@@ -1,0 +1,32 @@
+[
+  {
+    "type": "pair:PersonType",
+    "slug": "admin",
+    "pair:label": "Administrateur"
+  },
+  {
+    "type": "pair:PersonType",
+    "slug": "contributor",
+    "pair:label": "Contributeur"
+  },
+  {
+    "type": "cdlt:ServiceType",
+    "pair:label": "Chambres d’hôtes / tables d’hôtes"
+  },
+  {
+    "type": "cdlt:ServiceType",
+    "pair:label": "Gîtes"
+  },
+  {
+    "type": "cdlt:ServiceType",
+    "pair:label": "Accueil de stages / salles"
+  },
+  {
+    "type": "cdlt:ServiceType",
+    "pair:label": "Camping"
+  },
+  {
+    "type": "cdlt:ServiceType",
+    "pair:label": "Hébergements insolites"
+  }
+]

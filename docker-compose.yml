@@ -1,0 +1,22 @@
+version: '3.5'
+
+services:
+  fuseki:
+    image: semapps/jena-fuseki-webacl
+    container_name: fuseki
+    volumes:
+      - ./data/fuseki:/fuseki
+    ports:
+      - "3030:3030"
+    expose:
+      - "3030"
+    environment:
+      ADMIN_PASSWORD: "admin"
+
+  mailcatcher:
+    image: dockage/mailcatcher:0.7.1
+    container_name: mailcatcher
+    ports:
+    - "1080:1080"
+    - "1025:1025"
+    restart: on-failure

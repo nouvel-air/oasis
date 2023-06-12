@@ -1,0 +1,47 @@
+{
+  "name": "oasis-backoffice",
+  "version": "1.0.0",
+  "dependencies": {
+    "@mui/styles": "^5.0.2",
+    "@semapps/auth-provider": "0.5.0-alpha.0",
+    "@semapps/date-components": "0.5.0-alpha.0",
+    "@semapps/field-components": "0.5.0-alpha.0",
+    "@semapps/geo-components": "0.5.0-alpha.0",
+    "@semapps/input-components": "0.5.0-alpha.0",
+    "@semapps/interop-components": "0.5.0-alpha.0",
+    "@semapps/list-components": "0.5.0-alpha.0",
+    "@semapps/markdown-components": "0.5.0-alpha.0",
+    "@semapps/semantic-data-provider": "0.5.0-alpha.0",
+    "leaflet": "^1.8.0",
+    "leaflet-defaulticon-compatibility": "^0.1.1",
+    "leaflet.markercluster": "^1.5.3",
+    "ra-language-french": "^4.11.0",
+    "react": "^18.1.0",
+    "react-admin": "^4.11.0",
+    "react-dom": "^18.1.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "react-scripts": "3.4.0",
+    "source-map-explorer": "^2.5.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
+    "link-semapps-packages": "yarn link @semapps/activitypub-components @semapps/auth-provider @semapps/date-components @semapps/field-components @semapps/geo-components @semapps/input-components @semapps/interop-components @semapps/list-components @semapps/markdown-components @semapps/semantic-data-provider",
+    "unlink-semapps-packages": "yarn unlink @semapps/activitypub-components @semapps/auth-provider @semapps/date-components @semapps/field-components @semapps/geo-components @semapps/input-components @semapps/interop-components @semapps/list-components @semapps/markdown-components @semapps/semantic-data-provider"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ]
+}
