@@ -10,23 +10,23 @@
     "pair:label": "Contributeur"
   },
   {
-    "type": "cdlt:ServiceType",
+    "type": "http://virtual-assembly.org/ontologies/cdlt#ServiceType",
     "pair:label": "Chambres d’hôtes / tables d’hôtes"
   },
   {
-    "type": "cdlt:ServiceType",
+    "type": "http://virtual-assembly.org/ontologies/cdlt#ServiceType",
     "pair:label": "Gîtes"
   },
   {
-    "type": "cdlt:ServiceType",
+    "type": "http://virtual-assembly.org/ontologies/cdlt#ServiceType",
     "pair:label": "Accueil de stages / salles"
   },
   {
-    "type": "cdlt:ServiceType",
+    "type": "http://virtual-assembly.org/ontologies/cdlt#ServiceType",
     "pair:label": "Camping"
   },
   {
-    "type": "cdlt:ServiceType",
+    "type": "http://virtual-assembly.org/ontologies/cdlt#ServiceType",
     "pair:label": "Hébergements insolites"
   }
 ]

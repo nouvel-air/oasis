@@ -6,16 +6,16 @@ import { PlaceInput, TypeInput } from '../../common/input';
 
 const ServiceForm = () => (
   <SimpleForm>
-    <PlaceInput source="pair:offeredBy" validate={[required()]} />
-    {/* <TypeInput source="pair:hasType" filter={{ a: 'cdlt:ServiceType' }} /> */}
-    <TextInput source="cdlt:registrationLink" fullWidth />
     <TextInput source="pair:label" fullWidth validate={[required()]} />
-    <TextInput source="cdlt:price" fullWidth validate={[required()]} />
-    <TextInput source="cdlt:capacity" fullWidth validate={[required()]} />
-    <MarkdownInput source="pair:description" fullWidth validate={[required()]} isRequired />
-    <ImageInput source="pair:depictedBy" accept="image/*">
+    <PlaceInput source="pair:offeredBy" validate={[required()]} />
+    <TypeInput source="pair:hasType" filter={{ a: 'cdlt:ServiceType' }} />
+    <MarkdownInput source="pair:description" fullWidth />
+    <ImageInput source="pair:depictedBy" accept="image/*" validate={[required()]}>
       <ImageField source="src" />
     </ImageInput>
+    <TextInput source="cdlt:price" fullWidth validate={[required()]} />
+    <TextInput source="cdlt:capacity" fullWidth validate={[required()]} />
+    <TextInput source="cdlt:registrationLink" fullWidth />
   </SimpleForm>
 );
 

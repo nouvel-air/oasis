@@ -1,21 +1,21 @@
 import React from 'react';
 import { SelectInput } from 'react-admin';
-import { ReferenceArrayInput } from "@semapps/input-components";
+import { ReferenceInput } from "@semapps/input-components";
 
 export const UserInput = (props) => (
-  <ReferenceArrayInput reference="Person" {...props}>
+  <ReferenceInput reference="Person" {...props}>
     <SelectInput optionText="pair:label" fullWidth />
-  </ReferenceArrayInput>
+  </ReferenceInput>
 );
 
-export const PlaceInput = (props) => (
-  <ReferenceArrayInput reference="Place" {...props}>
-    <SelectInput optionText="pair:label" fullWidth />
-  </ReferenceArrayInput>
+export const PlaceInput = ({ validate, ...rest }) => (
+  <ReferenceInput reference="Place" {...rest}>
+    <SelectInput optionText="pair:label" validate={validate} fullWidth />
+  </ReferenceInput>
 );
 
 export const TypeInput = (props) => (
-  <ReferenceArrayInput reference="Type" {...props}>
+  <ReferenceInput reference="Type" {...props}>
     <SelectInput optionText="pair:label" fullWidth />
-  </ReferenceArrayInput>
+  </ReferenceInput>
 );

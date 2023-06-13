@@ -12,8 +12,9 @@ const PlaceList = props => {
               // secondaryText={record => `${record.views} views`}
           />
       ) : (
-          <Datagrid>
+          <Datagrid rowClick="edit">
             <TextField source="pair:label" />
+            <TextField source="pair:hasPostalAddress.pair:label" />
           </Datagrid>
       )}
     </List>

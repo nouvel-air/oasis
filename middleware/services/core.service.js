@@ -3,6 +3,7 @@ const urlJoin = require("url-join");
 const { CoreService } = require('@semapps/core');
 const CONFIG = require('../config/config');
 const containers = require('../config/containers');
+const ontologies = require('../config/ontologies.json');
 
 module.exports = {
   mixins: [CoreService],
@@ -16,6 +17,9 @@ module.exports = {
       mainDataset: CONFIG.MAIN_DATASET,
     },
     containers,
+    ontologies,
+    jsonContext: urlJoin(CONFIG.HOME_URL, 'context.json'),
+    jsonld: false, // Custom configuration in jsonld.service.js file
     api: {
       port: CONFIG.PORT,
     },

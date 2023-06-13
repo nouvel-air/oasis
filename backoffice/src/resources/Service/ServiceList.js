@@ -1,5 +1,6 @@
 import React from 'react';
 import { List, SimpleList, Datagrid, TextField } from 'react-admin';
+import { ReferenceField } from '@semapps/field-components';
 import { useMediaQuery } from '@mui/material';
 
 const ServiceList = props => {
@@ -8,12 +9,19 @@ const ServiceList = props => {
     <List {...props}>
       {xs ? (
         <SimpleList
-          primaryText="pair:label"
-          // secondaryText={record => `${record.views} views`}
+          primaryText="%{pair:label}"
+          secondaryText={
+            <ReferenceField source="pair:offeredBy" reference="Place" link={false}>
+              <TextField source="pair:label" />
+            </ReferenceField>
+          }
         />
       ) : (
-        <Datagrid>
+        <Datagrid rowClick="edit">
           <TextField source="pair:label" />
+          <ReferenceField source="pair:offeredBy" reference="Place" link={false}>
+            <TextField source="pair:label" />
+          </ReferenceField>
         </Datagrid>
       )}
     </List>

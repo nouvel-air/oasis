@@ -37,6 +37,7 @@ export default {
         'pair:label': 'Nom',
         'pair:description': 'Description',
         'pair:hasPostalAddress': 'Adresse postale',
+        'pair:hasPostalAddress.pair:label': 'Adresse postale',
         'pair:depictedBy': 'Image',
         'cdlt:proposedBy': 'Référent',
         'pair:e-mail': 'Adresse e-mail',
