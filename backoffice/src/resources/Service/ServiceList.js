@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, SimpleList, Datagrid, TextField } from 'react-admin';
+import { List, SimpleList, Datagrid, TextField, EditButton } from 'react-admin';
 import { ReferenceField } from '@semapps/field-components';
 import { useMediaQuery } from '@mui/material';
 
@@ -22,6 +22,7 @@ const ServiceList = props => {
           <ReferenceField source="pair:offeredBy" reference="Place" link={false}>
             <TextField source="pair:label" />
           </ReferenceField>
+          <EditButton />
         </Datagrid>
       )}
     </List>

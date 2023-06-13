@@ -30,7 +30,8 @@ export default {
         'pair:firstName': 'Prénom',
         'pair:lastName': 'Nom de famille',
         'pair:e-mail': 'Adresse mail',
-        'pair:hasType': "Type d'utilisateur"
+        'pair:hasType': "Type d'utilisateur",
+        'cdlt:proposes': 'Référent de'
       }
     }
   }

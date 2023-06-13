@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, SimpleList, Datagrid, TextField } from 'react-admin';
+import { List, SimpleList, Datagrid, TextField, EditButton } from 'react-admin';
 import { useMediaQuery } from '@mui/material';
 
 const PlaceList = props => {
@@ -7,15 +7,16 @@ const PlaceList = props => {
   return (
     <List {...props}>
       {xs ? (
-          <SimpleList
-              primaryText="pair:label"
-              // secondaryText={record => `${record.views} views`}
-          />
-      ) : (
-          <Datagrid rowClick="edit">
-            <TextField source="pair:label" />
-            <TextField source="pair:hasPostalAddress.pair:label" />
-          </Datagrid>
+        <SimpleList
+          primaryText="%{pair:label}"
+          secondaryText="%{pair:hasPostalAddress.pair:label}"
+        />
+    ) : (
+        <Datagrid rowClick="edit">
+          <TextField source="pair:label" />
+          <TextField source="pair:hasPostalAddress.pair:label" />
+          <EditButton />
+        </Datagrid>
       )}
     </List>
   )

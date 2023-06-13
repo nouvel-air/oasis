@@ -7,6 +7,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import SignupForm from './SignupForm';
 import LoginForm from './LoginForm';
 import NewPasswordForm from './NewPasswordForm';
+import ResetPasswordForm from './ResetPasswordForm';
 import SimpleBox from './SimpleBox';
 import makeStyles from '@mui/styles/makeStyles';
 
@@ -18,7 +19,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const LocalLoginPage = ({ children, hasSignup }) => {
+const LocalLoginPage = ({ hasSignup }) => {
     const classes = useStyles();
     const navigate = useNavigate();
     const translate = useTranslate();
@@ -32,8 +33,12 @@ const LocalLoginPage = ({ children, hasSignup }) => {
    
     useEffect(() => {
       if (!isLoading && identity?.id) {
-        // Already authenticated, redirect to the home page
-        navigate(redirectTo || '/');
+         // Already authenticated, redirect to the home page
+        if (redirectTo && redirectTo.startsWith('http')) {
+          window.location.href = redirectTo
+        } else {
+          navigate(redirectTo || '/');
+        }
       }    
     }, [identity, isLoading, navigate, redirectTo]);
 
@@ -49,13 +54,13 @@ const LocalLoginPage = ({ children, hasSignup }) => {
       }
     }, [isSignup, isLogin, isResetPassword, isNewPassword]);
 
-    if (isLoading) return null;
+    if (isLoading || identity?.id) return null;
 
     return (
       <SimpleBox title={translate(title)} text={translate(text)} icon={<LockIcon />}>
         <Card>
           {isSignup && <SignupForm redirectTo={redirectTo} delayBeforeRedirect={3000} />}
-          {/* {isResetPassword ? <ResetPasswordForm /> : null} */}
+          {isResetPassword && <ResetPasswordForm />}
           {isNewPassword && <NewPasswordForm redirectTo={redirectTo} />}
           {isLogin && <LoginForm redirectTo={redirectTo} />}
           <div className={classes.switch}>
@@ -87,7 +92,7 @@ const LocalLoginPage = ({ children, hasSignup }) => {
 };
 
 LocalLoginPage.defaultProps = {
-  hasSignup: false
+  hasSignup: true
 };
 
 export default LocalLoginPage;

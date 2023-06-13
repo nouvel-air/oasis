@@ -4,7 +4,8 @@ require('dotenv-flow').config();
 
 module.exports = {
   HOME_URL: process.env.SEMAPPS_HOME_URL,
-  FRONT_URL: process.env.SEMAPPS_FRONT_URL,
+  FRONTOFFICE_URL: process.env.SEMAPPS_FRONTOFFICE_URL,
+  BACKOFFICE_URL: process.env.SEMAPPS_BACKOFFICE_URL,
   PORT: process.env.SEMAPPS_PORT,
   INSTANCE_NAME: process.env.SEMAPPS_INSTANCE_NAME,
   INSTANCE_DESCRIPTION: process.env.SEMAPPS_INSTANCE_DESCRIPTION,

@@ -23,7 +23,6 @@ const App = () => (
           dataProvider={dataProvider}
           i18nProvider={i18nProvider}
           layout={Layout}
-        
           theme={theme}
           loginPage={LocalLoginPage}
           store={memoryStore()}

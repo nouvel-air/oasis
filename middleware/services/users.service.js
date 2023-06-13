@@ -9,7 +9,6 @@ module.exports = {
   settings: {
     path: '/users',
     acceptedTypes: ['pair:Person', 'foaf:Person', ACTOR_TYPES.PERSON],
-    preferredView: '/Person',
     dereference: ['sec:publicKey'],
     excludeFromMirror: false
   },
@@ -20,20 +19,22 @@ module.exports = {
     async post(ctx) {
       const { containerUri, slug, resource, contentType } = ctx.params;
 
-      console.log('slug', slug, typeof slug)
-
       const accountData = await ctx.call('auth.account.create', { email: resource['pair:e-mail'] });
       delete resource['pair:e-mail'];
 
-      const actorUri = await ctx.call('ldp.container.post', { containerUri, slug, resource, contentType, webId: 'system' });
+      const actorUri = await ctx.call('ldp.container.post', { containerUri, slug, resource, contentType });
 
       await ctx.call('auth.account.attachWebId', { accountUri: accountData['@id'], webId: actorUri });
 
       const token = await ctx.call('auth.account.generateResetPasswordToken', { webId: actorUri });
 
-      // if( resource['pair:hasType'] === urlJoin(CONFIG.HOME_URL, 'types', 'contributor')) {
+      if (resource['pair:hasType'] === urlJoin(CONFIG.HOME_URL, 'types', 'actor')) {
         await ctx.call('mailer.inviteActor', { actorUri, accountData, token });
-      // }
+      } else if (resource['pair:hasType'] === urlJoin(CONFIG.HOME_URL, 'types', 'admin')) {
+        await ctx.call('mailer.inviteAdmin', { actorUri, accountData, token });
+      } else {
+        throw new Error('Unknown person type: ' + resource['pair:hasType'])
+      }
 
       return actorUri;
     }

@@ -1,21 +1,32 @@
 import React from 'react';
-import { List, SimpleList } from 'react-admin';
-import { Avatar } from '@mui/material';
-import PersonIcon from '@mui/icons-material/Person';
+import { List, SimpleList, Datagrid, TextField, EditButton } from 'react-admin';
+import { ReferenceField } from '@semapps/field-components';
+import { useMediaQuery } from '@mui/material';
 
-const PersonList = () => (
-  <List>
-    <SimpleList
-      primaryText={record => record['pair:label']}
-      secondaryText={record => record['pair:comment']}
-      leftAvatar={record => (
-        <Avatar src={record['image']} width="100%">
-          <PersonIcon />
-        </Avatar>
+const PersonList = props => {
+  const xs = useMediaQuery(theme => theme.breakpoints.down('sm'));
+  return (
+    <List {...props}>
+      {xs ? (
+        <SimpleList
+          primaryText="%{pair:label}"
+          secondaryText={
+            <ReferenceField source="pair:hasType" reference="Type" link={false}>
+              <TextField source="pair:label" />
+            </ReferenceField>
+          }
+        />
+      ) : (
+        <Datagrid rowClick="edit">
+          <TextField source="pair:label" />
+          <ReferenceField source="pair:hasType" reference="Type" link={false}>
+            <TextField source="pair:label" />
+          </ReferenceField>
+          <EditButton />
+        </Datagrid>
       )}
-      linkType="show"
-    />
-  </List>
-);
+    </List>
+  )
+};
 
 export default PersonList;

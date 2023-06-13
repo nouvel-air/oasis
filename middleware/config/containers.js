@@ -1,6 +1,9 @@
+const { rootPermissions } = require('./permissions');
+
 module.exports = [
   {
-    path: '/'
+    path: '/',
+    permissions: rootPermissions
   },
   {
     path: '/places',

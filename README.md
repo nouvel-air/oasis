@@ -32,6 +32,14 @@ yarn run dev
 
 > This will launch Moleculer in [REPL mode](https://moleculer.services/docs/0.14/moleculer-repl.html), allowing you to call actions directly.
 
+Initialize the data with these commands:
+
+```bash
+call importer.types.freshImport
+call initialization.createAdmin --email youremail@domain.com
+call webacl.resource.refreshContainersRights
+```
+
 ### Frontend
 
 Launch the frontend on port 4000:

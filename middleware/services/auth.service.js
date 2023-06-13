@@ -9,6 +9,7 @@ module.exports = {
     baseUrl: CONFIG.HOME_URL,
     jwtPath: path.resolve(__dirname, '../jwt'),
     accountsDataset: CONFIG.AUTH_ACCOUNTS_DATASET_NAME,
-    formUrl: CONFIG.FRONT_URL ? urlJoin(CONFIG.FRONT_URL, 'login') : undefined,
+    // TODO handle redirect to frontoffice when necessary
+    formUrl: CONFIG.BACKOFFICE_URL ? urlJoin(CONFIG.BACKOFFICE_URL, 'login') : undefined,
   }
 };

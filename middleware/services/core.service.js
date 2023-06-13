@@ -26,7 +26,7 @@ module.exports = {
     ldp: {
       preferredViewForResource: async (resourceUri, containerPreferredView) => {
         if (!containerPreferredView) return resourceUri;
-        return urlJoin(CONFIG.FRONT_URL, containerPreferredView, encodeURIComponent(resourceUri), 'show')
+        return urlJoin(CONFIG.FRONTOFFICE_URL, containerPreferredView, encodeURIComponent(resourceUri), 'show')
       }
     },
     void: {

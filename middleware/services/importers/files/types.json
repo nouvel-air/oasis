@@ -6,27 +6,27 @@
   },
   {
     "type": "pair:PersonType",
-    "slug": "contributor",
-    "pair:label": "Contributeur"
+    "slug": "actor",
+    "pair:label": "Acteur"
   },
   {
-    "type": "http://virtual-assembly.org/ontologies/cdlt#ServiceType",
+    "type": "cdlt:ServiceType",
     "pair:label": "Chambres d’hôtes / tables d’hôtes"
   },
   {
-    "type": "http://virtual-assembly.org/ontologies/cdlt#ServiceType",
+    "type": "cdlt:ServiceType",
     "pair:label": "Gîtes"
   },
   {
-    "type": "http://virtual-assembly.org/ontologies/cdlt#ServiceType",
+    "type": "cdlt:ServiceType",
     "pair:label": "Accueil de stages / salles"
   },
   {
-    "type": "http://virtual-assembly.org/ontologies/cdlt#ServiceType",
+    "type": "cdlt:ServiceType",
     "pair:label": "Camping"
   },
   {
-    "type": "http://virtual-assembly.org/ontologies/cdlt#ServiceType",
+    "type": "cdlt:ServiceType",
     "pair:label": "Hébergements insolites"
   }
 ]

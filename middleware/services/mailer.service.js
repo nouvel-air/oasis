@@ -108,7 +108,12 @@ module.exports = {
         accept: MIME_TYPES.JSON
       });
 
-      const redirectUrl = 'http://localhost:4000/Place';
+      const place = await ctx.call('ldp.resource.get', {
+        resourceUri: actor['cdlt:proposes'],
+        accept: MIME_TYPES.JSON
+      });
+
+      const redirectUrl = urlJoin(CONFIG.FRONTOFFICE_URL, 'Place', encodeURIComponent(place.id));
 
       await ctx.call('mailer.send', {
         to: accountData.email,
@@ -116,8 +121,30 @@ module.exports = {
         template: 'invite-actor',
         data: {
           actor,
+          place,
           account: accountData,
-          resetUrl: urlJoin(CONFIG.FRONT_URL, 'login') + '?new_password=true&token=' + token + '&email=' + encodeURIComponent(accountData.email) + '&redirect=' + encodeURIComponent(redirectUrl)
+          resetUrl: urlJoin(CONFIG.FRONTOFFICE_URL, 'login') + '?new_password=true&token=' + token + '&email=' + encodeURIComponent(accountData.email) + '&redirect=' + encodeURIComponent(redirectUrl)
+        }
+      });
+    },
+    async inviteAdmin(ctx) {
+      let { actorUri, accountData, token } = ctx.params;
+
+      const actor = await ctx.call('ldp.resource.get', {
+        resourceUri: actorUri,
+        accept: MIME_TYPES.JSON
+      });
+
+      const redirectUrl = urlJoin(CONFIG.BACKOFFICE_URL, 'Person', encodeURIComponent(actor.id));
+
+      await ctx.call('mailer.send', {
+        to: accountData.email,
+        replyTo: this.settings.from,
+        template: 'invite-admin',
+        data: {
+          actor,
+          account: accountData,
+          resetUrl: urlJoin(CONFIG.BACKOFFICE_URL, 'login') + '?new_password=true&token=' + token + '&email=' + encodeURIComponent(accountData.email) + '&redirect=' + encodeURIComponent(redirectUrl)
         }
       });
     }
