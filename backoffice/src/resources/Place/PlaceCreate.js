@@ -4,7 +4,7 @@ import PlaceForm from './PlaceForm';
 
 const PlaceCreate = () => (
   <Create>
-    <SimpleForm>
+    <SimpleForm defaultValues={{ 'cdlt:hasPublicationStatus': 'https://data.lescheminsdelatransition.org/publication-status/en-cours' }}>
       <PlaceForm />
     </SimpleForm>
   </Create>

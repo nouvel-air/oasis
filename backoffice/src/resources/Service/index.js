@@ -14,7 +14,10 @@ export default {
     },
   },
   dataModel: {
-    types: ['cdlt:HostingService']
+    types: ['cdlt:HostingService'],
+    list: {
+      servers: '@default'
+    },
   },
   translations: {
     fr: {

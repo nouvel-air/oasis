@@ -32,23 +32,29 @@ yarn run dev
 
 > This will launch Moleculer in [REPL mode](https://moleculer.services/docs/0.14/moleculer-repl.html), allowing you to call actions directly.
 
-Initialize the data with these commands:
+
+### Backoffice
+
+Launch the backoffice on port 4000:
 
 ```bash
-call importer.types.freshImport
+cd backoffice
+yarn install
+yarn start
+```
+
+
+### Initialize the data
+
+Run these commands on Moleculer [REPL](https://moleculer.services/docs/0.14/moleculer-repl.html):
+
+```bash
+call importers.types.freshImport
 call initialization.createAdmin --email youremail@domain.com
 call webacl.resource.refreshContainersRights
 ```
 
-### Frontend
-
-Launch the frontend on port 4000:
-
-```bash
-cd frontend
-yarn install
-yarn start
-```
+The second commands will send an email to the given address. This will allow you to set a password and connect to the backoffice.
 
 
 ## Linking to SemApps packages

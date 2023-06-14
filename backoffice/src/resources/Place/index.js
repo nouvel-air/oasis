@@ -42,7 +42,8 @@ export default {
         'cdlt:proposedBy': 'Référents',
         'pair:e-mail': 'Adresse e-mail',
         'pair:homePage': 'Site web',
-        'cdlt:hasServiceType': 'Types de services'
+        'cdlt:hasServiceType': 'Types de services',
+        'cdlt:hasPublicationStatus': 'Statut de publication'
       },
     },
   },

@@ -15,7 +15,8 @@ const useStyles = makeStyles(() => ({
   switch: {
     marginBottom: '1em',
     display: 'flex',
-    justifyContent: 'center'
+    flexDirection: 'column',
+    alignItems: 'center'
   },
 }));
 

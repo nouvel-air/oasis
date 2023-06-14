@@ -33,3 +33,9 @@ export const TypeInput = ({ validate, ...rest }) => (
     <SelectInput optionText="pair:label" validate={validate} fullWidth />
   </ReferenceInput>
 );
+
+export const StatusInput = ({ validate, ...rest }) => (
+  <ReferenceInput reference="Status" {...rest}>
+    <SelectInput optionText="pair:label" validate={validate} />
+  </ReferenceInput>
+);

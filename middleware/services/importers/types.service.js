@@ -4,7 +4,7 @@ const { ImporterMixin } = require('@semapps/importer');
 const CONFIG = require('../../config/config');
 
 module.exports = {
-  name: 'importer.types',
+  name: 'importers.types',
   mixins: [ImporterMixin],
   settings: {
     source: {

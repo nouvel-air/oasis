@@ -8,6 +8,8 @@ module.exports = {
     async updatePlaceType(ctx) {
       const { placeUri } = ctx.params;
 
+      console.log('updatePlaceType', ctx.params);
+
       // Delete existing types
       await ctx.call('triplestore.update', {
         query: `

@@ -1,6 +1,6 @@
 {
-  "short_name": "Archipelago",
-  "name": "Archipelago",
+  "short_name": "Backoffice Oasis",
+  "name": "Backoffice Oasis",
   "icons": [
     {
       "src": "favicon.ico",
@@ -18,8 +18,8 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
+  "start_url": "https://admin.data.cooperative-oasis.org",
   "display": "standalone",
-  "theme_color": "#000000",
+  "theme_color": "#87B4C3",
   "background_color": "#ffffff"
 }

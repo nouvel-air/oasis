@@ -2,6 +2,7 @@ import React from 'react';
 import { List, SimpleList, Datagrid, TextField, EditButton, SingleFieldList, ChipField } from 'react-admin';
 import { useMediaQuery } from '@mui/material';
 import { ReferenceArrayField } from '@semapps/field-components';
+import PublishButton from '../../common/button/PublishButton';
 
 const PlaceList = props => {
   const xs = useMediaQuery(theme => theme.breakpoints.down('sm'));
@@ -10,7 +11,6 @@ const PlaceList = props => {
       {xs ? (
         <SimpleList
           primaryText="%{pair:label}"
-          secondaryText="%{pair:hasPostalAddress.pair:label}"
         />
     ) : (
         <Datagrid rowClick="edit">
@@ -22,6 +22,7 @@ const PlaceList = props => {
             </SingleFieldList>
           </ReferenceArrayField>
           <EditButton />
+          <PublishButton />
         </Datagrid>
       )}
     </List>

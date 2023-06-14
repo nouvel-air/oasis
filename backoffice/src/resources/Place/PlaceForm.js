@@ -3,7 +3,7 @@ import { TextInput, ImageField, email, required } from 'react-admin';
 import { MarkdownInput } from '@semapps/markdown-components';
 import { ImageInput } from '@semapps/input-components';
 import { extractContext, LocationInput } from '@semapps/geo-components';
-import { UsersInput } from '../../common/input';
+import { StatusInput, UsersInput } from '../../common/input';
 
 const PlaceForm = () => (
   <>
@@ -39,6 +39,7 @@ const PlaceForm = () => (
     <TextInput source="pair:homePage" fullWidth />
     <TextInput source="pair:e-mail" fullWidth validate={[required(), email()]} />  
     <UsersInput source="cdlt:proposedBy" fullWidth />
+    <StatusInput source="cdlt:hasPublicationStatus" validate={[required()]} />
   </>
 );
 

@@ -4,6 +4,9 @@ const dataServers = {
     authServer: true,
     default: true,
     uploadsContainer: '/files'
+  },
+  cdlt: {
+    baseUrl: 'https://data.lescheminsdelatransition.org/'
   }
 };
 

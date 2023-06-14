@@ -24,10 +24,13 @@ const rootPermissions = {
   }
 };
 
-const writePermissionToActors = {
+const anonReadPermissions = {
   anon: {
     read: true,
-  },
+  }
+};
+
+const writePermissionToActors = {
   group: {
     uri: urlJoin(CONFIG.HOME_URL, '_groups', 'actors'),
     write: true
@@ -36,5 +39,6 @@ const writePermissionToActors = {
 
 module.exports = {
   rootPermissions,
+  anonReadPermissions,
   writePermissionToActors
 };

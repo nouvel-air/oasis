@@ -99,7 +99,7 @@ module.exports = {
         accept: MIME_TYPES.JSON
       });
 
-      const redirectUrl = urlJoin(CONFIG.FRONTOFFICE_URL, 'Place', encodeURIComponent(place.id));
+      const redirectUrl = urlJoin(CONFIG.BACKOFFICE_URL, 'Place', encodeURIComponent(place.id));
 
       await ctx.call('mailer.send', {
         to: accountData.email,
@@ -109,7 +109,7 @@ module.exports = {
           actor,
           place,
           account: accountData,
-          resetUrl: urlJoin(CONFIG.FRONTOFFICE_URL, 'login') + '?new_password=true&token=' + token + '&email=' + encodeURIComponent(accountData.email) + '&redirect=' + encodeURIComponent(redirectUrl)
+          resetUrl: urlJoin(CONFIG.BACKOFFICE_URL, 'login') + '?new_password=true&token=' + token + '&email=' + encodeURIComponent(accountData.email) + '&redirect=' + encodeURIComponent(redirectUrl)
         }
       });
     },

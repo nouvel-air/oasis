@@ -12,6 +12,8 @@ import * as resources from './resources';
 import Layout from './Layout';
 import LocalLoginPage from './pages/LocalLoginPage/LocalLoginPage'
 
+const LoginPage = () => <LocalLoginPage hasSignup={false} />
+
 const App = () => (
   <StyledEngineProvider injectFirst>
     <BrowserRouter>
@@ -24,7 +26,7 @@ const App = () => (
           i18nProvider={i18nProvider}
           layout={Layout}
           theme={theme}
-          loginPage={LocalLoginPage}
+          loginPage={LoginPage}
           store={memoryStore()}
         >
           {Object.entries(resources).map(([key, resource]) => (
