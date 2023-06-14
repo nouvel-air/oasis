@@ -12,12 +12,12 @@
     "unlink-semapps-packages": "yarn unlink @semapps/activitypub @semapps/auth @semapps/backup @semapps/core @semapps/importer @semapps/inference @semapps/jsonld @semapps/ldp @semapps/middlewares @semapps/mime-types @semapps/pod @semapps/signature @semapps/sparql-endpoint @semapps/sync @semapps/triplestore @semapps/void @semapps/webacl @semapps/webfinger @semapps/webhooks @semapps/webid"
   },
   "dependencies": {
-    "@semapps/auth": "0.5.0-alpha.9",
-    "@semapps/backup": "0.5.0-alpha.9",
-    "@semapps/core": "0.5.0-alpha.9",
-    "@semapps/inference": "0.5.0-alpha.9",
-    "@semapps/importer": "0.5.0-alpha.9",
-    "@semapps/webid": "0.5.0-alpha.9",
+    "@semapps/auth": "0.5.0-alpha.10",
+    "@semapps/backup": "0.5.0-alpha.10",
+    "@semapps/core": "0.5.0-alpha.10",
+    "@semapps/inference": "0.5.0-alpha.10",
+    "@semapps/importer": "0.5.0-alpha.10",
+    "@semapps/webid": "0.5.0-alpha.10",
     "dotenv-flow": "^3.2.0",
     "ioredis": "^4.17.3",
     "moleculer": "^0.14.18",
