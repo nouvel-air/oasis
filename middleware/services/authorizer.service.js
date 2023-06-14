@@ -1,5 +1,6 @@
 const { defaultToArray } = require('@semapps/ldp');
 const { AuthorizerBot } = require('@semapps/webacl');
+const { MIME_TYPES } = require("@semapps/mime-types");
 
 module.exports = {
   mixins: [AuthorizerBot],
@@ -29,7 +30,6 @@ module.exports = {
   events: {
     async 'authorizer.added'(ctx) {
       const { resourceUri, users, rule } = ctx.params;
-      console.log('authorizer.added', ctx.params);
       if (rule.key === 'place') {
         const place = await ctx.call('ldp.resource.get', {
           resourceUri,
@@ -56,7 +56,6 @@ module.exports = {
     },
     async 'authorizer.removed'(ctx) {
       const { resourceUri, users, rule } = ctx.params;
-      console.log('authorizer.removed', ctx.params);
       if (rule.key === 'place') {
         const place = await ctx.call('ldp.resource.get', {
           resourceUri,
@@ -68,7 +67,7 @@ module.exports = {
             for (let userUri of users) {
               await ctx.call('webacl.resource.removeRights', {
                 resourceUri: serviceUri,
-                additionalRights: {
+                rights: {
                   user: {
                     uri: userUri,
                     ...rule.rights

@@ -37,11 +37,11 @@ module.exports = {
   actions: {
     async contact(ctx) {
       const { resourceUri, name, email, content } = ctx.params;
-      let to, resourceLabel, resourceFrontPath;
+      let resourceLabel, resourceFrontPath;
 
       if( !resourceUri ) throw new Error('Un ou plusieurs paramètres sont manquants');
 
-      const resource = await ctx.call('ldp.resource.get', {
+      let resource = await ctx.call('ldp.resource.get', {
         resourceUri,
         accept: MIME_TYPES.JSON,
         webId: 'system'
@@ -50,33 +50,24 @@ module.exports = {
       const types = Array.isArray(resource.type) ? resource.type : [resource.type];
 
       if( types.includes('pair:Place') ) {
-        to = resource['pair:e-mail'];
         resourceLabel = resource['pair:label'];
         resourceFrontPath = 'Place';
-      } else if( types.includes('pair:Event') ) {
-        to = resource['pair:e-mail'];
-        resourceLabel = resource['pair:label'];
-        resourceFrontPath = 'Event';
-      } else if( types.includes('pair:Organization') ) {
-        to = resource['pair:e-mail'];
-        resourceLabel = resource['pair:label'];
-        resourceFrontPath = 'Organization';
-      } else if( types.includes('pair:Person') ) {
-        const account = await ctx.call('auth.account.findByWebId', { webId: resourceUri });
-        to = account && account.email;
-        resourceLabel = "votre profil";
-        resourceFrontPath = 'Person';
-      } else if( types.includes('cdlt:Path') ) {
-        to = "bonjour@lescheminsdelatransition.org";
-        resourceLabel = resource['pair:label'];
-        resourceFrontPath = 'Path';
+      } else if( types.includes('cdlt:Service') ) {
+        const service = { ...resource };
+        resource = await ctx.call('ldp.resource.get', {
+          resourceUri: resource['pair:offeredBy'],
+          accept: MIME_TYPES.JSON,
+          webId: 'system'
+        });
+        resourceLabel = place['pair:label'];
+        resourceFrontPath = 'Place';
       } else {
         throw new Error('Impossible de contacter ce type de ressource: ' + resource.type);
       }
 
       if (!to) throw new Error('Aucune adresse mail définie pour ' + resourceLabel + '!')
 
-      const resourceFrontUrl = `https://lescheminsdelatransition.org/${resourceFrontPath}/${encodeURIComponent(resourceUri)}/show`;
+      const resourceFrontUrl = urlJoin(CONFIG.FRONTOFFICE_URL, resourceFrontPath, encodeURIComponent(resourceUri));
 
       await ctx.call('mailer.send', {
         to,
@@ -101,15 +92,10 @@ module.exports = {
       });
     },
     async inviteActor(ctx) {
-      let { actorUri, accountData, token } = ctx.params;
+      let { actorUri, place, accountData, token } = ctx.params;
 
       const actor = await ctx.call('ldp.resource.get', {
         resourceUri: actorUri,
-        accept: MIME_TYPES.JSON
-      });
-
-      const place = await ctx.call('ldp.resource.get', {
-        resourceUri: actor['cdlt:proposes'],
         accept: MIME_TYPES.JSON
       });
 

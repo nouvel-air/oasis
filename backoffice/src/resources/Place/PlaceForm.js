@@ -1,12 +1,12 @@
 import React from 'react';
-import { TextInput, SimpleForm, ImageField, email, required } from 'react-admin';
+import { TextInput, ImageField, email, required } from 'react-admin';
 import { MarkdownInput } from '@semapps/markdown-components';
 import { ImageInput } from '@semapps/input-components';
 import { extractContext, LocationInput } from '@semapps/geo-components';
-import { UserInput } from '../../common/input';
+import { UsersInput } from '../../common/input';
 
 const PlaceForm = () => (
-  <SimpleForm>
+  <>
     <TextInput source="pair:label" fullWidth validate={[required()]} />
     <MarkdownInput source="pair:description" fullWidth validate={[required()]} isRequired />
     <ImageInput source="pair:depictedBy" accept="image/*" multiple>
@@ -38,8 +38,8 @@ const PlaceForm = () => (
     />
     <TextInput source="pair:homePage" fullWidth />
     <TextInput source="pair:e-mail" fullWidth validate={[required(), email()]} />  
-    <UserInput source="cdlt:proposedBy" fullWidth />
-  </SimpleForm>
+    <UsersInput source="cdlt:proposedBy" fullWidth />
+  </>
 );
 
 export default PlaceForm;

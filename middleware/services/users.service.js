@@ -1,6 +1,7 @@
 const urlJoin = require("url-join");
-const { ControlledContainerMixin } = require('@semapps/ldp');
+const { ControlledContainerMixin, defaultToArray } = require('@semapps/ldp');
 const { ACTOR_TYPES } = require("@semapps/activitypub");
+const { MIME_TYPES } = require("@semapps/mime-types");
 const CONFIG = require("../config/config");
 
 module.exports = {
@@ -22,6 +23,10 @@ module.exports = {
       const accountData = await ctx.call('auth.account.create', { email: resource['pair:e-mail'] });
       delete resource['pair:e-mail'];
 
+      // Keep track of place URI, but don't post it with the user, otherwise the AuthorizerService will not work.
+      const placeUri = resource['cdlt:proposes'];
+      delete resource['cdlt:proposes'];
+
       const actorUri = await ctx.call('ldp.container.post', { containerUri, slug, resource, contentType });
 
       await ctx.call('auth.account.attachWebId', { accountUri: accountData['@id'], webId: actorUri });
@@ -29,7 +34,20 @@ module.exports = {
       const token = await ctx.call('auth.account.generateResetPasswordToken', { webId: actorUri });
 
       if (resource['pair:hasType'] === urlJoin(CONFIG.HOME_URL, 'types', 'actor')) {
-        await ctx.call('mailer.inviteActor', { actorUri, accountData, token });
+        let place = await ctx.call('ldp.resource.get', {
+          resourceUri: placeUri,
+          accept: MIME_TYPES.JSON
+        });
+
+        place['cdlt:proposedBy'] = place['cdlt:proposedBy'] ? [...defaultToArray(place['cdlt:proposedBy']), actorUri] : actorUri;
+
+        await ctx.call('ldp.resource.put', {
+          resource: place,
+          contentType: MIME_TYPES.JSON,
+          webId: 'system'
+        });
+
+        await ctx.call('mailer.inviteActor', { actorUri, place, accountData, token });
       } else if (resource['pair:hasType'] === urlJoin(CONFIG.HOME_URL, 'types', 'admin')) {
         await ctx.call('mailer.inviteAdmin', { actorUri, accountData, token });
       } else {

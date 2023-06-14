@@ -19,6 +19,9 @@ const ServiceList = props => {
       ) : (
         <Datagrid rowClick="edit">
           <TextField source="pair:label" />
+          <ReferenceField source="cdlt:hasServiceType" reference="Type" link={false}>
+            <TextField source="pair:label" />
+          </ReferenceField>
           <ReferenceField source="pair:offeredBy" reference="Place" link={false}>
             <TextField source="pair:label" />
           </ReferenceField>

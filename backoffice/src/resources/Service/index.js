@@ -14,17 +14,14 @@ export default {
     },
   },
   dataModel: {
-    types: ['cdlt:HostingService'],
-    fieldsMapping: {
-      title: 'pair:label'
-    }
+    types: ['cdlt:HostingService']
   },
   translations: {
     fr: {
       name: 'Service |||| Services',
       fields: {
         'pair:offeredBy': 'Oasis',
-        'pair:hasType': 'Catégorie',
+        'cdlt:hasServiceType': 'Catégorie',
         'pair:label': 'Nom',
         'cdlt:price': 'Prix',
         'cdlt:capacity': 'Capacité',

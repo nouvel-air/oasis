@@ -39,9 +39,10 @@ export default {
         'pair:hasPostalAddress': 'Adresse postale',
         'pair:hasPostalAddress.pair:label': 'Adresse postale',
         'pair:depictedBy': 'Image',
-        'cdlt:proposedBy': 'Référent',
+        'cdlt:proposedBy': 'Référents',
         'pair:e-mail': 'Adresse e-mail',
         'pair:homePage': 'Site web',
+        'cdlt:hasServiceType': 'Types de services'
       },
     },
   },

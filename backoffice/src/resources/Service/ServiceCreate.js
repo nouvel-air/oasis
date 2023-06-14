@@ -1,11 +1,24 @@
 import React from 'react';
-import { Create } from 'react-admin';
+import { Create, useRedirect } from 'react-admin';
+import { useLocation } from 'react-router-dom';
 import ServiceForm from './ServiceForm';
 
-const ServiceCreate = props => (
-  <Create {...props}>
-    <ServiceForm />
-  </Create>
-);
+const ServiceCreate = () => {
+  const location = useLocation();
+  const redirect = useRedirect();
+  const placeUri = location.state && location.state.record ? location.state.record['pair:offeredBy'] : undefined;
+
+  const onSuccess = () => {
+    if (placeUri) {
+      redirect(`/Place/${encodeURIComponent(placeUri)}/1`);
+    }
+  };
+
+  return (
+    <Create mutationOptions={{ onSuccess }} redirect={placeUri ? false : 'edit'}>
+      <ServiceForm />
+    </Create>
+  );
+}
 
 export default ServiceCreate;

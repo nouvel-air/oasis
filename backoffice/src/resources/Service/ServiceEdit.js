@@ -3,8 +3,8 @@ import { Edit } from 'react-admin';
 import ServiceForm from './ServiceForm';
 import ServiceTitle from './ServiceTitle';
 
-const ServiceEdit = props => (
-  <Edit title={<ServiceTitle />} {...props}>
+const ServiceEdit = () => (
+  <Edit redirect="edit" title={<ServiceTitle />}>
     <ServiceForm />
   </Edit>
 );

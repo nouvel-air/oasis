@@ -1,20 +1,18 @@
 import React from 'react';
-import { SimpleList, Datagrid, TextField, List } from 'react-admin';
+import { SimpleList, Datagrid, TextField, List, EditButton } from 'react-admin';
 import { useMediaQuery } from '@mui/material';
 
-const PageList = props => {
+const PageList = () => {
   const xs = useMediaQuery(theme => theme.breakpoints.down('sm'));
   return (
-    <List {...props}>
+    <List>
       {xs ? (
-          <SimpleList
-              primaryText="pair:label"
-              // secondaryText={record => `${record.views} views`}
-          />
+        <SimpleList primaryText="semapps:title" />
       ) : (
-          <Datagrid>
-              <TextField source="pair:label" />
-          </Datagrid>
+        <Datagrid rowClick="edit">
+          <TextField source="semapps:title" />
+          <EditButton />
+        </Datagrid>
       )}
     </List>
   )

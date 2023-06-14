@@ -8,7 +8,7 @@ const ServiceForm = () => (
   <SimpleForm>
     <TextInput source="pair:label" fullWidth validate={[required()]} />
     <PlaceInput source="pair:offeredBy" validate={[required()]} />
-    <TypeInput source="pair:hasType" filter={{ a: 'cdlt:ServiceType' }} />
+    <TypeInput source="cdlt:hasServiceType" filter={{ a: 'cdlt:ServiceType' }} />
     <MarkdownInput source="pair:description" fullWidth />
     <ImageInput source="pair:depictedBy" accept="image/*" validate={[required()]}>
       <ImageField source="src" />

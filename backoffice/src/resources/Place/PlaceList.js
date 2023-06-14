@@ -1,6 +1,7 @@
 import React from 'react';
-import { List, SimpleList, Datagrid, TextField, EditButton } from 'react-admin';
+import { List, SimpleList, Datagrid, TextField, EditButton, SingleFieldList, ChipField } from 'react-admin';
 import { useMediaQuery } from '@mui/material';
+import { ReferenceArrayField } from '@semapps/field-components';
 
 const PlaceList = props => {
   const xs = useMediaQuery(theme => theme.breakpoints.down('sm'));
@@ -15,6 +16,11 @@ const PlaceList = props => {
         <Datagrid rowClick="edit">
           <TextField source="pair:label" />
           <TextField source="pair:hasPostalAddress.pair:label" />
+          <ReferenceArrayField reference="Type" source="cdlt:hasServiceType">
+            <SingleFieldList linkType={false}>
+                <ChipField source="pair:label" />
+            </SingleFieldList>
+          </ReferenceArrayField>
           <EditButton />
         </Datagrid>
       )}

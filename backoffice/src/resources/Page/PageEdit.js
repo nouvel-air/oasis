@@ -1,14 +1,11 @@
 import React from 'react';
-import { SimpleForm, TextInput, Edit } from 'react-admin';
-import { MarkdownInput } from '@semapps/markdown-components';
+import { Edit } from 'react-admin';
 import PageTitle from './PageTitle';
+import PageForm from './PageForm';
 
-export const PageEdit = props => (
-  <Edit title={<PageTitle />} redirect="show" {...props}>
-    <SimpleForm>
-      <TextInput source="semapps:title" fullWidth />
-      <MarkdownInput source="semapps:content" fullWidth />
-    </SimpleForm>
+export const PageEdit = () => (
+  <Edit title={<PageTitle />}>
+    <PageForm />
   </Edit>
 );
 

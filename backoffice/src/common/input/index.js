@@ -10,6 +10,12 @@ export const UserInput = (props) => (
   </ReferenceInput>
 );
 
+export const UsersInput = (props) => (
+  <ReferenceArrayInput reference="Person" enableGetChoices={ifTwoLetters} {...props}>
+    <AutocompleteArrayInput optionText="pair:label" shouldRenderSuggestions={(value) => value.length > 1} noOptionsText="Tapez deux lettres..." fullWidth />
+  </ReferenceArrayInput>
+);
+
 export const PlaceInput = ({ validate, ...rest }) => (
   <ReferenceInput reference="Place" {...rest}>
     <SelectInput optionText="pair:label" validate={validate} fullWidth />
@@ -18,12 +24,12 @@ export const PlaceInput = ({ validate, ...rest }) => (
 
 export const PlacesInput = (props) => (
   <ReferenceArrayInput reference="Place" enableGetChoices={ifTwoLetters} {...props}>
-    <AutocompleteArrayInput optionText="pair:label" shouldRenderSuggestions={(value) => value.length > 1} fullWidth />
+    <AutocompleteArrayInput optionText="pair:label" shouldRenderSuggestions={(value) => value.length > 1} noOptionsText="Tapez deux lettres..." fullWidth />
   </ReferenceArrayInput>
 );
 
-export const TypeInput = (props) => (
-  <ReferenceInput reference="Type" {...props}>
-    <SelectInput optionText="pair:label" fullWidth />
+export const TypeInput = ({ validate, ...rest }) => (
+  <ReferenceInput reference="Type" {...rest}>
+    <SelectInput optionText="pair:label" validate={validate} fullWidth />
   </ReferenceInput>
 );

@@ -18,7 +18,8 @@ const PersonList = props => {
         />
       ) : (
         <Datagrid rowClick="edit">
-          <TextField source="pair:label" />
+          <TextField source="pair:firstName" />
+          <TextField source="pair:lastName" />
           <ReferenceField source="pair:hasType" reference="Type" link={false}>
             <TextField source="pair:label" />
           </ReferenceField>

@@ -1,4 +1,4 @@
-const { rootPermissions } = require('./permissions');
+const { rootPermissions, writePermissionToActors } = require('./permissions');
 
 module.exports = [
   {
@@ -17,6 +17,7 @@ module.exports = [
   {
     path: '/services',
     acceptedTypes: ['cdlt:Service', 'cdlt:HostingService'],
+    permissions: writePermissionToActors
   },
   {
     path: '/bots',
