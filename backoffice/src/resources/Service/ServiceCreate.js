@@ -15,7 +15,7 @@ const ServiceCreate = () => {
   };
 
   return (
-    <Create mutationOptions={{ onSuccess }} redirect={placeUri ? false : 'edit'}>
+    <Create mutationOptions={placeUri ? { onSuccess } : undefined} redirect={placeUri ? false : 'edit'}>
       <ServiceForm />
     </Create>
   );
