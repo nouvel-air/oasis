@@ -4,10 +4,11 @@ import { ReferenceField } from '@semapps/field-components';
 import PlaceForm from './PlaceForm';
 import PlaceTitle from './PlaceTitle';
 import AddServiceButton from '../../common/button/AddServiceButton';
+import PlaceToolbar from './PlaceToolbar';
 
 const PlaceEdit = () => (
   <Edit title={<PlaceTitle />}>
-    <TabbedForm>
+    <TabbedForm toolbar={<PlaceToolbar />}>
       <TabbedForm.Tab label="Description">
         <PlaceForm />
       </TabbedForm.Tab>
