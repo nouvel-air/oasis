@@ -21,7 +21,7 @@ const ServiceIcons = ({ source }) => {
   const record = useRecordContext();
   return (
     record && record[source] && defaultToArray(record[source]).filter(typeUri => Object.keys(iconsMapping).includes(typeUri)).map(typeUri => (
-      <SvgIcon sx={{ width: 20 }} key={typeUri}>
+      <SvgIcon sx={{ width: 20, marginLeft: 2, marginRight: 2 }} key={typeUri}>
         {React.createElement(iconsMapping[typeUri])}
       </SvgIcon>
     ))
