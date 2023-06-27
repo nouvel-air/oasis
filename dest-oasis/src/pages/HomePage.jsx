@@ -22,7 +22,6 @@ const IconsContainer = styled('div')({
 
 const CardsList = () => {
   const { data } = useListContext();
-  console.log('data', data);
   return (
     <Grid container spacing={2}>
       {data && data.map(record => (
@@ -54,15 +53,13 @@ const CardsList = () => {
 
 const HomePage = () => {
   return (
-    <>
+    <ListBase resource="Place">
       <Hero />
       <Container sx={{ marginBottom: 6 }}>
-        <ListBase resource="Place">
-          <CardsList />
-        </ListBase> 
+        <CardsList />
       </Container>
       <Footer />
-    </>
+    </ListBase> 
   );
 };
 

@@ -14,27 +14,29 @@ import HomePage from './pages/HomePage';
 const LoginPage = () => <LocalLoginPage hasSignup={false} />
 
 const App = () => (
-  <Admin
-    disableTelemetry
-    title="Destination Oasis"
-    authProvider={authProvider}
-    dataProvider={dataProvider}
-    i18nProvider={i18nProvider}
-    theme={theme}
-    loginPage={LoginPage}
-    store={memoryStore()}
-  >
-    <CustomRoutes noLayout>
-      <Route path="/" element={<HomePage />} />
-    </CustomRoutes>
-    <Resource name="Page" />
-    <Resource name="Person" />
-    <Resource name="Place" />
-    <Resource name="Region" />
-    <Resource name="Service" />
-    <Resource name="Status" />
-    <Resource name="Type" />
-  </Admin>
+  <BrowserRouter>
+    <Admin
+      disableTelemetry
+      title="Destination Oasis"
+      authProvider={authProvider}
+      dataProvider={dataProvider}
+      i18nProvider={i18nProvider}
+      theme={theme}
+      loginPage={LoginPage}
+      store={memoryStore()}
+    >
+      <CustomRoutes noLayout>
+        <Route path="/" element={<HomePage />} />
+      </CustomRoutes>
+      <Resource name="Page" />
+      <Resource name="Person" />
+      <Resource name="Place" />
+      <Resource name="Region" />
+      <Resource name="Service" />
+      <Resource name="Status" />
+      <Resource name="Type" />
+    </Admin>
+  </BrowserRouter>
 );
 
 export default App;
