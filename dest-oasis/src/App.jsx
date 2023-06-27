@@ -9,7 +9,7 @@ import i18nProvider from './config/i18nProvider';
 import authProvider from './config/authProvider';
 import dataProvider from './config/dataProvider';
 import theme from './config/theme';
-import HomePage from './pages/HomePage';
+import HomePage from './pages/HomePage/HomePage';
 
 const LoginPage = () => <LocalLoginPage hasSignup={false} />
 

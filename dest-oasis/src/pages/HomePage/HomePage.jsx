@@ -5,7 +5,7 @@ import { ReferenceField } from '@semapps/field-components';
 import { styled } from '@mui/material/styles';
 import ServiceIcons from './ServiceIcons';
 import Hero from './Hero';
-import Footer from './Footer';
+import Footer from '../Footer';
 
 const IconsContainer = styled('div')({
   position: 'absolute',
@@ -27,7 +27,7 @@ const CardsList = () => {
       {data && data.map(record => (
         <RecordContextProvider key={record.id} value={record}>
           <Grid item xs={4}>
-            <Card variant="outlined">
+            <Card variant="outlined" sx={{ borderWidth: 0 }}>
               <CardMedia
                 sx={{ height: 250, position: 'relative' }}
                 image={Array.isArray(record['pair:depictedBy']) ? record['pair:depictedBy'][0] : record['pair:depictedBy']}

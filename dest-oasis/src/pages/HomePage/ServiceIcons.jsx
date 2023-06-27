@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRecordContext } from 'react-admin';
 import { SvgIcon } from '@mui/material';
-import { iconsMapping } from '../config/constants';
+import { iconsMapping } from '../../config/constants';
 
 const defaultToArray = value => (!value ? [] : Array.isArray(value) ? value : [value])
 

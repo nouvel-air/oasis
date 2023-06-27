@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import { Box, SvgIcon, Typography } from '@mui/material';
-import { services } from '../config/constants';
-import { ReactComponent as AllServicesIcon } from '../assets/all.svg';
+import { services } from '../../config/constants';
+import { ReactComponent as AllServicesIcon } from '../../assets/all.svg';
 import { useListContext } from 'react-admin';
 
 const Choice = ({ icon, label, selected, onSelect }) => (
@@ -23,12 +23,8 @@ const Filters = () => {
   const [selected, setSelected] = useState(filterValues['cdlt:hasServiceType']);
   const select = useCallback(serviceUri => {
     setSelected(serviceUri);
-    setFilters({ 'cdlt:hasServiceType': serviceUri });
-  }, [setSelected, setFilters]);
-  const clear = useCallback(() => {
-    setSelected(undefined);
-    setFilters({ 'cdlt:hasServiceType': undefined });
-  }, [setSelected, setFilters]);
+    setFilters({ ...filterValues, 'cdlt:hasServiceType': serviceUri });
+  }, [setSelected, setFilters, filterValues]);
   return (
     <Container display="flex" p={1}>
       <Choice 

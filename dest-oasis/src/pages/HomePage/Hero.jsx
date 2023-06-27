@@ -2,8 +2,8 @@ import React from 'react';
 import { Container, Box, Grid, Typography } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import { faHouse, faCircleArrowRight, faCirclePlus } from '@fortawesome/free-solid-svg-icons'
-import backgroundImage from '../assets/background.jpg';
-import { ReactComponent as Title } from '../assets/Titre_soustitre_home.svg';
+import backgroundImage from '../../assets/background.jpg';
+import { ReactComponent as Title } from '../../assets/Titre_soustitre_home.svg';
 import TopLink from './TopLink';
 import Filters from './Filters';
 import SearchForm from './SearchForm';
