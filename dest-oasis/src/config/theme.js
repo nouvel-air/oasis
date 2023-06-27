@@ -7,7 +7,7 @@ const theme = createTheme({
   palette: {
     primary: { main: '#FF96A0' },
     secondary: { main: '#5A696B' },
-    background: { default: '#F6F6F6' }
+    // background: { default: '#F6F6F6' }
   },
   typography: {
     fontFamily: 'Geomanist',
@@ -19,6 +19,12 @@ const theme = createTheme({
       fontSize: 16,
       fontWeight: 500, // Medium
       lineHeight: '19.2px'
+    },
+    h1: {
+      color: '#5A696B',
+      fontSize: 48,
+      fontWeight: 500, // Medium
+      lineHeight: '60px'
     },
     h5: {
       color: '#5A696B',

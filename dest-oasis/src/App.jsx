@@ -10,6 +10,7 @@ import authProvider from './config/authProvider';
 import dataProvider from './config/dataProvider';
 import theme from './config/theme';
 import HomePage from './pages/HomePage/HomePage';
+import DetailsPage from './pages/DetailsPage/DetailsPage';
 
 const LoginPage = () => <LocalLoginPage hasSignup={false} />
 
@@ -27,6 +28,7 @@ const App = () => (
     >
       <CustomRoutes noLayout>
         <Route path="/" element={<HomePage />} />
+        <Route path="/lieux/:slug" element={<DetailsPage />} />
       </CustomRoutes>
       <Resource name="Page" />
       <Resource name="Person" />

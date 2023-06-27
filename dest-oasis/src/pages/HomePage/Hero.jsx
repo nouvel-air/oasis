@@ -4,7 +4,7 @@ import { styled, useTheme } from '@mui/material/styles';
 import { faHouse, faCircleArrowRight, faCirclePlus } from '@fortawesome/free-solid-svg-icons'
 import backgroundImage from '../../assets/background.jpg';
 import { ReactComponent as Title } from '../../assets/Titre_soustitre_home.svg';
-import TopLink from './TopLink';
+import TopLink from '../TopLink';
 import Filters from './Filters';
 import SearchForm from './SearchForm';
 
@@ -24,7 +24,7 @@ const Hero = () => {
             En savoir plus
           </TopLink>
           <TopLink icon={faCircleArrowRight} align="right" iconColor={theme.palette.primary.main}>
-            Site de la Coopérative Oasis
+            La Coopérative Oasis
           </TopLink>
         </Box>
         <Box display="flex" alignItems="center" justifyContent="center" padding={2} flexDirection="column">
@@ -68,7 +68,7 @@ const BackgroundImage = styled('div')({
   backgroundRepeat: "no-repeat",
   minHeight: 500,
   marginBottom: 150,
-  padding: 30
+  padding: 10
 });
 
 const BlackFilter = styled('div')({
