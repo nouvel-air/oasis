@@ -5,6 +5,7 @@ import { ReferenceField } from '@semapps/field-components';
 import { styled } from '@mui/material/styles';
 import ServiceIcons from './ServiceIcons';
 import Hero from './Hero';
+import Footer from './Footer';
 
 const IconsContainer = styled('div')({
   position: 'absolute',
@@ -13,7 +14,7 @@ const IconsContainer = styled('div')({
   right: 0,
   color: 'darkslategray',
   backgroundColor: '#FF96A0BB',
-  padding: 8,
+  padding: 10,
   display: 'flex',
   alignContent: 'center',
   justifyContent: 'center'
@@ -29,7 +30,7 @@ const CardsList = () => {
           <Grid item xs={4}>
             <Card variant="outlined">
               <CardMedia
-                sx={{ height: 140, position: 'relative' }}
+                sx={{ height: 250, position: 'relative' }}
                 image={Array.isArray(record['pair:depictedBy']) ? record['pair:depictedBy'][0] : record['pair:depictedBy']}
                 title={record['pair:label']}
               >
@@ -37,7 +38,7 @@ const CardsList = () => {
                   <ServiceIcons source="cdlt:hasServiceType" />
                 </IconsContainer>
               </CardMedia>
-              <CardContent>
+              <CardContent sx={{ padding: 3}}>
                 <TextField source="pair:label" gutterBottom variant="h5" component="div" />
                 <ReferenceField reference="Region" source="cdlt:hasRegion">
                   <TextField source="pair:label" variant="h6" component="div" />
@@ -55,11 +56,12 @@ const HomePage = () => {
   return (
     <>
       <Hero />
-      <Container>
+      <Container sx={{ marginBottom: 6 }}>
         <ListBase resource="Place">
           <CardsList />
         </ListBase> 
       </Container>
+      <Footer />
     </>
   );
 };

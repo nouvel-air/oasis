@@ -6,7 +6,7 @@ const defaultTheme = createTheme();
 const theme = createTheme({
   palette: {
     primary: { main: '#FF96A0' },
-    secondary: { main: '#87B4C3' },
+    secondary: { main: '#5A696B' },
     background: { default: '#F6F6F6' }
   },
   typography: {
@@ -17,17 +17,20 @@ const theme = createTheme({
     },
     body2: {
       fontSize: 16,
-      fontWeight: 500,
+      fontWeight: 500, // Medium
       lineHeight: '19.2px'
     },
-    // h5: {
-    //   fontSize: 24,
-    //   fontWeight: 500,
-    // },
+    h5: {
+      color: '#5A696B',
+      fontSize: 26,
+      fontWeight: 500, // Medium
+      lineHeight: '30px'
+    },
     h6: {
       color: '#FF96A0',
-      fontSize: 15,
-      fontWeight: 'bold'
+      fontWeight: 500,
+      fontSize: 18,
+      lineHeight: '30px'
     }
   },
   components: {
