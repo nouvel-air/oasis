@@ -25,7 +25,7 @@ const Pictures = () => {
         variant="quilted"
         cols={pictures.length === 1 ? 2 : 3}
         gap={10}
-        rowHeight={200}
+        rowHeight={190}
       >
         <ImageListItem cols={2} rows={2}>
           <img src={pictures[0]} style={{ borderRadius: '5px', cursor: 'pointer' }} onClick={() => showPicture(0)} />

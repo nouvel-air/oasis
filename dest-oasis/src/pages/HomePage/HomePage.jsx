@@ -29,7 +29,7 @@ const CardsList = () => {
                   </IconsContainer>
                 </CardMedia>
                 <CardContent sx={{ padding: 3}}>
-                  <TextField source="pair:label" gutterBottom variant="h5" component="div" />
+                  <TextField source="pair:label" gutterBottom variant="h4" component="div" />
                   <ReferenceField reference="Region" source="cdlt:hasRegion">
                     <TextField source="pair:label" variant="h6" component="div" />
                   </ReferenceField>

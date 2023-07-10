@@ -9,6 +9,12 @@ const theme = createTheme({
     secondary: { main: '#5A696B' },
     // background: { default: '#F6F6F6' }
   },
+  // breakpoints: {
+  //   values: {
+  //     md: 920,
+  //     lg: 1360
+  //   }
+  // },
   typography: {
     fontFamily: 'Geomanist',
     body1: {
@@ -26,9 +32,21 @@ const theme = createTheme({
       fontWeight: 500, // Medium
       lineHeight: '60px'
     },
-    h5: {
+    h3: {
+      color: '#5A696B',
+      fontSize: 30,
+      fontWeight: 500, // Medium
+      lineHeight: '36px'
+    },
+    h4: {
       color: '#5A696B',
       fontSize: 26,
+      fontWeight: 500, // Medium
+      lineHeight: '30px'
+    },
+    h5: {
+      color: '#5A696B',
+      fontSize: 24,
       fontWeight: 500, // Medium
       lineHeight: '30px'
     },
@@ -36,6 +54,11 @@ const theme = createTheme({
       color: '#FF96A0',
       fontWeight: 500,
       fontSize: 18,
+      lineHeight: '30px'
+    },
+    subtitle1: {
+      color: '#5A696B',
+      fontSize: 16,
       lineHeight: '30px'
     }
   },
@@ -106,6 +129,19 @@ const theme = createTheme({
     //     }
     //   }
     // },
+    MuiButton: {
+      styleOverrides: {
+        text: {
+          textTransform: 'none',
+          fontSize: '16px',
+          padding: 0,
+          paddingRight: 30
+        },
+        startIcon: {
+          marginTop: -4,
+        }
+      }
+    },
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
