@@ -7,6 +7,7 @@ import { ReactComponent as Title } from '../../assets/Titre_soustitre_home.svg';
 import TopLink from '../TopLink';
 import Filters from './Filters';
 import SearchForm from './SearchForm';
+import Separator from '../Separator';
 
 const Hero = () => {
   const theme = useTheme();
@@ -31,7 +32,7 @@ const Hero = () => {
           <Box sx={{ width: 300 }}>
             <Title />
           </Box>
-          <Box mt={3} mb={2} sx={{ width: 80, height: 10, backgroundColor: 'primary.main' }} />
+          <Separator mt={3} mb={2} />
           <Box sx={{ maxWidth: 1050, padding: 2 }}>
             <Grid container spacing={4}>
               <Grid item xs={6}>
