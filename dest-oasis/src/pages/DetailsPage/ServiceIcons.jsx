@@ -10,7 +10,7 @@ const ServiceIcons = ({ source }) => {
   return (
     <Box display="flex">
       {record && record[source] && defaultToArray(record[source]).filter(typeUri => Object.keys(iconsMapping).includes(typeUri)).map(typeUri => (
-        <Tooltip key={typeUri} title={services.find(s => s.id === typeUri)?.label} arrow>
+        <Tooltip key={typeUri} title={services.find(s => s.id === typeUri)?.label} arrow placement="top">
           <Box ml={1} sx={{ borderRadius: '50%', backgroundColor: '#F6F6F6', height: 60, width: 60, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <SvgIcon htmlColor="#FF96A0" sx={{ width: 32, height: '100%', marginTop: '-2px' }}>
               {React.createElement(iconsMapping[typeUri])}

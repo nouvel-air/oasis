@@ -21,7 +21,7 @@ const CardsList = () => {
             <Link to={`/lieux/${encodeURIComponent(getSlugFromUri(record.id))}`}>
               <Card variant="outlined" sx={{ borderWidth: 0 }}>
                 <CardMedia
-                  sx={{ height: 250, position: 'relative' }}
+                  sx={{ height: 250, position: 'relative', backgroundColor: '#F6F6F6' }}
                   image={Array.isArray(record['pair:depictedBy']) ? record['pair:depictedBy'][0] : record['pair:depictedBy']}
                   title={record['pair:label']}
                 >

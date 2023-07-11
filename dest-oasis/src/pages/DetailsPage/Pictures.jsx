@@ -17,7 +17,7 @@ const Pictures = () => {
     setOpen(true);
   }, [setOpen, setIndex]);
 
-  if (!record) return null;
+  if (!pictures || pictures.length === 0) return null;
 
   return (
     <Box>

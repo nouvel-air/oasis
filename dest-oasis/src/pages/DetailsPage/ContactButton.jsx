@@ -2,8 +2,8 @@ import React from 'react';
 import { Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-const ContactButton = () => (
-  <StyledButton variant="contained" color="primary">Contacter</StyledButton>
+const ContactButton = props => (
+  <StyledButton variant="contained" color="primary" {...props}>Contacter</StyledButton>
 )
 
 const StyledButton = styled(Button)({

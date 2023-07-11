@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { RecordContextProvider, useShowController, useRedirect, TextField, UrlField, Link } from 'react-admin';
 import { MarkdownField } from '@semapps/markdown-components';
@@ -18,15 +18,25 @@ import MapField from '../../common/field/MapField/MapField';
 import backgroundBottomImage from '../../assets/background-bottom.png'
 import backgroundTopImage from '../../assets/background-top.png'
 import ScrollToTop from '../ScrollToTop';
+import ContactDialog from './ContactDialog';
 
 const DetailsPage = () => {
+  const [openContact, setOpenContact] = useState(false);
+  const [service, setService] = useState();
   const { slug } = useParams();
   const redirect = useRedirect();
+  
   const { record } = useShowController({ 
     resource: 'Place',
     id: import.meta.env.VITE_APP_MIDDLEWARE_URL + 'places/' + slug, 
     queryOptions: { onError: () => redirect('/') }
   });
+
+  const contact = service => {
+    setService(service);
+    setOpenContact(true);
+  };
+
   if (!record) return null;
 
   return (
@@ -45,7 +55,7 @@ const DetailsPage = () => {
           <Grid item xs={4}>
             <Box display="flex" flexDirection="column" alignItems="flex-end">
               <ServiceIcons source="cdlt:hasServiceType" />
-              <ContactButton />
+              <ContactButton onClick={() => contact()} />
             </Box>
           </Grid>
         </Grid>
@@ -55,8 +65,8 @@ const DetailsPage = () => {
           <Pictures />
           <Grid container spacing={2} mt={2} mb={2}>
             <Grid item xs={8}>
-              <Typography variant="body1" sx={{ color: '#6F7B7C', mb: 2 }}>
-                <MarkdownField source="pair:description" forceInline />
+              <Typography variant="body1" sx={{ color: '#6F7B7C', mt: -2, mb: 2 }}>
+                <MarkdownField source="pair:description" />
               </Typography>
               <UrlField source="pair:homePage" variant="h6" target="_blank" />
               <Separator mt={4} mb={3} />
@@ -72,7 +82,7 @@ const DetailsPage = () => {
           </Grid>
           <Typography variant="h3" mb={4}>Les formules</Typography>
           <ReferenceArrayField source="pair:offers" reference="Service">
-            <ServicesList />
+            <ServicesList contact={contact} />
           </ReferenceArrayField>
           <Separator mt={6} />
         </Container>
@@ -90,6 +100,7 @@ const DetailsPage = () => {
         </Container>
       </GreyPinkWrapper>
       <Footer />
+      <ContactDialog open={!!openContact} onClose={() => setOpenContact()} service={service} />
     </RecordContextProvider> 
   );
 };
