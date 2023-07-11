@@ -29,14 +29,14 @@ const ServicesList = ({ contact }) => {
             <Card variant="outlined" sx={{ borderWidth: 0, display: 'flex' }}>
               <CardMedia
                 component="img"
-                sx={{ width: '50%', height: 215 }}
+                sx={{ width: '50%', height: 230, cursor: 'pointer' }}
                 image={record['pair:depictedBy']}
                 alt={record['pair:label']}
                 onClick={() => showPicture(i)}
               />
               <CardContent sx={{ flex: '1 0', padding: 4, position: 'relative' }}>
                 <ServiceTypeField source="cdlt:hasServiceType" />
-                <TextField source="pair:label" variant="h5" component="div" mb={3} />
+                <TextField source="pair:label" variant="h5" component="div" mb={2} />
                 <TextField source="cdlt:capacity" variant="subtitle1" component="div" />
                 <TextField source="cdlt:price" variant="subtitle1" component="div" mb={1} />
                 {record['pair:description'] && 

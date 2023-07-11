@@ -1,6 +1,5 @@
 import React from 'react';
 import { Admin, Resource, memoryStore, CustomRoutes } from 'react-admin';
-import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
 import { BrowserRouter } from 'react-router-dom';
 import { LocalLoginPage } from '@semapps/auth-provider';
 import { Route } from "react-router-dom";
@@ -11,6 +10,7 @@ import dataProvider from './config/dataProvider';
 import theme from './config/theme';
 import HomePage from './pages/HomePage/HomePage';
 import DetailsPage from './pages/DetailsPage/DetailsPage';
+import CustomPage from './pages/CustomPage/CustomPage';
 
 const LoginPage = () => <LocalLoginPage hasSignup={false} />
 
@@ -29,6 +29,7 @@ const App = () => (
       <CustomRoutes noLayout>
         <Route path="/" element={<HomePage />} />
         <Route path="/lieux/:slug" element={<DetailsPage />} />
+        <Route path="/pages/:slug" element={<CustomPage />} />
       </CustomRoutes>
       <Resource name="Page" />
       <Resource name="Person" />

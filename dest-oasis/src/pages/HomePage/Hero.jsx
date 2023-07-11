@@ -4,7 +4,7 @@ import { styled, useTheme } from '@mui/material/styles';
 import { faHouse, faCircleArrowRight, faCirclePlus } from '@fortawesome/free-solid-svg-icons'
 import backgroundImage from '../../assets/background.jpg';
 import { ReactComponent as Title } from '../../assets/Titre_soustitre_home.svg';
-import TopLink from '../TopLink';
+import TopLink from '../../layout/TopLink';
 import Filters from './Filters';
 import SearchForm from './SearchForm';
 import Separator from '../Separator';
@@ -16,12 +16,12 @@ const Hero = () => {
       <BlackFilter />
       <Container sx={{ position: 'relative', padding: 2 }}>
         <Box position="absolute" top={0} left={0} padding={2}>
-          <TopLink icon={faHouse}>
+          <TopLink to="/" icon={faHouse}>
             Accueil
           </TopLink>
         </Box>
         <Box position="absolute" top={0} right={0} padding={2}>
-          <TopLink icon={faCirclePlus} align="right" iconColor={theme.palette.primary.main}>
+          <TopLink to="/pages/a-propos" icon={faCirclePlus} align="right" iconColor={theme.palette.primary.main}>
             En savoir plus
           </TopLink>
           <TopLink icon={faCircleArrowRight} align="right" iconColor={theme.palette.primary.main}>

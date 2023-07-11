@@ -6,8 +6,8 @@ import { ReferenceField, ReferenceArrayField } from '@semapps/field-components';
 import { Container, Grid, Box, Typography, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import LockIcon from '@mui/icons-material/Lock';
-import Header from './Header';
-import Footer from '../Footer';
+import Header from '../../layout/Header';
+import Footer from '../../layout/Footer';
 import Separator from '../Separator';
 import ServiceIcons from './ServiceIcons';
 import ContactButton from './ContactButton';
@@ -17,7 +17,7 @@ import ShareButtons from './ShareButtons';
 import MapField from '../../common/field/MapField/MapField';
 import backgroundBottomImage from '../../assets/background-bottom.png'
 import backgroundTopImage from '../../assets/background-top.png'
-import ScrollToTop from '../ScrollToTop';
+import ScrollToTop from '../../layout/ScrollToTop';
 import ContactDialog from './ContactDialog';
 
 const DetailsPage = () => {

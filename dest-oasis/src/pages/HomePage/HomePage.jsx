@@ -6,8 +6,8 @@ import { ReferenceField } from '@semapps/field-components';
 import { styled } from '@mui/material/styles';
 import ServiceIcons from './ServiceIcons';
 import Hero from './Hero';
-import Footer from '../Footer';
-import ScrollToTop from '../ScrollToTop';
+import Footer from '../../layout/Footer';
+import ScrollToTop from '../../layout/ScrollToTop';
 
 const getSlugFromUri = str => str.match(new RegExp(`.*/(.*)`))[1];
 

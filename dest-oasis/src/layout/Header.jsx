@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Box } from '@mui/material';
+import { Container, Box, Button } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import { faHouse, faCircleArrowRight, faCirclePlus } from '@fortawesome/free-solid-svg-icons'
-import backgroundImage from '../../assets/header_circle.png';
-import { ReactComponent as Title } from '../../assets/Titre_soustitre_fiche.svg';
-import TopLink from '../TopLink';
+import backgroundImage from '../assets/header_circle.png';
+import { ReactComponent as Title } from '../assets/Titre_soustitre_fiche.svg';
+import TopLink from './TopLink';
 
 const Header = () => {
   const theme = useTheme();
@@ -13,15 +13,15 @@ const Header = () => {
     <BackgroundImage>
       <Container sx={{ position: 'relative', padding: 2 }}>
         <Box position="absolute" top={0} left={0} padding={2}>
-          <TopLink icon={faHouse} labelColor="secondary.main" iconColor={theme.palette.primary.main}>
+          <TopLink to="/" icon={faHouse} labelColor="secondary.main" iconColor={theme.palette.primary.main}>
             Accueil
           </TopLink>
         </Box>
         <Box position="absolute" top={0} right={0} padding={2}>
-          <TopLink icon={faCirclePlus} align="right" labelColor="secondary.main" iconColor={theme.palette.primary.main}>
+          <TopLink to="/pages/a-propos" icon={faCirclePlus} align="right" labelColor="secondary.main" iconColor={theme.palette.primary.main}>
             En savoir plus
           </TopLink>
-          <TopLink icon={faCircleArrowRight} align="right" labelColor="secondary.main" iconColor={theme.palette.primary.main}>
+          <TopLink to="https://cooperative-oasis.org" target="_blank" icon={faCircleArrowRight} align="right" labelColor="secondary.main" iconColor={theme.palette.primary.main}>
             La Coopérative Oasis
           </TopLink>
         </Box>
