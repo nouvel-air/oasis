@@ -1,5 +1,6 @@
 import React from 'react';
-import { Container, Box, Grid, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { Container, Box } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import { faHouse, faCircleArrowRight, faCirclePlus } from '@fortawesome/free-solid-svg-icons'
 import backgroundImage from '../../assets/header_circle.png';
@@ -26,7 +27,9 @@ const Header = () => {
         </Box>
         <Box display="flex" alignItems="center" justifyContent="center" padding={2} flexDirection="column">
           <Box sx={{ width: 300 }}>
-            <Title />
+            <Link to="/">
+              <Title />
+            </Link>
           </Box>
         </Box>
       </Container>

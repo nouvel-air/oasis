@@ -7,6 +7,7 @@ import { styled } from '@mui/material/styles';
 import ServiceIcons from './ServiceIcons';
 import Hero from './Hero';
 import Footer from '../Footer';
+import ScrollToTop from '../ScrollToTop';
 
 const getSlugFromUri = str => str.match(new RegExp(`.*/(.*)`))[1];
 
@@ -46,6 +47,7 @@ const CardsList = () => {
 const HomePage = () => {
   return (
     <ListBase resource="Place">
+      <ScrollToTop />
       <Hero />
       <Container sx={{ marginBottom: 6 }}>
         <CardsList />

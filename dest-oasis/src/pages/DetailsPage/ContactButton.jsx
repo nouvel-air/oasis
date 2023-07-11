@@ -3,7 +3,7 @@ import { Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 const ContactButton = () => (
-  <StyledButton variant="contained" color="primary">Contactez-les</StyledButton>
+  <StyledButton variant="contained" color="primary">Contacter</StyledButton>
 )
 
 const StyledButton = styled(Button)({
@@ -12,7 +12,7 @@ const StyledButton = styled(Button)({
   fontSize: '18px',
   textHeight: '21.6px',
   fontWeight: 500,
-  padding: '4px 45px',
+  padding: '5px 60px 3px',
   textTransform: 'none',
   marginTop: 15
 });

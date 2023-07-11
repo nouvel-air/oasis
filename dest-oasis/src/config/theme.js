@@ -135,10 +135,10 @@ const theme = createTheme({
           textTransform: 'none',
           fontSize: '16px',
           padding: 0,
-          paddingRight: 30
+          paddingRight: 0
         },
         startIcon: {
-          marginTop: -4,
+          marginTop: -5,
         }
       }
     },

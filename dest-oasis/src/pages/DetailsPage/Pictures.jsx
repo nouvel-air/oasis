@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { useRecordContext } from "react-admin";
-import { ImageList, ImageListItem, ImageListItemBar } from '@mui/material';
+import { ImageList, ImageListItem, ImageListItemBar, Box } from '@mui/material';
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 
@@ -20,7 +20,7 @@ const Pictures = () => {
   if (!record) return null;
 
   return (
-    <>
+    <Box>
       <ImageList
         variant="quilted"
         cols={pictures.length === 1 ? 2 : 3}
@@ -65,7 +65,7 @@ const Pictures = () => {
         index={index}
         slides={pictures.map(p => ({ src: p }))}
       />
-    </>
+    </Box>
   );
 
 };

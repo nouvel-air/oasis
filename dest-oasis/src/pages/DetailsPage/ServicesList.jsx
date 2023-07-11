@@ -23,7 +23,7 @@ const ServicesList = () => {
               <TextField source="pair:label" variant="h5" component="div" mb={3} />
               <TextField source="cdlt:capacity" variant="subtitle1" component="div" />
               <TextField source="cdlt:price" variant="subtitle1" component="div" mb={1} />
-              <Button startIcon={<AddCircleIcon />}>En savoir plus</Button>
+              <Button startIcon={<AddCircleIcon />} sx={{ pr: 4 }}>En savoir plus</Button>
               <Button startIcon={<CalendarMonthIcon />}>Réserver</Button>
             </CardContent>
           </Card>
