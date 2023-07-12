@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useMediaQuery } from '@mui/material';
 import { EmailShareButton, FacebookShareButton, TwitterShareButton, LinkedinShareButton, WhatsappShareButton, EmailIcon, FacebookIcon, TwitterIcon, LinkedinIcon, WhatsappIcon } from 'react-share';
 import { useRecordContext } from 'react-admin';
 
@@ -7,7 +7,8 @@ const iconProps = { borderRadius: 10, size: 30, bgStyle: { fill: '#FF96A0' }};
 
 const ShareButtons = () => {
   const record = useRecordContext();
-  const buttonProps = { url: window.location.href, style: { marginLeft: 8 } };
+  const xs = useMediaQuery(theme => theme.breakpoints.down('sm'), { noSsr: true });
+  const buttonProps = { url: window.location.href, style: xs ? { marginRight: 8 } : { marginLeft: 8 } };
   const title = `Découvrez l'oasis ${record?.['pair:label']}`;
 
   return (

@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { RecordContextProvider, useShowController, useRedirect, TextField, UrlField, Link } from 'react-admin';
 import { MarkdownField } from '@semapps/markdown-components';
 import { ReferenceField, ReferenceArrayField } from '@semapps/field-components';
-import { Container, Grid, Box, Typography, Button } from '@mui/material';
+import { Container, Grid, Box, Typography, Button, useMediaQuery } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import LockIcon from '@mui/icons-material/Lock';
 import Header from '../../layout/Header';
@@ -21,6 +21,7 @@ import ScrollToTop from '../../layout/ScrollToTop';
 import ContactDialog from './ContactDialog';
 
 const DetailsPage = () => {
+  const xs = useMediaQuery(theme => theme.breakpoints.down('sm'), { noSsr: true });
   const [openContact, setOpenContact] = useState(false);
   const [service, setService] = useState();
   const { slug } = useParams();
@@ -45,17 +46,17 @@ const DetailsPage = () => {
       <Header />
       <Container maxWidth="md">
         <Grid container>
-          <Grid item xs={8}>
+          <Grid item xs={12} sm={8}>
             <ReferenceField reference="Region" source="cdlt:hasRegion">
             <TextField source="pair:label" variant="h4" color="primary.main" component="div" />
             </ReferenceField>
             <TextField source="pair:label" variant="h1" />
-            <Separator mt={2} mb={2}/>
+            <Separator mt={xs ? 1 : 2} mb={2} />
           </Grid>
-          <Grid item xs={4}>
-            <Box display="flex" flexDirection="column" alignItems="flex-end">
+          <Grid item xs={12} sm={4}>
+            <Box display="flex" flexDirection="column" alignItems={xs ? 'flex-start' : 'flex-end'}>
               <ServiceIcons source="cdlt:hasServiceType" />
-              <ContactButton onClick={() => contact()} />
+              {!xs && <ContactButton onClick={() => contact()} sx={{ mt: 4 }} />}
             </Box>
           </Grid>
         </Grid>
@@ -64,22 +65,23 @@ const DetailsPage = () => {
         <Container maxWidth="md">
           <Pictures />
           <Grid container spacing={2} mt={2} mb={2}>
-            <Grid item xs={8}>
+            <Grid item xs={12} md={8}>
               <Typography variant="body1" sx={{ color: '#6F7B7C', mt: -2, mb: 2 }}>
                 <MarkdownField source="pair:description" />
               </Typography>
               <UrlField source="pair:homePage" variant="h6" target="_blank" />
-              <Separator mt={4} mb={3} />
             </Grid>
-            <Grid item xs={4}>
-              <Box display="flex" flexDirection="column" alignItems="flex-end">
+            <Grid item xs={12} md={4}>
+              <Box display="flex" flexDirection="column" alignItems={xs ? 'flex-start' : 'flex-end'}>
+                {xs && <ContactButton onClick={() => contact()} sx={{ mb: 2 }} />}
                 <ShareButtons />
                 <Link to={`/lieux/${slug}/editer`}>
-                  <Button endIcon={<LockIcon color="primary" />} color="secondary" sx={{ mt: 4 }}>Editer la page</Button>
+                  <Button endIcon={<LockIcon color="primary" />} color="secondary" sx={{ mt: xs ? 2 : 4 }}>Editer la page</Button>
                 </Link>
               </Box>
             </Grid>
           </Grid>
+          <Separator mt={4} mb={3} />
           <Typography variant="h3" mb={4}>Les formules</Typography>
           <ReferenceArrayField source="pair:offers" reference="Service">
             <ServicesList contact={contact} />
@@ -88,7 +90,7 @@ const DetailsPage = () => {
         </Container>
       </WhitePinkWrapper>
       <GreyPinkWrapper>
-        <Container maxWidth="md" sx={{ pt: 3 }}>
+        <Container maxWidth="md" sx={{ pt: 2 }}>
           <Typography variant="h3" mt={1} mb={3}>Localisation</Typography>
           <MapField 
             address={record => record?.['pair:hasPostalAddress']?.['pair:label']} 

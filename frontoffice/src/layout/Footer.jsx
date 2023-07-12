@@ -3,13 +3,13 @@ import { Container, Box, Grid, Typography } from '@mui/material';
 import { ReactComponent as LogoIcon } from '../assets/logo-blanc.svg';
 
 const Footer = () => (
-  <Box bgcolor="primary.main" padding={12}>
+  <Box bgcolor="primary.main" padding={{ xs: '30px 0px', sm: 12 }}>
     <Container maxWidth="md">
       <Grid container spacing={2}>
-        <Grid item xs={3}>
+        <Grid item xs={12} md={3}>
           <LogoIcon />
         </Grid>
-        <Grid item xs={9}>
+        <Grid item xs={12} md={9}>
           <Typography fontSize={14} color="white">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut bibendum vehicula placerat. Mauris molestie nunc quis augue 
             ultrices, at hendrerit est rhoncus. Mauris enim ante, luctus nec arcu sollicitudin, feugiat pulvinar lacus. Proin nec orci 

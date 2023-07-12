@@ -17,7 +17,7 @@ const CardsList = () => {
     <Grid container spacing={2}>
       {data && data.map(record => (
         <RecordContextProvider key={record.id} value={record}>
-          <Grid item xs={4}>
+          <Grid item xs={12} md={4}>
             <Link to={`/lieux/${encodeURIComponent(getSlugFromUri(record.id))}`}>
               <Card variant="outlined" sx={{ borderWidth: 0 }}>
                 <CardMedia
@@ -49,7 +49,7 @@ const HomePage = () => {
     <ListBase resource="Place">
       <ScrollToTop />
       <Hero />
-      <Container sx={{ marginBottom: 6 }}>
+      <Container sx={{ mt: 1, mb: 6 }}>
         <CardsList />
       </Container>
       <Footer />

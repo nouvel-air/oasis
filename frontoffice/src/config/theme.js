@@ -1,4 +1,4 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme, responsiveFontSizes } from '@mui/material/styles';
 
 const theme = createTheme({
   palette: {
@@ -16,47 +16,48 @@ const theme = createTheme({
     fontFamily: 'Geomanist',
     body1: {
       fontSize: 18,
-      lineHeight: "21.6px"
+      lineHeight: 1,
+      // lineHeight: "21.6px"
     },
     body2: {
       fontSize: 16,
       fontWeight: 500, // Medium
-      lineHeight: '19.2px'
+      // lineHeight: '19.2px'
     },
     h1: {
       color: '#5A696B',
       fontSize: 48,
       fontWeight: 500, // Medium
-      lineHeight: '60px'
+      // lineHeight: '60px'
     },
     h3: {
       color: '#5A696B',
       fontSize: 30,
       fontWeight: 500, // Medium
-      lineHeight: '36px'
+      // lineHeight: '36px'
     },
     h4: {
       color: '#5A696B',
       fontSize: 26,
       fontWeight: 500, // Medium
-      lineHeight: '30px'
+      // lineHeight: '30px'
     },
     h5: {
       color: '#5A696B',
       fontSize: 24,
       fontWeight: 500, // Medium
-      lineHeight: '30px'
+      // lineHeight: '30px'
     },
     h6: {
       color: '#FF96A0',
       fontWeight: 500,
       fontSize: 18,
-      lineHeight: '30px'
+      // lineHeight: '30px'
     },
     subtitle1: {
       color: '#5A696B',
       fontSize: 16,
-      lineHeight: '30px'
+      // lineHeight: '30px'
     }
   },
   components: {
@@ -97,4 +98,4 @@ const theme = createTheme({
   }
 });
 
-export default theme;
+export default responsiveFontSizes(theme);

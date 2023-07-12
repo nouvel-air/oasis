@@ -13,8 +13,7 @@ const StyledButton = styled(Button)({
   textHeight: '21.6px',
   fontWeight: 500,
   padding: '5px 60px 3px',
-  textTransform: 'none',
-  marginTop: 15
+  textTransform: 'none'
 });
 
 export default ContactButton;

@@ -1,15 +1,17 @@
 import React, { useCallback, useState } from "react";
 import { useRecordContext } from "react-admin";
-import { ImageList, ImageListItem, ImageListItemBar, Box } from '@mui/material';
+import { ImageList, ImageListItem, ImageListItemBar, Box, useMediaQuery } from '@mui/material';
 import Lightbox from "yet-another-react-lightbox";
 
 const defaultToArray = value => (!value ? [] : Array.isArray(value) ? value : [value])
 
 const Pictures = () => {
+  const xs = useMediaQuery(theme => theme.breakpoints.down('sm'), { noSsr: true });
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(false);
   const record = useRecordContext();
   const pictures = record && defaultToArray(record['pair:depictedBy']).slice(0,4);
+  const label = record?.['pair:label'];
 
   const showPicture = useCallback((index) => {
     setIndex(index);
@@ -22,21 +24,21 @@ const Pictures = () => {
     <Box>
       <ImageList
         variant="quilted"
-        cols={pictures.length === 1 ? 2 : 3}
+        cols={xs || pictures.length === 1 ? 2 : 3}
         gap={10}
-        rowHeight={190}
+        rowHeight={xs ? 150 : 190}
       >
-        <ImageListItem cols={2} rows={2}>
-          <img src={pictures[0]} style={{ borderRadius: '5px', cursor: 'pointer' }} onClick={() => showPicture(0)} />
+        <ImageListItem cols={2} rows={xs ? 1 : 2}>
+          <img src={pictures[0]} alt={label} style={{ borderRadius: '5px', cursor: 'pointer' }} onClick={() => showPicture(0)} />
         </ImageListItem>
         {pictures.length > 1 &&
           <ImageListItem cols={1} rows={pictures.length > 2 ? 1 : 2}>
-            <img src={pictures[1]} style={{ borderRadius: '5px', cursor: 'pointer' }} onClick={() => showPicture(1)} />
+            <img src={pictures[1]} alt={label} style={{ borderRadius: '5px', cursor: 'pointer' }} onClick={() => showPicture(1)} />
           </ImageListItem>
         }
         {pictures.length > 2 &&
           <ImageListItem cols={1} rows={1}>
-            <img src={pictures[2]} style={{ borderRadius: '5px', cursor: 'pointer' }} onClick={() => showPicture(2)} />
+            <img src={pictures[2]} alt={label} style={{ borderRadius: '5px', cursor: 'pointer' }} onClick={() => showPicture(2)} />
             {pictures.length > 3 &&
               <ImageListItemBar
                 sx={{

@@ -13,11 +13,11 @@ const SearchForm = () => {
   }, [setFilters, filterValues, keyword, region]);
   const { data } = useGetList('Region', { pagination: { page: 1, perPage: 100 } });
   return (
-    <Box display="flex" mt={3} mb={3} sx={{ width: 600 }} alignItems="center" justifyContent="center">
+    <Box display="flex" mt={3} mb={3} sx={{ width: '100%', maxWidth: 600 }} alignItems="center" justifyContent="center">
       <Input 
         disableUnderline
         placeholder="Mots-clés" 
-        sx={{ margin: 1, paddingLeft: 3, paddingTop: '3px', height: 40, backgroundColor: 'white', borderRadius: 10 }} 
+        sx={{ margin: 0, paddingLeft: 3, paddingTop: '3px', height: 40, backgroundColor: 'white', borderRadius: 10 }} 
         fullWidth 
         value={keyword}
         onChange={e => setKeyword(e.target.value)}
@@ -36,7 +36,7 @@ const SearchForm = () => {
         ))}
       </Select>
       <Button 
-        sx={{ backgroundColor: 'primary.main', borderRadius: '100%', minWidth: 40, width: 40, height: 40, margin: 1 }} 
+        sx={{ backgroundColor: 'primary.main', borderRadius: '100%', minWidth: 40, width: 40, height: 40, margin: 0 }} 
         onClick={search}
       >
         <FontAwesomeIcon icon={faMagnifyingGlass} color="white" fontSize={18} />
