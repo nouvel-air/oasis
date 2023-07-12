@@ -13,11 +13,8 @@ module.exports = {
         uploads: path.resolve(__dirname, '../uploads')
       }
     },
-    // Rsync
+    copyMethod: 'fs',
     remoteServer: {
-      user: CONFIG.BACKUP_SERVER_USER,
-      password: CONFIG.BACKUP_SERVER_PASSWORD,
-      host: CONFIG.BACKUP_SERVER_HOST,
       path: CONFIG.BACKUP_SERVER_PATH
     },
     cronJob: {
