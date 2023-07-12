@@ -14,14 +14,6 @@ docker-compose up -d fuseki
 
 ### Middleware
 
-Add a `.env.local` file in the `/middleware` directory and fill the required OIDC configurations:
-
-```dotenv
-SEMAPPS_OIDC_ISSUER=
-SEMAPPS_OIDC_CLIENT_ID=
-SEMAPPS_OIDC_CLIENT_SECRET=
-```
-
 Launch the middleware on port 3000:
 
 ```bash
@@ -31,17 +23,6 @@ yarn run dev
 ```
 
 > This will launch Moleculer in [REPL mode](https://moleculer.services/docs/0.14/moleculer-repl.html), allowing you to call actions directly.
-
-
-### Backoffice
-
-Launch the backoffice on port 4000:
-
-```bash
-cd backoffice
-yarn install
-yarn start
-```
 
 
 ### Initialize the data
@@ -55,6 +36,28 @@ call webacl.resource.refreshContainersRights
 ```
 
 The second commands will send an email to the given address. This will allow you to set a password and connect to the backoffice.
+
+
+### Backoffice
+
+Launch the backoffice on port 4000:
+
+```bash
+cd backoffice
+yarn install
+yarn start
+```
+
+
+### Frontoffice
+
+Launch the frontoffice on port 5000:
+
+```bash
+cd frontoffice
+yarn install
+yarn start
+```
 
 
 ## Linking to SemApps packages
