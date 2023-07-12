@@ -2,6 +2,8 @@
 
 # Oasis
 
+SemApps instance for the [Coopérative Oasis](https://cooperative-oasis.org)
+
 ## Getting started
 
 ### Triple store
@@ -69,7 +71,7 @@ To modify packages on the [SemApps repository](https://github.com/assemblee-virt
 ```bash
 cd /SEMAPPS_REPO/src/middleware
 yarn run link-all
-cd /ARCHIPELAGO_REPO/middleware
+cd /OASIS_REPO/middleware
 yarn run link-semapps-packages
 ```
 
@@ -78,9 +80,11 @@ yarn run link-semapps-packages
 ```bash
 cd /SEMAPPS_REPO/src/frontend
 yarn run link-all
-cd /ARCHIPELAGO_REPO/frontend
+cd /OASIS_REPO/backoffice
+yarn run link-semapps-packages
+cd /OASIS_REPO/frontoffice
 yarn run link-semapps-packages
 ```
 
-Additionally, frontend packages need to be rebuilt, or your changes will not be taken into account by Archipelago. 
+Additionally, frontend packages need to be rebuilt, or your changes will not be taken into account. 
 You can use `yarn run build` to build a package once, or `yarn run dev` to rebuild a package on every change.
