@@ -7838,6 +7838,11 @@ lcid@^2.0.0:
   dependencies:
     invert-kv "^2.0.0"
 
+leaflet-defaulticon-compatibility@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/leaflet-defaulticon-compatibility/-/leaflet-defaulticon-compatibility-0.1.1.tgz#ab72257b3da66fb48dab69a10c3824012a15a20a"
+  integrity sha512-vDBFdlUAwjSEGep9ih8kfJilf6yN8V9zTbF5NC/1ZwLeGko3RUQepspPnGCRMFV51dY3Lb3hziboicrFz+rxQA==
+
 leaflet.markercluster@^1.5.3:
   version "1.5.3"
   resolved "https://registry.yarnpkg.com/leaflet.markercluster/-/leaflet.markercluster-1.5.3.tgz#9cdb52a4eab92671832e1ef9899669e80efc4056"
@@ -12313,11 +12318,6 @@ wbuf@^1.1.0, wbuf@^1.7.3:
   integrity sha512-O84QOnr0icsbFGLS0O3bI5FswxzRr8/gHwWkDlQFskhSPryQXvrTMxjxGP4+iWYoauLoBvfDpkrOauZ+0iZpDA==
   dependencies:
     minimalistic-assert "^1.0.0"
-
-web-vitals@^2.1.0:
-  version "2.1.4"
-  resolved "https://registry.yarnpkg.com/web-vitals/-/web-vitals-2.1.4.tgz#76563175a475a5e835264d373704f9dde718290c"
-  integrity sha512-sVWcwhU5mX6crfI5Vd2dC4qchyTqxV8URinzt25XqVh+bHEPGH4C3NPrNionCP7Obx59wrYEbNlw4Z8sjALzZg==
 
 webidl-conversions@^4.0.2:
   version "4.0.2"

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { RecordContextProvider, useShowController, useRedirect, TextField, UrlField, Link } from 'react-admin';
+import { RecordContextProvider, useShowController, useRedirect, TextField, UrlField } from 'react-admin';
 import { MarkdownField } from '@semapps/markdown-components';
 import { ReferenceField, ReferenceArrayField } from '@semapps/field-components';
 import { Container, Grid, Box, Typography, Button, useMediaQuery } from '@mui/material';
@@ -75,9 +75,9 @@ const DetailsPage = () => {
               <Box display="flex" flexDirection="column" alignItems={xs ? 'flex-start' : 'flex-end'}>
                 {xs && <ContactButton onClick={() => contact()} sx={{ mb: 2 }} />}
                 <ShareButtons />
-                <Link to={`/lieux/${slug}/editer`}>
+                <a href={`${process.env.REACT_APP_BACKOFFICE_URL}Place/${encodeURIComponent(record.id)}`} target="_blank" rel="noopener noreferrer">
                   <Button endIcon={<LockIcon color="primary" />} color="secondary" sx={{ mt: xs ? 2 : 4 }}>Editer la page</Button>
-                </Link>
+                </a>
               </Box>
             </Grid>
           </Grid>

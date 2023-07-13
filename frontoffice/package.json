@@ -18,6 +18,7 @@
     "@semapps/markdown-components": "0.5.0-alpha.1",
     "@semapps/semantic-data-provider": "0.5.0-alpha.1",
     "leaflet": "^1.8.0",
+    "leaflet-defaulticon-compatibility": "^0.1.1",
     "leaflet.markercluster": "^1.5.3",
     "ra-language-french": "^4.11.0",
     "react": "^18.1.0",
