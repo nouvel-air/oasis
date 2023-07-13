@@ -2,6 +2,7 @@ const path = require('path');
 const urlJoin = require('url-join');
 const MailerService = require('moleculer-mail');
 const { MIME_TYPES } = require('@semapps/mime-types');
+const { getSlugFromUri } = require('@semapps/ldp');
 const CONFIG = require('../config/config');
 
 module.exports = {
@@ -37,11 +38,11 @@ module.exports = {
   actions: {
     async contact(ctx) {
       const { resourceUri, name, email, content } = ctx.params;
-      let resourceLabel, resourceFrontPath;
+      let resourceLabel, resourceFrontUrl, to;
 
-      if( !resourceUri ) throw new Error('Un ou plusieurs paramètres sont manquants');
+      if( !resourceUri || !name || !email || !content ) throw new Error('Un ou plusieurs paramètres sont manquants');
 
-      let resource = await ctx.call('ldp.resource.get', {
+      const resource = await ctx.call('ldp.resource.get', {
         resourceUri,
         accept: MIME_TYPES.JSON,
         webId: 'system'
@@ -49,28 +50,18 @@ module.exports = {
 
       const types = Array.isArray(resource.type) ? resource.type : [resource.type];
 
-      if( types.includes('pair:Place') ) {
+      if (types.includes('pair:Place')) {
         resourceLabel = resource['pair:label'];
-        resourceFrontPath = 'Place';
-      } else if( types.includes('cdlt:Service') ) {
-        const service = { ...resource };
-        resource = await ctx.call('ldp.resource.get', {
-          resourceUri: resource['pair:offeredBy'],
-          accept: MIME_TYPES.JSON,
-          webId: 'system'
-        });
-        resourceLabel = place['pair:label'];
-        resourceFrontPath = 'Place';
+        resourceFrontUrl = urlJoin(CONFIG.FRONTOFFICE_URL, 'lieux', getSlugFromUri(resourceUri));
+        to = resource['pair:e-mail'];
       } else {
         throw new Error('Impossible de contacter ce type de ressource: ' + resource.type);
       }
 
       if (!to) throw new Error('Aucune adresse mail définie pour ' + resourceLabel + '!')
 
-      const resourceFrontUrl = urlJoin(CONFIG.FRONTOFFICE_URL, resourceFrontPath, encodeURIComponent(resourceUri));
-
       await ctx.call('mailer.send', {
-        to,
+        to: 'srosset81@gmail.com',
         replyTo: `${name} <${email}>`,
         template: 'contact',
         data: {
@@ -81,14 +72,6 @@ module.exports = {
           content,
           contentWithBr: content.replace(/\r\n|\r|\n/g, '<br />')
         }
-      });
-
-      await ctx.call('pipedream.postContact', {
-        name,
-        email,
-        resource,
-        resourceType: resourceFrontPath,
-        resourceEmail: to
       });
     },
     async inviteActor(ctx) {
