@@ -6,12 +6,25 @@ SemApps instance for the [Coopérative Oasis](https://cooperative-oasis.org)
 
 ## Getting started
 
+### Requirements
+
+- Node 18+
+- Docker (with compose plugin)
+
 ### Triple store
 
 Launch the [Jena Fuseki](https://jena.apache.org/documentation/fuseki2/) triplestore on port 3030:
 
 ```bash
 docker-compose up -d fuseki
+```
+
+### Mailcatcher
+
+If you don't have a mail provider, you can use [MailCatcher](https://mailcatcher.me) to see the emails sent. They will be available at http://localhost:1080
+
+```bash
+docker-compose up -d mailcatcher
 ```
 
 ### Middleware
@@ -37,7 +50,7 @@ call initialization.createAdmin --email youremail@domain.com
 call webacl.resource.refreshContainersRights
 ```
 
-The second commands will send an email to the given address. This will allow you to set a password and connect to the backoffice.
+The second commands will send an email to the given address. Go to http://localhost:1080 if you launched MailCatcher. This will allow you to set a password and connect to the backoffice.
 
 
 ### Backoffice
