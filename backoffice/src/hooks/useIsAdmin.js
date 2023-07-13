@@ -3,7 +3,7 @@ import { useGetIdentity } from 'react-admin';
 
 const useIsAdmin = () => {
   const { identity } = useGetIdentity();
-  return identity?.data?.webIdData?.['pair:hasType'] === urlJoin(process.env.REACT_APP_MIDDLEWARE_URL, 'types', 'admin');
+  return identity?.webIdData?.['pair:hasType'] === urlJoin(process.env.REACT_APP_MIDDLEWARE_URL, 'types', 'admin');
 };
 
 export default useIsAdmin;
