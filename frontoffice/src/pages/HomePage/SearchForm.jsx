@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useGetList, useListContext } from 'react-admin';
 import { Box, Button, Select, MenuItem, Input } from '@mui/material';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
@@ -13,6 +13,10 @@ const SearchForm = () => {
     setFilters({ ...filterValues, 'q': keyword, 'cdlt:hasRegion': region });
   }, [setFilters, filterValues, keyword, region]);
   const { data } = useGetList('Region', { pagination: { page: 1, perPage: 100 } });
+  useEffect(() => {
+    setKeyword(filterValues.q || "");
+    setRegion(filterValues['cdlt:hasRegion']);
+  }, [filterValues]);
   return (
     <form onSubmit={search} style={{ width: '100%', maxWidth: 600 }}>
       <Box display="flex" mt={3} mb={3} alignItems="center" justifyContent="center">
@@ -33,7 +37,7 @@ const SearchForm = () => {
           value={region}
           onChange={e => {
             setRegion(e.target.value);
-            setFilters({ ...filterValues, 'q': keyword, 'cdlt:hasRegion': e.target.value });
+            setFilters({ ...filterValues, 'cdlt:hasRegion': e.target.value });
           }}
         >
           <MenuItem value=""></MenuItem>

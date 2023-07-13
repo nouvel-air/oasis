@@ -1,20 +1,19 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { ListBase, TextField, useListContext, RecordContextProvider } from 'react-admin';
-import { Box, Container, Card, Grid, CardContent, CardMedia } from '@mui/material';
-import { ReferenceField } from '@semapps/field-components';
+import { ListBase, TextField, useListContext, RecordContextProvider, Loading, Link } from 'react-admin';
+import { Box, Container, Card, Grid, Button, CardContent, CardMedia, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ServiceIcons from './ServiceIcons';
 import Hero from './Hero';
 import Footer from '../../layout/Footer';
 import ScrollToTop from '../../layout/ScrollToTop';
+import DepartmentField from '../../common/field/DepartmentField';
 
 const getSlugFromUri = str => str.match(new RegExp(`.*/(.*)`))[1];
 
 const CardsList = () => {
-  const { data } = useListContext();
+  const { data, isFetching, setFilters } = useListContext();
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={2} sx={{ position: 'relative' }}>
       {data && data.map(record => (
         <RecordContextProvider key={record.id} value={record}>
           <Grid item xs={12} sm={6} md={4}>
@@ -31,15 +30,33 @@ const CardsList = () => {
                 </CardMedia>
                 <CardContent sx={{ padding: 3}}>
                   <TextField source="pair:label" gutterBottom variant="h4" component="div" />
-                  <ReferenceField reference="Region" source="cdlt:hasRegion">
-                    <TextField source="pair:label" variant="h6" component="div" />
-                  </ReferenceField>
+                  <Typography variant="h6" component="div">
+                    <DepartmentField source="pair:hasPostalAddress.pair:addressZipCode" />
+                  </Typography>
                 </CardContent>
               </Card>
-              </Link>
-            </Grid>
+            </Link>
+          </Grid>
         </RecordContextProvider>
       ))}
+      {isFetching && 
+        (data && data.length > 0 ?
+        <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'white', opacity: 0.5, minHeight: 250 }}>
+          <Loading loadingSecondary='' />
+        </Box>
+        :
+        <Box sx={{ width: '100%', height: 300 }}>
+          <Loading loadingSecondary='' />
+        </Box>
+      )}
+      {!isFetching && data && data.length === 0 && 
+        <Box display="flex" flexDirection="column" alignItems="center" justifyItems="center" sx={{ width: '100%', height: 300, p: 5 }}>
+          <Typography variant="h3" pb={1}>Aucun résultat</Typography>
+          <Button onClick={() => setFilters({})}>
+            Réinitialiser les filtres
+          </Button>
+        </Box>
+      }
     </Grid>
   );
 }

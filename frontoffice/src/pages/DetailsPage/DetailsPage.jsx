@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { RecordContextProvider, useShowController, useRedirect, TextField, UrlField } from 'react-admin';
 import { MarkdownField } from '@semapps/markdown-components';
-import { ReferenceField, ReferenceArrayField } from '@semapps/field-components';
+import { ReferenceArrayField } from '@semapps/field-components';
 import { Container, Grid, Box, Typography, Button, useMediaQuery } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import LockIcon from '@mui/icons-material/Lock';
@@ -19,6 +19,7 @@ import backgroundBottomImage from '../../assets/background-bottom.png'
 import backgroundTopImage from '../../assets/background-top.png'
 import ScrollToTop from '../../layout/ScrollToTop';
 import ContactDialog from './ContactDialog';
+import DepartmentField from '../../common/field/DepartmentField';
 
 const DetailsPage = () => {
   const xs = useMediaQuery(theme => theme.breakpoints.down('sm'), { noSsr: true });
@@ -47,9 +48,9 @@ const DetailsPage = () => {
       <Container maxWidth="md">
         <Grid container>
           <Grid item xs={12} sm={8}>
-            <ReferenceField reference="Region" source="cdlt:hasRegion">
-            <TextField source="pair:label" variant="h4" color="primary.main" component="div" />
-            </ReferenceField>
+            <Typography variant="h4" color="primary.main" component="div">
+              <DepartmentField source="pair:hasPostalAddress.pair:addressZipCode" />
+            </Typography>
             <TextField source="pair:label" variant="h1" />
             <Separator mt={xs ? 1 : 2} mb={2} />
           </Grid>

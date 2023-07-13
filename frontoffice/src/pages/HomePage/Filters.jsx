@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import { Box, SvgIcon, Typography, useMediaQuery, Drawer, List, ListItem, ListItemIcon, ListItemText, ListItemButton } from '@mui/material';
 import { services } from '../../config/constants';
@@ -33,6 +33,10 @@ const Filters = () => {
     setFilters({ ...filterValues, 'cdlt:hasServiceType': serviceUri });
   }, [setSelected, setFilters, filterValues]);
   const selectedService = services.find(s => s.id === selected) || allServices;
+
+  useEffect(() => {
+    setSelected(filterValues['cdlt:hasServiceType']);
+  }, [filterValues]);
 
   return xs ? (
     <>
