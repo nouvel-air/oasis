@@ -8,7 +8,7 @@ import { ReactComponent as Title } from '../assets/Titre_soustitre_fiche.svg';
 import TopLink from './TopLink';
 
 const Header = () => {
-  const xs = useMediaQuery(theme => theme.breakpoints.down('sm'), { noSsr: true });
+  const xs = useMediaQuery(theme => theme.breakpoints.down('md'), { noSsr: true });
   const theme = useTheme();
   return (
     <BackgroundImage p={{ xs: 0, md: 2 }}>

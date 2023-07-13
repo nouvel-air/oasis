@@ -24,7 +24,7 @@ const Choice = ({ icon, label, selected, onSelect }) => (
 );
 
 const Filters = () => {
-  const xs = useMediaQuery(theme => theme.breakpoints.down('sm'), { noSsr: true });
+  const xs = useMediaQuery(theme => theme.breakpoints.down('md'), { noSsr: true });
   const [openDrawer, setOpenDrawer] = useState(false);
   const { filterValues, setFilters } = useListContext();
   const [selected, setSelected] = useState(filterValues['cdlt:hasServiceType']);

@@ -10,6 +10,7 @@ import DescriptionDialog from './DescriptionDialog';
 
 const ServicesList = ({ contact }) => {
   const xs = useMediaQuery(theme => theme.breakpoints.down('sm'), { noSsr: true });
+  const sm = useMediaQuery(theme => theme.breakpoints.down('md'), { noSsr: true });
   const [open, setOpen] = useState(false);
   const [openImage, setOpenImage] = useState(false);
   const [index, setIndex] = useState(false);
@@ -28,7 +29,7 @@ const ServicesList = ({ contact }) => {
             <Card variant="outlined" sx={{ borderWidth: 0, display: xs ? 'block' : 'flex' }}>
               <CardMedia
                 component="img"
-                sx={{ width: xs ? undefined : '50%', height: xs ? 150 : 230, cursor: 'pointer' }}
+                sx={{ width: xs ? undefined : sm ? '35%' : '50%', height: xs ? 150 : 230, cursor: 'pointer' }}
                 image={record['pair:depictedBy']}
                 alt={record['pair:label']}
                 onClick={() => showPicture(i)}

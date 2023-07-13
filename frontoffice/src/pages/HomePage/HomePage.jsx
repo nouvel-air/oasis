@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ListBase, TextField, useListContext, RecordContextProvider } from 'react-admin';
-import { Container, Card, Grid, CardContent, CardMedia } from '@mui/material';
+import { Box, Container, Card, Grid, CardContent, CardMedia } from '@mui/material';
 import { ReferenceField } from '@semapps/field-components';
 import { styled } from '@mui/material/styles';
 import ServiceIcons from './ServiceIcons';
@@ -17,7 +17,7 @@ const CardsList = () => {
     <Grid container spacing={2}>
       {data && data.map(record => (
         <RecordContextProvider key={record.id} value={record}>
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} sm={6} md={4}>
             <Link to={`/lieux/${encodeURIComponent(getSlugFromUri(record.id))}`}>
               <Card variant="outlined" sx={{ borderWidth: 0 }}>
                 <CardMedia
@@ -46,14 +46,16 @@ const CardsList = () => {
 
 const HomePage = () => {
   return (
-    <ListBase resource="Place">
-      <ScrollToTop />
-      <Hero />
-      <Container sx={{ mt: 1, mb: 6 }}>
-        <CardsList />
-      </Container>
-      <Footer />
-    </ListBase> 
+    <Box sx={{ backgroundColor: '#F6F6F6' }}>
+      <ListBase resource="Place">
+        <ScrollToTop />
+        <Hero />
+        <Container sx={{ mt: 1, mb: 6 }}>
+          <CardsList />
+        </Container>
+        <Footer />
+      </ListBase> 
+    </Box>
   );
 };
 

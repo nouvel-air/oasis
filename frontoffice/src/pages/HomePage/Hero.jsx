@@ -1,21 +1,20 @@
 import React from 'react';
 import { Container, Box, Grid, Typography, useMediaQuery } from '@mui/material';
-import { styled, useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import { faHouse, faCircleArrowRight, faCirclePlus } from '@fortawesome/free-solid-svg-icons'
-import backgroundImage from '../../assets/background.jpg';
 import { ReactComponent as Title } from '../../assets/Titre_soustitre_home.svg';
 import TopLink from '../../layout/TopLink';
 import Filters from './Filters';
 import SearchForm from './SearchForm';
 import Separator from '../Separator';
+import BackgroundSlider from './BackgroundSlider';
 
 const Hero = () => {
   const theme = useTheme();
-  const xs = useMediaQuery(theme => theme.breakpoints.down('sm'), { noSsr: true });
+  const xs = useMediaQuery(theme => theme.breakpoints.down('md'), { noSsr: true });
   return (
     <>
-      <BackgroundImage mb={xs ? 0 : 20}>
-        <BlackFilter />
+      <BackgroundSlider mb={xs ? 0 : 20} p={2}>
         <Container sx={{ position: 'relative', padding: { xs: 0, md: 2 } }}>
           {!xs && <Box position="absolute" top={0} left={0} padding={2}>
             <TopLink to="/" icon={faHouse}>
@@ -69,30 +68,10 @@ const Hero = () => {
           </Box>
           {!xs && <Filters />}
         </Container>
-      </BackgroundImage>
+      </BackgroundSlider>
       {xs && <Filters />}
     </>
   )
 };
-
-const BackgroundImage = styled(Box)({
-  position: 'relative',
-  backgroundImage: `url(${backgroundImage})`,
-  backgroundPosition: "center",
-  backgroundSize: "cover",
-  backgroundRepeat: "no-repeat",
-  minHeight: 500,
-  padding: 10
-});
-
-const BlackFilter = styled('div')({
-  backgroundColor: '#000000',
-  opacity: 0.2,
-  position: 'absolute',
-  top: 0,
-  bottom: 0,
-  left: 0,
-  right: 0
-});
 
 export default Hero;
