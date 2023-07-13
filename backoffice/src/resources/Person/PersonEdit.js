@@ -1,15 +1,13 @@
 import React from 'react';
-import { Edit } from 'react-admin';
-import PersonTitle from './PersonTitle';
+import { EditWithPermissions } from '@semapps/auth-provider';
 import PersonForm from './PersonForm';
 
 export const PersonEdit = () => (
-  <Edit
-    title={<PersonTitle />}
+  <EditWithPermissions
     transform={data => ({ ...data, 'pair:label': `${data['pair:firstName']} ${data['pair:lastName']?.toUpperCase()}` })}
   >
     <PersonForm />
-  </Edit>
+  </EditWithPermissions>
 );
 
 export default PersonEdit;

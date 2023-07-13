@@ -12,6 +12,7 @@ export default {
     options: {
       label: 'Service'
     },
+    recordRepresentation: 'pair:label'
   },
   dataModel: {
     types: ['cdlt:HostingService'],

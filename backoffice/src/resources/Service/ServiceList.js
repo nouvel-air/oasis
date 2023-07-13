@@ -1,12 +1,42 @@
 import React from 'react';
-import { List, SimpleList, Datagrid, TextField, EditButton } from 'react-admin';
+import { SimpleList, Datagrid, TextField, EditButton, useGetIdentity } from 'react-admin';
+import { ListWithPermissions } from '@semapps/auth-provider';
 import { ReferenceField } from '@semapps/field-components';
 import { useMediaQuery } from '@mui/material';
+import useIsAdmin from '../../hooks/useIsAdmin';
+
+const defaultToArray = value => !value ? [] : Array.isArray(value) ? value : [value];
+
+const filterByPlaces = places => ([
+  {
+    type: "values",
+    values: places.map(placeUri => ({
+      "?placeUri": {
+        termType: "NamedNode",
+        value: placeUri
+      }
+    }))
+  },
+  {
+    type: "bgp",
+    triples: [
+      {
+        subject: { termType: "Variable", value: "s1" },
+        predicate: { termType: "NameNode", value: "http://virtual-assembly.org/ontologies/pair#offeredBy" },
+        object: { termType: "Variable", value: "placeUri" }
+      }
+    ]
+  }
+]);
 
 const ServiceList = props => {
+  const isAdmin = useIsAdmin();
+  const { identity } = useGetIdentity();
+  const ownedPlaces = defaultToArray(identity?.webIdData?.['cdlt:proposes']);
   const xs = useMediaQuery(theme => theme.breakpoints.down('sm'));
+  if (!identity?.id) return;
   return (
-    <List {...props}>
+    <ListWithPermissions filter={isAdmin ? {} : { sparqlWhere: filterByPlaces(ownedPlaces) }} {...props}>
       {xs ? (
         <SimpleList
           primaryText="%{pair:label}"
@@ -28,7 +58,7 @@ const ServiceList = props => {
           <EditButton />
         </Datagrid>
       )}
-    </List>
+    </ListWithPermissions>
   )
 };
 

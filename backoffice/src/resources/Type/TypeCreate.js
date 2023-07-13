@@ -1,8 +1,9 @@
 import React from 'react';
-import { SimpleForm, TextInput, SelectArrayInput, Create } from 'react-admin';
+import { SimpleForm, TextInput, SelectArrayInput } from 'react-admin';
+import { CreateWithPermissions } from '@semapps/auth-provider';
 
 const TypeCreate = () => (
-  <Create>
+  <CreateWithPermissions>
     <SimpleForm>
       <TextInput source="pair:label" fullWidth />
       <SelectArrayInput
@@ -13,7 +14,7 @@ const TypeCreate = () => (
         ]}
       />
     </SimpleForm>
-  </Create>
+  </CreateWithPermissions>
 );
 
 export default TypeCreate;

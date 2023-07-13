@@ -1,5 +1,6 @@
 import React from 'react';
-import { Create, useRedirect } from 'react-admin';
+import { useRedirect } from 'react-admin';
+import { CreateWithPermissions } from '@semapps/auth-provider';
 import { useLocation } from 'react-router-dom';
 import ServiceForm from './ServiceForm';
 
@@ -15,9 +16,9 @@ const ServiceCreate = () => {
   };
 
   return (
-    <Create mutationOptions={placeUri ? { onSuccess } : undefined} redirect={placeUri ? false : 'edit'}>
+    <CreateWithPermissions mutationOptions={placeUri ? { onSuccess } : undefined} redirect={placeUri ? false : 'edit'}>
       <ServiceForm />
-    </Create>
+    </CreateWithPermissions>
   );
 }
 

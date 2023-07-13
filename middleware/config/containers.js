@@ -3,18 +3,21 @@ const { rootPermissions, anonReadPermissions, writePermissionToActors } = requir
 module.exports = [
   {
     path: '/',
-    permissions: rootPermissions
+    permissions: rootPermissions,
+    newResourcesPermissions: anonReadPermissions
   },
   {
     path: '/places',
     acceptedTypes: ['pair:Place'],
     dereference: ['pair:hasPostalAddress'],
-    permissions: anonReadPermissions
+    permissions: anonReadPermissions,
+    newResourcesPermissions: anonReadPermissions
   },
     {
     path: '/regions',
     acceptedTypes: ['pair:Place'],
-    permissions: anonReadPermissions
+    permissions: anonReadPermissions,
+    newResourcesPermissions: anonReadPermissions
   },
   {
     path: '/services',
@@ -22,13 +25,15 @@ module.exports = [
     permissions: {
       ...anonReadPermissions,
       ...writePermissionToActors
-    }
+    },
+    newResourcesPermissions: anonReadPermissions
   },
   {
     path: '/bots',
     acceptedTypes: ['Application'],
     dereference: ['sec:publicKey'],
-    permissions: anonReadPermissions
+    permissions: anonReadPermissions,
+    newResourcesPermissions: anonReadPermissions
   },
   {
     path: '/types',
@@ -36,11 +41,13 @@ module.exports = [
       'cdlt:ServiceType',
       'pair:PersonType'
     ],
-    permissions: anonReadPermissions
+    permissions: anonReadPermissions,
+    newResourcesPermissions: anonReadPermissions
   },
   {
     path: '/pages',
     acceptedTypes: ['semapps:Page'],
-    permissions: anonReadPermissions
+    permissions: anonReadPermissions,
+    newResourcesPermissions: anonReadPermissions
   }
 ];

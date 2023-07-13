@@ -1,11 +1,11 @@
 import React from 'react';
-import { Create } from 'react-admin';
+import { CreateWithPermissions } from '@semapps/auth-provider';
 import PageForm from './PageForm';
 
 const PageCreate = () => (
-  <Create>
+  <CreateWithPermissions>
     <PageForm />
-  </Create>
+  </CreateWithPermissions>
 );
 
 export default PageCreate;

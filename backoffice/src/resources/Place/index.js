@@ -12,6 +12,7 @@ export default {
     options: {
       label: 'Oasis'
     },
+    recordRepresentation: 'pair:label'
   },
   dataModel: {
     types: ['pair:Place'],

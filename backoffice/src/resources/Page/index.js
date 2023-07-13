@@ -11,7 +11,8 @@ export default {
     icon: DescriptionIcon,
     options: {
       label: 'Pages'
-    }
+    },
+    recordRepresentation: 'semapps:title'
   },
   dataModel: {
     types: ['semapps:Page'],

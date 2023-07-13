@@ -1,9 +1,10 @@
 import React from 'react';
-import { Create, SimpleForm, TextInput, FormDataConsumer, required } from 'react-admin';
+import { SimpleForm, TextInput, FormDataConsumer, required } from 'react-admin';
+import { CreateWithPermissions } from '@semapps/auth-provider';
 import { TypeInput, PlaceInput } from '../../common/input';
 
 const PersonCreate = () => (
-  <Create transform={data => ({ ...data, 'pair:label': `${data['pair:firstName']} ${data['pair:lastName']?.toUpperCase()}` })}>
+  <CreateWithPermissions transform={data => ({ ...data, 'pair:label': `${data['pair:firstName']} ${data['pair:lastName']?.toUpperCase()}` })}>
     <SimpleForm>
       <TextInput source="pair:firstName" fullWidth validate={required()} />
       <TextInput source="pair:lastName" fullWidth validate={required()} />
@@ -15,7 +16,7 @@ const PersonCreate = () => (
         }
       </FormDataConsumer>
     </SimpleForm>
-  </Create>
+  </CreateWithPermissions>
 );
 
 export default PersonCreate;

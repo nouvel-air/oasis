@@ -1,13 +1,18 @@
 import React from 'react';
-import { List, SimpleList, Datagrid, TextField, EditButton, SingleFieldList, ChipField } from 'react-admin';
+import { SimpleList, Datagrid, TextField, EditButton, SingleFieldList, ChipField, useGetIdentity } from 'react-admin';
 import { useMediaQuery } from '@mui/material';
 import { ReferenceArrayField } from '@semapps/field-components';
+import { ListWithPermissions } from '@semapps/auth-provider';
 import PublishButton from '../../common/button/PublishButton';
+import useIsAdmin from '../../hooks/useIsAdmin';
 
 const PlaceList = props => {
+  const isAdmin = useIsAdmin();
+  const { identity } = useGetIdentity();
   const xs = useMediaQuery(theme => theme.breakpoints.down('sm'));
+  if (!identity?.id) return;
   return (
-    <List {...props}>
+    <ListWithPermissions filter={isAdmin ? {} : { 'cdlt:proposedBy': identity?.id }} {...props}>
       {xs ? (
         <SimpleList
           primaryText="%{pair:label}"
@@ -25,7 +30,7 @@ const PlaceList = props => {
           <PublishButton />
         </Datagrid>
       )}
-    </List>
+    </ListWithPermissions>
   )
 };
 

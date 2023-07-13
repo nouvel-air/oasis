@@ -1,11 +1,12 @@
 import React from 'react';
-import { List, Datagrid, SimpleList, TextField, EditButton } from 'react-admin';
+import { Datagrid, SimpleList, TextField, EditButton } from 'react-admin';
+import { ListWithPermissions } from '@semapps/auth-provider';
 import { useMediaQuery } from '@mui/material';
 
 const TypeList = () => {
   const xs = useMediaQuery(theme => theme.breakpoints.down('sm'));
   return (
-    <List>
+    <ListWithPermissions>
       {xs ? (
         <SimpleList
           primaryText="%{pair:label}"
@@ -18,7 +19,7 @@ const TypeList = () => {
           <EditButton />
         </Datagrid>
       )}
-    </List>
+    </ListWithPermissions>
   );
 }
 

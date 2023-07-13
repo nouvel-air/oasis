@@ -5,5 +5,5 @@ export default authProvider({
   dataProvider,
   authType: 'local',
   // allowAnonymous: false,
-  // checkPermissions: true
+  checkPermissions: true
 });

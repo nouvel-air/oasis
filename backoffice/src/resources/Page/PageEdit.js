@@ -1,12 +1,11 @@
 import React from 'react';
-import { Edit } from 'react-admin';
-import PageTitle from './PageTitle';
+import { EditWithPermissions } from '@semapps/auth-provider';
 import PageForm from './PageForm';
 
 export const PageEdit = () => (
-  <Edit title={<PageTitle />}>
+  <EditWithPermissions>
     <PageForm />
-  </Edit>
+  </EditWithPermissions>
 );
 
 export default PageEdit;

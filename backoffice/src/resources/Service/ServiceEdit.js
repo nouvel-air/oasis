@@ -1,12 +1,11 @@
 import React from 'react';
-import { Edit } from 'react-admin';
+import { EditWithPermissions } from '@semapps/auth-provider';
 import ServiceForm from './ServiceForm';
-import ServiceTitle from './ServiceTitle';
 
 const ServiceEdit = () => (
-  <Edit redirect="edit" title={<ServiceTitle />}>
+  <EditWithPermissions redirect="edit">
     <ServiceForm />
-  </Edit>
+  </EditWithPermissions>
 );
 
 export default ServiceEdit;
