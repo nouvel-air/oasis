@@ -64,7 +64,7 @@ const CardsList = () => {
 const HomePage = () => {
   return (
     <Box sx={{ backgroundColor: '#F6F6F6' }}>
-      <ListBase resource="Place">
+      <ListBase resource="Place" perPage={500}>
         <ScrollToTop />
         <Hero />
         <Container sx={{ mt: 1, mb: 6 }}>

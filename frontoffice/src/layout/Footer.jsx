@@ -11,11 +11,10 @@ const Footer = () => (
         </Grid>
         <Grid item xs={12} md={9}>
           <Typography fontSize={14} color="white">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut bibendum vehicula placerat. Mauris molestie nunc quis augue 
-            ultrices, at hendrerit est rhoncus. Mauris enim ante, luctus nec arcu sollicitudin, feugiat pulvinar lacus. Proin nec orci 
-            ut mauris bibendum convallis aliquam interdum dolor. Vestibulum tincidunt quam sed lobortis accumsan. Ut id dapibus velit, 
-            quis vestibulum erat. Praesent sit amet condimentum risus, nec pulvinar lorem. Suspendisse egestas risus eu turpis accumsan, 
-            et venenatis lacus hendrerit.
+            La Coopérative Oasis anime le réseau français des écolieux. Elle accompagne chaque année la création de dizaines de 
+            nouveaux projets en France et soutient l'émergence de modes de vie plus collectifs et écologiques. Avec Destination 
+            Oasis, nous souhaitons mettre en avant des oasis qui proposent des offres d'écotourisme et les aider à s'affranchir 
+            des plateformes habituelles.
           </Typography>      
         </Grid>
       </Grid>

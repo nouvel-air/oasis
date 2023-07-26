@@ -45,18 +45,18 @@ const Hero = () => {
               <Title />
             </Box>
             <Separator mt={2} mb={2} />
-            <Box sx={{ maxWidth: 1050, padding: { xs: 0, md: 2 } }}>
+            <Box sx={{ maxWidth: 1080, padding: { xs: 0, md: 2 } }}>
               <Grid container spacing={{ xs: 2, md: 4 }}>
                 <Grid item xs={12} md={6}>
                   <Typography color="white" align={xs ? 'left' : 'right'} variant="body1" fontSize={xs ? 14 : undefined}>
-                    Certaines oasis proposent des offres de séjours qui leur permettent de faire vivre leur lieu en ouvrant aux curieux 
-                    qui souhaitent découvrir ce mode de vie, partager un peu de leur quotidien ou encore louer des salles d'ateliers.
+                    Les oasis sont des écolieux collectifs. On y expérimente un mode de vie basé sur le partage, la sobriété, 
+                    l'autonomie et la solidarité. Plusieurs oasis proposent des séjours ou des locations pour découvrir ce mode de vie.
                   </Typography>
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <Typography color="white" align="left" variant="body1" fontSize={xs ? 14 : undefined}>
-                    Voici une page pour vous permettre de <strong>trouver l'oasis de votre prochain séjour</strong>. Utilisez les filtres pour trouver ce
-                    que vous cherchez, puis cliquer sur les vignettes pour être redirigés vers le site web du lieu ou leur envoyer un mail.
+                    Avec Destination Oasis, trouvez une oasis pour faire l'expérience de la vie en écolieu. Seul, en famille ou avec des 
+                    amis, venez partager un peu du quotidien de ces collectifs et ainsi soutenir leur développement !
                   </Typography>
                 </Grid> 
               </Grid>
