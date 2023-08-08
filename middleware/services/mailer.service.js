@@ -61,7 +61,7 @@ module.exports = {
       if (!to) throw new Error('Aucune adresse mail définie pour ' + resourceLabel + '!')
 
       await ctx.call('mailer.send', {
-        to: ['srosset81@gmail.com', 'edwardpetitpro@gmail.com', 'mathieu.labonne@cooperative-oasis.org'],
+        to: [resource['pair:e-mail']],
         replyTo: `${name} <${email}>`,
         template: 'contact',
         data: {
