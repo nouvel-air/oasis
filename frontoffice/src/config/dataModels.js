@@ -28,6 +28,9 @@ const dataModels = {
       containers: {
         oasis: ['/places']
       },
+      filter: {
+        'cdlt:hasPublicationStatus': 'https://data.lescheminsdelatransition.org/publication-status/valide'
+      },
       explicitEmbedOnFraming: false, // Increase performance since explicit embed is not necessary
     },
     fieldsMapping: {
