@@ -1,22 +1,23 @@
 import React from 'react';
-import { useRedirect } from 'react-admin';
 import { CreateWithPermissions } from '@semapps/auth-provider';
-import { useLocation } from 'react-router-dom';
+// import { useRedirect } from 'react-admin';
+// import { useLocation } from 'react-router-dom';
 import ServiceForm from './ServiceForm';
 
 const ServiceCreate = () => {
-  const location = useLocation();
-  const redirect = useRedirect();
-  const placeUri = location.state && location.state.record ? location.state.record['pair:offeredBy'] : undefined;
+  // const location = useLocation();
+  // const redirect = useRedirect();
+  // const placeUri = location.state && location.state.record ? location.state.record['pair:offeredBy'] : undefined;
 
-  const onSuccess = () => {
-    if (placeUri) {
-      redirect(`/Place/${encodeURIComponent(placeUri)}/1`);
-    }
-  };
+  // const onSuccess = () => {
+  //   if (placeUri) {
+  //     // Set refresh to true, so that the place data are refreshed with the updated services types (done on PlaceEdit)
+  //     redirect(`/Place/${encodeURIComponent(placeUri)}/1`, 'Place', placeUri, {}, { refresh: true });
+  //   }
+  // };
 
   return (
-    <CreateWithPermissions mutationOptions={placeUri ? { onSuccess } : undefined} redirect={placeUri ? false : 'edit'}>
+    <CreateWithPermissions mutationOptions={/*placeUri ? { onSuccess } :*/ undefined} redirect={/*placeUri ? false : 'edit'*/ undefined}>
       <ServiceForm />
     </CreateWithPermissions>
   );
