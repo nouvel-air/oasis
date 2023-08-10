@@ -8,8 +8,6 @@ module.exports = {
     async updatePlaceType(ctx) {
       const { placeUri } = ctx.params;
 
-      console.log('updatePlaceType', ctx.params);
-
       // Delete existing types
       await ctx.call('triplestore.update', {
         query: `
@@ -31,7 +29,7 @@ module.exports = {
             <${placeUri}> cdlt:hasServiceType ?typeUri 
           }
           WHERE {
-            <${placeUri}> pair:offers ?serviceUri .
+            ?serviceUri pair:offeredBy <${placeUri}> .
             ?serviceUri cdlt:hasServiceType ?typeUri
           }
         `,
