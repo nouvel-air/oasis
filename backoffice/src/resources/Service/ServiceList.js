@@ -36,7 +36,7 @@ const ServiceList = props => {
   const xs = useMediaQuery(theme => theme.breakpoints.down('sm'));
   if (!identity?.id) return;
   return (
-    <ListWithPermissions filter={isAdmin ? {} : { sparqlWhere: filterByPlaces(ownedPlaces) }} {...props}>
+    <ListWithPermissions filter={isAdmin ? {} : { sparqlWhere: filterByPlaces(ownedPlaces) }} perPage={25} {...props}>
       {xs ? (
         <SimpleList
           primaryText="%{pair:label}"

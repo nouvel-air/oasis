@@ -12,7 +12,7 @@ const PlaceList = props => {
   const xs = useMediaQuery(theme => theme.breakpoints.down('sm'));
   if (!identity?.id) return;
   return (
-    <ListWithPermissions filter={isAdmin ? {} : { 'cdlt:proposedBy': identity?.id }} {...props}>
+    <ListWithPermissions filter={isAdmin ? {} : { 'cdlt:proposedBy': identity?.id }} perPage={25} {...props}>
       {xs ? (
         <SimpleList
           primaryText="%{pair:label}"

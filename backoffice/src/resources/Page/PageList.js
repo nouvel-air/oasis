@@ -6,7 +6,7 @@ import { useMediaQuery } from '@mui/material';
 const PageList = () => {
   const xs = useMediaQuery(theme => theme.breakpoints.down('sm'));
   return (
-    <ListWithPermissions>
+    <ListWithPermissions perPage={25}>
       {xs ? (
         <SimpleList primaryText="semapps:title" />
       ) : (

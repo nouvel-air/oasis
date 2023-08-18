@@ -7,7 +7,7 @@ import { useMediaQuery } from '@mui/material';
 const PersonList = props => {
   const xs = useMediaQuery(theme => theme.breakpoints.down('sm'));
   return (
-    <ListWithPermissions {...props}>
+    <ListWithPermissions perPage={25} {...props}>
       {xs ? (
         <SimpleList
           primaryText="%{pair:label}"
