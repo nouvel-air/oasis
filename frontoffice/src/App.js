@@ -16,7 +16,7 @@ const LoginPage = () => <LocalLoginPage hasSignup={false} />
 
 const App = () => {
   useEffect(() => {
-    if (process.env.NODE_ENV === 'prod') {
+    if (process.env.NODE_ENV === 'production') {
       let _mtm = window._mtm = window._mtm || [];
       _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
       let d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
