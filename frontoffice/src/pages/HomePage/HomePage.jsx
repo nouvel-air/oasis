@@ -7,6 +7,7 @@ import Hero from './Hero';
 import Footer from '../../layout/Footer';
 import ScrollToTop from '../../layout/ScrollToTop';
 import DepartmentField from '../../common/field/DepartmentField';
+import usePageTracking from '../../hooks/usePageTracking';
 
 const getSlugFromUri = str => str.match(new RegExp(`.*/(.*)`))[1];
 
@@ -62,6 +63,8 @@ const CardsList = () => {
 }
 
 const HomePage = () => {
+  console.log('Homepage render')
+  usePageTracking("Accueil");
   return (
     <Box sx={{ backgroundColor: '#F6F6F6' }}>
       <ListBase resource="Place" perPage={500}>

@@ -6,6 +6,7 @@ import { MarkdownField } from '@semapps/markdown-components';
 import Header from '../../layout/Header';
 import Footer from '../../layout/Footer';
 import ScrollToTop from '../../layout/ScrollToTop';
+import usePageTracking from '../../hooks/usePageTracking';
 
 const CustomPage = () => {
   const { slug } = useParams();
@@ -17,6 +18,8 @@ const CustomPage = () => {
     queryOptions: { onError: () => redirect('/') }
   });
 
+  usePageTracking(record?.['semapps:title']);
+
   if (!record) return null;
 
   return (
@@ -25,7 +28,7 @@ const CustomPage = () => {
       <Header />
       <Container maxWidth="md" sx={{ mt: 3, mb: 10 }}>
         {/* <Typo source="semapps:title" variant="h4" color="primary.main" component="div" /> */}
-        <TextField source="semapps:title" variant="h1" />
+        <TextField source="semapps:title" variant="h1" component="h1" />
         <MarkdownField source="semapps:content" />
       </Container>
       <Footer />

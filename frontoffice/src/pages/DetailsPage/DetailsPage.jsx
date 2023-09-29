@@ -20,6 +20,7 @@ import backgroundTopImage from '../../assets/background-top.png'
 import ScrollToTop from '../../layout/ScrollToTop';
 import ContactDialog from './ContactDialog';
 import DepartmentField from '../../common/field/DepartmentField';
+import usePageTracking from '../../hooks/usePageTracking';
 
 const DetailsPage = () => {
   const xs = useMediaQuery(theme => theme.breakpoints.down('sm'), { noSsr: true });
@@ -39,6 +40,8 @@ const DetailsPage = () => {
     setOpenContact(true);
   };
 
+  usePageTracking(record?.['pair:label']);
+
   if (!record) return null;
 
   return (
@@ -51,7 +54,7 @@ const DetailsPage = () => {
             <Typography variant="h4" color="primary.main" component="div">
               <DepartmentField source="pair:hasPostalAddress.pair:addressZipCode" />
             </Typography>
-            <TextField source="pair:label" variant="h1" />
+            <TextField source="pair:label" variant="h1" component="h1" />
             <Separator mt={xs ? 1 : 2} mb={2} />
           </Grid>
           <Grid item xs={12} sm={4}>
