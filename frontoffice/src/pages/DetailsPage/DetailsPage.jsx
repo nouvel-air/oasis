@@ -51,7 +51,7 @@ const DetailsPage = () => {
             <Typography variant="h4" color="primary.main" component="div">
               <DepartmentField source="pair:hasPostalAddress.pair:addressZipCode" />
             </Typography>
-            <TextField source="pair:label" variant="h1" />
+            <TextField source="pair:label" variant="h1" component="h1" />
             <Separator mt={xs ? 1 : 2} mb={2} />
           </Grid>
           <Grid item xs={12} sm={4}>

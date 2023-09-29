@@ -25,7 +25,7 @@ const CustomPage = () => {
       <Header />
       <Container maxWidth="md" sx={{ mt: 3, mb: 10 }}>
         {/* <Typo source="semapps:title" variant="h4" color="primary.main" component="div" /> */}
-        <TextField source="semapps:title" variant="h1" />
+        <TextField source="semapps:title" variant="h1" component="h1" />
         <MarkdownField source="semapps:content" />
       </Container>
       <Footer />
