@@ -19,7 +19,7 @@ const LoginPage = () => <LocalLoginPage hasSignup={false} />
 const instance = createInstance({
   urlBase: 'https://stats.colibris-outilslibres.org/',
   siteId: 43,
-  // disabled: process.env.NODE_ENV !== 'production'
+  disabled: process.env.NODE_ENV !== 'production'
 });
 
 const App = () => (
