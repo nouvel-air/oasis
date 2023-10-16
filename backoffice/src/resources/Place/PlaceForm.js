@@ -6,6 +6,13 @@ import { extractContext, LocationInput } from '@semapps/geo-components';
 import { StatusInput, UsersInput } from '../../common/input';
 import useIsAdmin from '../../hooks/useIsAdmin';
 
+// For places, we do not receive a ZIP code because places can have many ZIP codes
+// So find the department short code (eg FR-60) and transform it to 60000 so that we have at least the correct department code
+const extractZipCodeFromPlaceContext = (context) => {
+  const property = context.find(property => property.id.startsWith(`region.`));
+  if (property) return property.short_code?.slice(-2);
+};
+
 const PlaceForm = () => {
   const isAdmin = useIsAdmin();
   return (
@@ -18,18 +25,19 @@ const PlaceForm = () => {
       <LocationInput
         mapboxConfig={{
           access_token: process.env.REACT_APP_MAPBOX_ACCESS_TOKEN,
-          types: ['place', 'address', 'region'],
+          types: ['place', 'address'],
           country: ['fr', 'be', 'ch'],
         }}
         source="pair:hasPostalAddress"
         parse={(value) => {
           const countryName = extractContext(value.context, 'country');
+          const placeType = value.place_type[0];
           return ({
             type: 'pair:PostalAddress',
             'pair:label': value.place_name,
-            'pair:addressLocality': value.place_type[0] === 'place' ? value.text : value.place_type[0] === 'address' ? extractContext(value.context, 'place') : undefined,
-            'pair:addressStreet': value.place_type[0] === 'address' ? [value.address, value.text].join(' ') : undefined,
-            'pair:addressZipCode': value.place_type[0] !== 'region' ? extractContext(value.context, 'postcode') : countryName === 'France' ? value.properties?.short_code?.substring(3) : undefined,
+            'pair:addressLocality': placeType === 'place' ? value.text : placeType === 'address' ? extractContext(value.context, 'place') : undefined,
+            'pair:addressStreet': placeType === 'address' ? [value.address, value.text].join(' ') : undefined,
+            'pair:addressZipCode': placeType === 'place' ? extractZipCodeFromPlaceContext(value.context) : extractContext(value.context, 'postcode'),
             'pair:addressCountry': countryName,
             'pair:longitude': value.center[0],
             'pair:latitude': value.center[1],
