@@ -25,8 +25,7 @@ module.exports = [
     permissions: {
       ...anonReadPermissions,
       ...writePermissionToActors
-    },
-    newResourcesPermissions: anonReadPermissions
+    }
   },
   {
     path: '/bots',
