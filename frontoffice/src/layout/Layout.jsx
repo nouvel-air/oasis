@@ -9,7 +9,7 @@ export const usePageTracking = (title) => {
     trackPageView({
       documentTitle: title
     });
-  }, [location, trackPageView]);
+  }, [location, title, trackPageView]);
 }
 
 export const Layout = ({ children, title }) => {
