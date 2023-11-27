@@ -1,5 +1,6 @@
 import React from 'react';
 import { Admin, Resource, memoryStore, CustomRoutes } from 'react-admin';
+import { QueryClient } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { LocalLoginPage } from '@semapps/auth-provider';
 import { MatomoProvider, createInstance } from '@datapunt/matomo-tracker-react';
@@ -16,14 +17,22 @@ import CustomPage from './pages/CustomPage/CustomPage';
 
 const LoginPage = () => <LocalLoginPage hasSignup={false} />
 
-const instance = createInstance({
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false
+    },
+  },
+});
+
+const matomoInstance = createInstance({
   urlBase: 'https://stats.colibris-outilslibres.org/',
   siteId: 43,
   disabled: process.env.NODE_ENV !== 'production'
 });
 
 const App = () => (
-  <MatomoProvider value={instance}>
+  <MatomoProvider value={matomoInstance}>
     <BrowserRouter>
       <Admin
         disableTelemetry
@@ -35,6 +44,7 @@ const App = () => (
         theme={theme}
         loginPage={LoginPage}
         store={memoryStore()}
+        queryClient={queryClient}
       >
         <CustomRoutes>
           <Route path="/" element={<HomePage />} />
