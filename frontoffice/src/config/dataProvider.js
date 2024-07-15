@@ -1,13 +1,14 @@
-import { dataProvider as semanticDataProvider } from '@semapps/semantic-data-provider';
+import urlJoin from 'url-join';
+import { dataProvider } from '@semapps/semantic-data-provider';
 import ontologies from './ontologies.json';
 import dataServers from './dataServers';
 import dataModels from './dataModels';
 
-const dataProvider = semanticDataProvider({
+const { origin: backendOrigin } = new URL(process.env.REACT_APP_MIDDLEWARE_URL);
+
+export default dataProvider({
   dataServers,
   resources: dataModels,
   ontologies,
-  jsonContext: process.env.REACT_APP_MIDDLEWARE_URL + 'context.json'
+  jsonContext: ['https://www.w3.org/ns/activitystreams', urlJoin(backendOrigin, '.well-known/context.jsonld')]
 });
-
-export default dataProvider;

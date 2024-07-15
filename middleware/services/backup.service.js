@@ -6,7 +6,7 @@ module.exports = {
   mixins: [BackupService],
   settings: {
     localServer: {
-      fusekiBackupsPath: CONFIG.BACKUP_FUSEKI_DATASETS_PATH,
+      fusekiBase: CONFIG.FUSEKI_BASE,
       otherDirsPaths: {
         actors: path.resolve(__dirname, '../actors'),
         jwt: path.resolve(__dirname, '../jwt'),
