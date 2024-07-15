@@ -27,6 +27,22 @@ module.exports = [
     }
   },
   {
+    path: '/groups',
+    acceptedTypes: ['pair:Group'],
+    permissions: {
+      ...anonReadPermissions,
+      ...writePermissionToActors
+    }
+  },
+  {
+    path: '/organizations',
+    acceptedTypes: ['pair:Organization'],
+    permissions: {
+      ...anonReadPermissions,
+      ...writePermissionToActors
+    }
+  },
+  {
     path: '/bots',
     acceptedTypes: ['Application'],
     permissions: anonReadPermissions,

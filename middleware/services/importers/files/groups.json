@@ -1,0 +1,32 @@
+[
+  {
+    "type": "pair:Group",
+    "slug": "fondateurs",
+    "pair:label": "Fondateurs"
+  },
+  {
+    "type": "pair:Group",
+    "slug": "producteurs",
+    "pair:label": "Producteurs"
+  },
+  {
+    "type": "pair:Group",
+    "slug": "investisseurs",
+    "pair:label": "Investisseurs"
+  },
+  {
+    "type": "pair:Group",
+    "slug": "oasis",
+    "pair:label": "Oasis"
+  },
+  {
+    "type": "pair:Group",
+    "slug": "partenaires",
+    "pair:label": "Partenaires"
+  },
+  {
+    "type": "pair:Group",
+    "slug": "accompagnateurs",
+    "pair:label": "Accompagnateurs"
+  }
+]

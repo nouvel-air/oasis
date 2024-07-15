@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { AppBar, Layout, Menu } from 'react-admin';
-import { UserMenu, useCheckAuthenticated } from "@semapps/auth-provider";
+import { UserMenu, useCheckAuthenticated } from '@semapps/auth-provider';
 import useIsAdmin from './hooks/useIsAdmin';
 
 const MyAppBar = () => <AppBar userMenu={<UserMenu />} />;
@@ -12,6 +12,7 @@ export const MyMenu = () => {
       <Menu.ResourceItem name="Place" />
       <Menu.ResourceItem name="Service" />
       <Menu.ResourceItem name="Person" />
+      <Menu.ResourceItem name="Organization" />
       <Menu.ResourceItem name="Type" />
       <Menu.ResourceItem name="Page" />
     </Menu>
