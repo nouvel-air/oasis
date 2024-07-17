@@ -2,7 +2,7 @@ const path = require('path');
 const urlJoin = require('url-join');
 const MailerService = require('moleculer-mail');
 const { MIME_TYPES } = require('@semapps/mime-types');
-const { getSlugFromUri } = require('@semapps/ldp');
+const { getSlugFromUri, arrayOf } = require('@semapps/ldp');
 const CONFIG = require('../config/config');
 
 module.exports = {
@@ -16,10 +16,10 @@ module.exports = {
       secure: CONFIG.SMTP_SECURE,
       auth: {
         user: CONFIG.SMTP_USER,
-        pass: CONFIG.SMTP_PASS,
-      },
+        pass: CONFIG.SMTP_PASS
+      }
     },
-    templateFolder: path.join(__dirname, "../templates"),
+    templateFolder: path.join(__dirname, '../templates')
   },
   dependencies: ['api'],
   async started() {
@@ -40,7 +40,7 @@ module.exports = {
       const { resourceUri, name, email, content } = ctx.params;
       let resourceLabel, resourceFrontUrl, to;
 
-      if( !resourceUri || !name || !email || !content ) throw new Error('Un ou plusieurs paramètres sont manquants');
+      if (!resourceUri || !name || !email || !content) throw new Error('Un ou plusieurs paramètres sont manquants');
 
       const resource = await ctx.call('ldp.resource.get', {
         resourceUri,
@@ -58,7 +58,7 @@ module.exports = {
         throw new Error('Impossible de contacter ce type de ressource: ' + resource.type);
       }
 
-      if (!to) throw new Error('Aucune adresse mail définie pour ' + resourceLabel + '!')
+      if (!to) throw new Error('Aucune adresse mail définie pour ' + resourceLabel + '!');
 
       await ctx.call('mailer.send', {
         to: [resource['pair:e-mail']],
@@ -92,7 +92,14 @@ module.exports = {
           actor,
           place,
           account: accountData,
-          resetUrl: urlJoin(CONFIG.BACKOFFICE_URL, 'login') + '?new_password=true&token=' + token + '&email=' + encodeURIComponent(accountData.email) + '&redirect=' + encodeURIComponent(redirectUrl)
+          resetUrl:
+            urlJoin(CONFIG.BACKOFFICE_URL, 'login') +
+            '?new_password=true&token=' +
+            token +
+            '&email=' +
+            encodeURIComponent(accountData.email) +
+            '&redirect=' +
+            encodeURIComponent(redirectUrl)
         }
       });
     },
@@ -113,7 +120,105 @@ module.exports = {
         data: {
           actor,
           account: accountData,
-          resetUrl: urlJoin(CONFIG.BACKOFFICE_URL, 'login') + '?new_password=true&token=' + token + '&email=' + encodeURIComponent(accountData.email) + '&redirect=' + encodeURIComponent(redirectUrl)
+          resetUrl:
+            urlJoin(CONFIG.BACKOFFICE_URL, 'login') +
+            '?new_password=true&token=' +
+            token +
+            '&email=' +
+            encodeURIComponent(accountData.email) +
+            '&redirect=' +
+            encodeURIComponent(redirectUrl)
+        }
+      });
+    },
+    async verifyEmail(ctx) {
+      const { webId, emailVerificationToken } = ctx.params;
+
+      const actor = await ctx.call('ldp.resource.get', {
+        resourceUri: webId,
+        accept: MIME_TYPES.JSON
+      });
+
+      const account = await ctx.call('auth.account.findByWebId', { webId });
+
+      const verifyUrl = new URL(urlJoin(CONFIG.HOME_URL, 'auth', 'verify_email'));
+      verifyUrl.searchParams.append('webId', webId);
+      verifyUrl.searchParams.append('email', account.email);
+      verifyUrl.searchParams.append('token', emailVerificationToken);
+
+      await ctx.call('mailer.send', {
+        to: account.email,
+        replyTo: this.settings.from,
+        template: 'verify-email',
+        data: {
+          actor,
+          account,
+          verifyUrl: verifyUrl.toString()
+        }
+      });
+    },
+    async verifyMembership(ctx) {
+      const { webId, membershipVerificationToken } = ctx.params;
+      let emails = [];
+
+      const actor = await ctx.call('ldp.resource.get', {
+        resourceUri: webId,
+        accept: MIME_TYPES.JSON
+      });
+
+      if (!actor['pair:affiliatedBy']) {
+        this.logger.warn(`Actor ${webId} is not affiliated with any organization, skipping...`);
+        return;
+      }
+
+      const organization = await ctx.call('ldp.resource.get', {
+        resourceUri: actor['pair:affiliatedBy'],
+        accept: MIME_TYPES.JSON
+      });
+
+      // Add organization email
+      if (organization['pair:e-mail']) emails.push(organization['pair:e-mail']);
+
+      // Add the email of other existing members
+      for (const memberUri of arrayOf(organization['pair:affiliates'])) {
+        if (memberUri !== webId) {
+          const account = await ctx.call('auth.account.findByWebId', { webId });
+          emails.push(account.email);
+        }
+      }
+
+      const verifyUrl = new URL(urlJoin(CONFIG.HOME_URL, 'auth', 'verify_membership'));
+      verifyUrl.searchParams.append('webId', webId);
+      verifyUrl.searchParams.append('token', membershipVerificationToken);
+
+      await ctx.call('mailer.send', {
+        to: emails,
+        replyTo: this.settings.from,
+        template: 'verify-membership',
+        data: {
+          actor,
+          organization,
+          verifyUrl: verifyUrl.toString()
+        }
+      });
+    },
+    async accountActivated(ctx) {
+      const { webId } = ctx.params;
+
+      const actor = await ctx.call('ldp.resource.get', {
+        resourceUri: webId,
+        accept: MIME_TYPES.JSON
+      });
+
+      const account = await ctx.call('auth.account.findByWebId', { webId });
+
+      await ctx.call('mailer.send', {
+        to: account.email,
+        replyTo: this.settings.from,
+        template: 'account-activated',
+        data: {
+          actor,
+          backofficeUrl: CONFIG.BACKOFFICE_URL
         }
       });
     }

@@ -12,18 +12,16 @@ const PlaceList = props => {
   const xs = useMediaQuery(theme => theme.breakpoints.down('sm'));
   if (!identity?.id) return;
   return (
-    <ListWithPermissions filter={isAdmin ? {} : { 'cdlt:proposedBy': identity?.id }} perPage={25} {...props}>
+    <ListWithPermissions filter={isAdmin ? {} : { 'pair:affiliates': identity?.id }} perPage={25} {...props}>
       {xs ? (
-        <SimpleList
-          primaryText="%{pair:label}"
-        />
-    ) : (
+        <SimpleList primaryText="%{pair:label}" />
+      ) : (
         <Datagrid rowClick="edit">
           <TextField source="pair:label" />
           <TextField source="pair:hasPostalAddress.pair:label" />
           <ReferenceArrayField reference="Type" source="cdlt:hasServiceType">
             <SingleFieldList linkType={false}>
-                <ChipField source="pair:label" />
+              <ChipField source="pair:label" />
             </SingleFieldList>
           </ReferenceArrayField>
           <EditButton />
@@ -31,7 +29,7 @@ const PlaceList = props => {
         </Datagrid>
       )}
     </ListWithPermissions>
-  )
+  );
 };
 
 export default PlaceList;

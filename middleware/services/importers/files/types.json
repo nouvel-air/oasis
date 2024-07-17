@@ -7,7 +7,17 @@
   {
     "type": "pair:PersonType",
     "slug": "actor",
-    "pair:label": "Acteur"
+    "pair:label": "Membre d'une organisation sociétaire"
+  },
+  {
+    "type": "pair:PersonType",
+    "slug": "member",
+    "pair:label": "Sociétaire (en tant qu'individu)"
+  },
+  {
+    "type": "pair:PersonType",
+    "slug": "agent",
+    "pair:label": "Agent immobilier"
   },
   {
     "type": "cdlt:ServiceType",

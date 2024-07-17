@@ -1,0 +1,22 @@
+[
+  {
+    "type": "pair:ActorStatus",
+    "slug": "email-not-verified",
+    "pair:label": "Email en attente de vérification"
+  },
+  {
+    "type": "pair:ActorStatus",
+    "slug": "email-verified",
+    "pair:label": "Email vérifié"
+  },
+  {
+    "type": "pair:ActorStatus",
+    "slug": "membership-not-verified",
+    "pair:label": "Appartenance en attente de vérification"
+  },
+  {
+    "type": "pair:ActorStatus",
+    "slug": "membership-verified",
+    "pair:label": "Appartenance vérifiée"
+  }
+]

@@ -10,8 +10,7 @@ export default {
     edit: PersonEdit,
     icon: PersonIcon,
     options: {
-      label: 'Personnes',
-      parent: 'Actor'
+      label: 'Individus'
     },
     recordRepresentation: 'pair:label'
   },
@@ -26,13 +25,15 @@ export default {
   },
   translations: {
     fr: {
-      name: 'Utilisateur |||| Utilisateurs',
+      name: 'Individu |||| Individus',
       fields: {
         'pair:firstName': 'Prénom',
         'pair:lastName': 'Nom de famille',
         'pair:e-mail': 'Adresse mail',
         'pair:hasType': "Type d'utilisateur",
-        'cdlt:proposes': 'Référent de'
+        'pair:affiliatedBy': 'Organisation',
+        'pair:partOf': 'Collège',
+        'pair:hasStatus': 'Statut'
       }
     }
   }
