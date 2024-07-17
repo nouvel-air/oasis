@@ -8,7 +8,7 @@ import useIsAdmin from '../../hooks/useIsAdmin';
 
 // For places, we do not receive a ZIP code because places can have many ZIP codes
 // So find the department short code (eg FR-60) and transform it to 60000 so that we have at least the correct department code
-const extractZipCodeFromPlaceContext = (context) => {
+const extractZipCodeFromPlaceContext = context => {
   const property = context.find(property => property.id.startsWith(`region.`));
   if (property) return property.short_code?.slice(-2);
 };
@@ -26,31 +26,43 @@ const PlaceForm = () => {
         mapboxConfig={{
           access_token: process.env.REACT_APP_MAPBOX_ACCESS_TOKEN,
           types: ['place', 'address'],
-          country: ['fr', 'be', 'ch'],
+          country: ['fr', 'be', 'ch']
         }}
         source="pair:hasPostalAddress"
-        parse={(value) => {
+        parse={value => {
           const countryName = extractContext(value.context, 'country');
           const placeType = value.place_type[0];
-          return ({
+          return {
             type: 'pair:PostalAddress',
             'pair:label': value.place_name,
-            'pair:addressLocality': placeType === 'place' ? value.text : placeType === 'address' ? extractContext(value.context, 'place') : undefined,
+            'pair:addressLocality':
+              placeType === 'place'
+                ? value.text
+                : placeType === 'address'
+                ? extractContext(value.context, 'place')
+                : undefined,
             'pair:addressStreet': placeType === 'address' ? [value.address, value.text].join(' ') : undefined,
-            'pair:addressZipCode': placeType === 'place' ? extractZipCodeFromPlaceContext(value.context) : extractContext(value.context, 'postcode'),
+            'pair:addressZipCode':
+              placeType === 'place'
+                ? extractZipCodeFromPlaceContext(value.context)
+                : extractContext(value.context, 'postcode'),
             'pair:addressCountry': countryName,
             'pair:longitude': value.center[0],
-            'pair:latitude': value.center[1],
-          })
+            'pair:latitude': value.center[1]
+          };
         }}
-        optionText={(resource) => resource['pair:label']}
+        optionText={resource => resource['pair:label']}
         validate={[required()]}
         fullWidth
       />
       <TextInput source="pair:homePage" fullWidth />
-      <TextInput source="pair:e-mail" fullWidth validate={[required(), email()]} />  
-      {isAdmin && <UsersInput source="cdlt:proposedBy" fullWidth />}
-      <StatusInput source="cdlt:hasPublicationStatus" validate={[required()]} />
+      <TextInput source="pair:e-mail" fullWidth validate={[required(), email()]} />
+      {isAdmin && <UsersInput source="pair:affiliates" fullWidth />}
+      <StatusInput
+        source="cdlt:hasPublicationStatus"
+        filter={{ a: 'cdlt:PublicationStatus' }}
+        validate={[required()]}
+      />
     </>
   );
 };

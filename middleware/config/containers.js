@@ -55,6 +55,12 @@ module.exports = [
     newResourcesPermissions: anonReadPermissions
   },
   {
+    path: '/status',
+    acceptedTypes: ['pair:ActorStatus'],
+    permissions: anonReadPermissions,
+    newResourcesPermissions: anonReadPermissions
+  },
+  {
     path: '/pages',
     acceptedTypes: ['semapps:Page'],
     permissions: anonReadPermissions,

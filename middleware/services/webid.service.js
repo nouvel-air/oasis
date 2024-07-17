@@ -5,6 +5,7 @@ const { ACTOR_TYPES } = require('@semapps/activitypub');
 const { MIME_TYPES } = require('@semapps/mime-types');
 const CONFIG = require('../config/config');
 const { anonReadPermissions } = require('../config/permissions');
+const { STATUS_EMAIL_NOT_VERIFIED, STATUS_MEMBERSHIP_NOT_VERIFIED, TYPE_ACTOR } = require('../constants');
 
 module.exports = {
   name: 'webid',
@@ -21,7 +22,52 @@ module.exports = {
     // Then remove the email so that it's not visible
     // Also send an invitation email if it's an actor
     async post(ctx) {
-      const { containerUri, resource, contentType } = ctx.params;
+      let { containerUri, resource, contentType, webId } = ctx.params;
+
+      if (!containerUri) {
+        containerUri = await this.actions.getContainerUri({ webId }, { parentCtx: ctx });
+      }
+
+      // If the user created the account himself (through auth.signup), process it normally
+      if (ctx.meta.isSignup) {
+        const webId = await ctx.call('ldp.container.post', { containerUri, resource, contentType, webId });
+
+        const emailVerificationToken = await ctx.call('auth.generateEmailVerificationToken', { webId });
+
+        await ctx.call('ldp.resource.patch', {
+          resourceUri: webId,
+          triplesToAdd: [
+            triple(
+              namedNode(webId),
+              namedNode('http://virtual-assembly.org/ontologies/pair#hasStatus'),
+              namedNode(STATUS_EMAIL_NOT_VERIFIED)
+            )
+          ],
+          webId
+        });
+
+        await ctx.call('mailer.confirmEmail', { webId, emailVerificationToken });
+
+        if (arrayOf(resource['pair:hasType']).includes(TYPE_ACTOR)) {
+          const membershipVerificationToken = await ctx.call('auth.generateMembershipVerificationToken', { webId });
+
+          await ctx.call('ldp.resource.patch', {
+            resourceUri: webId,
+            triplesToAdd: [
+              triple(
+                namedNode(webId),
+                namedNode('http://virtual-assembly.org/ontologies/pair#hasStatus'),
+                namedNode(STATUS_MEMBERSHIP_NOT_VERIFIED)
+              )
+            ],
+            webId
+          });
+
+          await ctx.call('mailer.confirmMembership', { webId, membershipVerificationToken });
+        }
+
+        return actorUri;
+      }
 
       const accountData = await ctx.call('auth.account.create', { email: resource['pair:e-mail'] });
       delete resource['pair:e-mail'];

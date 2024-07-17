@@ -25,7 +25,7 @@ export default {
       containers: {
         oasis: ['/places']
       },
-      explicitEmbedOnFraming: false, // Increase performance since explicit embed is not necessary
+      explicitEmbedOnFraming: false // Increase performance since explicit embed is not necessary
     },
     fieldsMapping: {
       title: 'pair:label'
@@ -40,12 +40,12 @@ export default {
         'pair:hasPostalAddress': 'Adresse postale',
         'pair:hasPostalAddress.pair:label': 'Adresse postale',
         'pair:depictedBy': 'Image',
-        'cdlt:proposedBy': 'Référents',
+        'pair:affiliates': 'Membres',
         'pair:e-mail': 'Adresse e-mail',
         'pair:homePage': 'Site web',
         'cdlt:hasServiceType': 'Types de services',
         'cdlt:hasPublicationStatus': 'Statut de publication'
-      },
-    },
-  },
+      }
+    }
+  }
 };
