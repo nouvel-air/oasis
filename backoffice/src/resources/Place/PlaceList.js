@@ -4,15 +4,19 @@ import { useMediaQuery } from '@mui/material';
 import { ReferenceArrayField } from '@semapps/field-components';
 import { ListWithPermissions } from '@semapps/auth-provider';
 import PublishButton from '../../common/button/PublishButton';
-import useIsAdmin from '../../hooks/useIsAdmin';
+import useAccountType from '../../hooks/useAccountType';
 
 const PlaceList = props => {
-  const isAdmin = useIsAdmin();
+  const accountType = useAccountType();
   const { identity } = useGetIdentity();
   const xs = useMediaQuery(theme => theme.breakpoints.down('sm'));
   if (!identity?.id) return;
   return (
-    <ListWithPermissions filter={isAdmin ? {} : { 'pair:affiliates': identity?.id }} perPage={25} {...props}>
+    <ListWithPermissions
+      filter={accountType === 'admin' ? {} : { 'pair:affiliates': identity?.id }}
+      perPage={25}
+      {...props}
+    >
       {xs ? (
         <SimpleList primaryText="%{pair:label}" />
       ) : (

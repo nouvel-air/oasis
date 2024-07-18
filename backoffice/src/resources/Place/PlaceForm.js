@@ -4,7 +4,7 @@ import { MarkdownInput } from '@semapps/markdown-components';
 import { ImageInput } from '@semapps/input-components';
 import { extractContext, LocationInput } from '@semapps/geo-components';
 import { StatusInput, UsersInput } from '../../common/input';
-import useIsAdmin from '../../hooks/useIsAdmin';
+import useAccountType from '../../hooks/useAccountType';
 
 // For places, we do not receive a ZIP code because places can have many ZIP codes
 // So find the department short code (eg FR-60) and transform it to 60000 so that we have at least the correct department code
@@ -14,7 +14,7 @@ const extractZipCodeFromPlaceContext = context => {
 };
 
 const PlaceForm = () => {
-  const isAdmin = useIsAdmin();
+  const accountType = useAccountType();
   return (
     <>
       <TextInput source="pair:label" fullWidth validate={[required()]} />
@@ -57,7 +57,7 @@ const PlaceForm = () => {
       />
       <TextInput source="pair:homePage" fullWidth />
       <TextInput source="pair:e-mail" fullWidth validate={[required(), email()]} />
-      {isAdmin && <UsersInput source="pair:affiliates" fullWidth />}
+      {accountType === 'admin' && <UsersInput source="pair:affiliates" fullWidth />}
       <StatusInput
         source="cdlt:hasPublicationStatus"
         filter={{ a: 'cdlt:PublicationStatus' }}

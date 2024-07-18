@@ -1,16 +1,18 @@
 import React from 'react';
 import { FormDataConsumer, email, required, SimpleForm, TextInput } from 'react-admin';
 import { TypeInput, OrganizationOrPlaceInput, GroupInput, StatusesInput } from '../../common/input';
-import useIsAdmin from '../../hooks/useIsAdmin';
+import useAccountType from '../../hooks/useAccountType';
 
 export const PersonForm = ({ isCreate }) => {
-  const isAdmin = useIsAdmin();
+  const accountType = useAccountType();
   return (
     <SimpleForm>
       <TextInput source="pair:firstName" fullWidth validate={[required()]} />
       <TextInput source="pair:lastName" fullWidth validate={[required()]} />
       {isCreate && <TextInput source="pair:e-mail" fullWidth validate={[required(), email()]} />}
-      {isAdmin && <TypeInput source="pair:hasType" filter={{ a: 'pair:PersonType' }} fullWidth disabled={!isCreate} />}
+      {accountType === 'admin' && (
+        <TypeInput source="pair:hasType" filter={{ a: 'pair:PersonType' }} fullWidth disabled={!isCreate} />
+      )}
       <FormDataConsumer>
         {({ formData, ...rest }) => (
           <>
@@ -23,7 +25,7 @@ export const PersonForm = ({ isCreate }) => {
           </>
         )}
       </FormDataConsumer>
-      {isAdmin && <StatusesInput source="pair:hasStatus" filter={{ a: 'pair:ActorStatus' }} />}
+      {accountType === 'admin' && <StatusesInput source="pair:hasStatus" filter={{ a: 'pair:ActorStatus' }} />}
     </SimpleForm>
   );
 };

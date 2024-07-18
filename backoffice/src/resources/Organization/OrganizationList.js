@@ -3,14 +3,18 @@ import { SimpleList, Datagrid, TextField, EditButton, useGetIdentity } from 'rea
 import { ReferenceField } from '@semapps/field-components';
 import { ListWithPermissions } from '@semapps/auth-provider';
 import { useMediaQuery } from '@mui/material';
-import useIsAdmin from '../../hooks/useIsAdmin';
+import useAccountType from '../../hooks/useAccountType';
 
 const OrganizationList = props => {
   const xs = useMediaQuery(theme => theme.breakpoints.down('sm'));
-  const isAdmin = useIsAdmin();
+  const accountType = useAccountType();
   const { identity } = useGetIdentity();
   return (
-    <ListWithPermissions filter={isAdmin ? {} : { 'pair:affiliates': identity?.id }} perPage={25} {...props}>
+    <ListWithPermissions
+      filter={accountType === 'admin' ? {} : { 'pair:affiliates': identity?.id }}
+      perPage={25}
+      {...props}
+    >
       {xs ? (
         <SimpleList
           primaryText="%{pair:label}"

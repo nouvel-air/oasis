@@ -3,6 +3,7 @@ const crypto = require('crypto');
 const urlJoin = require('url-join');
 const { namedNode, triple } = require('@rdfjs/data-model');
 const { AuthLocalService } = require('@semapps/auth');
+const { MIME_TYPES } = require('@semapps/mime-types');
 const CONFIG = require('../config/config');
 const { arrayOf } = require('@semapps/ldp');
 const {
@@ -10,7 +11,8 @@ const {
   STATUS_EMAIL_NOT_VERIFIED,
   STATUS_MEMBERSHIP_VERIFIED,
   STATUS_MEMBERSHIP_NOT_VERIFIED,
-  TYPE_AGENT
+  TYPE_AGENT,
+  TYPE_ACTOR
 } = require('../constants');
 
 module.exports = {
@@ -70,7 +72,7 @@ module.exports = {
         const account = await ctx.call('auth.account.findByWebId', { webId });
 
         if (account.emailVerificationToken !== token || account.email !== email) {
-          return 'Invalid token or email address';
+          return 'Token ou adresse mail invalide';
         } else {
           await ctx.call('ldp.resource.patch', {
             resourceUri: webId,
@@ -97,11 +99,14 @@ module.exports = {
             arrayOf(actor['pair:hasType']).includes(TYPE_AGENT)
           ) {
             await ctx.call('mailer.accountActivated', { webId });
+
+            ctx.meta.$statusCode = 302;
+            ctx.meta.$location = urlJoin(CONFIG.BACKOFFICE_URL, 'login');
           }
         }
       }
 
-      return 'Success';
+      return 'Votre adresse mail est bien vérifiée. Veuillez attendre la validation de votre compte par mail.';
     },
     async verifyMembership(ctx) {
       const { webId, token } = ctx.params;
@@ -112,7 +117,7 @@ module.exports = {
         const account = await ctx.call('auth.account.findByWebId', { webId });
 
         if (account.membershipVerificationToken !== token) {
-          return 'Invalid token';
+          return 'Token invalide';
         } else {
           await ctx.call('ldp.resource.patch', {
             resourceUri: webId,
@@ -139,7 +144,7 @@ module.exports = {
         }
       }
 
-      return 'Success';
+      return 'Le compte a bien été validé';
     },
     async generateEmailVerificationToken(ctx) {
       const { webId } = ctx.params;
@@ -147,7 +152,7 @@ module.exports = {
       const account = await ctx.call('auth.account.findByWebId', { webId });
 
       await ctx.call('auth.account.update', {
-        '@id': account['@id'],
+        id: account['@id'],
         emailVerificationToken
       });
 
@@ -159,7 +164,7 @@ module.exports = {
       const account = await ctx.call('auth.account.findByWebId', { webId });
 
       await ctx.call('auth.account.update', {
-        '@id': account['@id'],
+        id: account['@id'],
         membershipVerificationToken
       });
 
@@ -177,6 +182,54 @@ module.exports = {
           resolve(buf.toString('hex'));
         });
       });
+    }
+  },
+  hooks: {
+    after: {
+      async signup(ctx, res) {
+        const { webId } = res;
+
+        const actor = await ctx.call('ldp.resource.get', {
+          resourceUri: webId,
+          accept: MIME_TYPES.JSON
+        });
+
+        const emailVerificationToken = await ctx.call('auth.generateEmailVerificationToken', { webId });
+
+        await ctx.call('ldp.resource.patch', {
+          resourceUri: webId,
+          triplesToAdd: [
+            triple(
+              namedNode(webId),
+              namedNode('http://virtual-assembly.org/ontologies/pair#hasStatus'),
+              namedNode(STATUS_EMAIL_NOT_VERIFIED)
+            )
+          ],
+          webId
+        });
+
+        await ctx.call('mailer.verifyEmail', { webId, emailVerificationToken });
+
+        if (arrayOf(actor['pair:hasType']).includes(TYPE_ACTOR)) {
+          const membershipVerificationToken = await ctx.call('auth.generateMembershipVerificationToken', { webId });
+
+          await ctx.call('ldp.resource.patch', {
+            resourceUri: webId,
+            triplesToAdd: [
+              triple(
+                namedNode(webId),
+                namedNode('http://virtual-assembly.org/ontologies/pair#hasStatus'),
+                namedNode(STATUS_MEMBERSHIP_NOT_VERIFIED)
+              )
+            ],
+            webId
+          });
+
+          await ctx.call('mailer.verifyMembership', { webId, membershipVerificationToken });
+        }
+
+        return res;
+      }
     }
   }
 };

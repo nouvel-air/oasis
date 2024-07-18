@@ -1,4 +1,5 @@
 const urlJoin = require('url-join');
+const CONFIG = require('./config/config');
 
 const STATUS_EMAIL_VERIFIED = urlJoin(CONFIG.HOME_URL, 'status', 'email-verified');
 const STATUS_EMAIL_NOT_VERIFIED = urlJoin(CONFIG.HOME_URL, 'status', 'email-not-verified');

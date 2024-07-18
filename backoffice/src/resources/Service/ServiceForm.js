@@ -3,16 +3,21 @@ import { TextInput, SimpleForm, ImageField, required, useGetIdentity } from 'rea
 import { MarkdownInput } from '@semapps/markdown-components';
 import { ImageInput } from '@semapps/input-components';
 import { PlaceInput, TypeInput } from '../../common/input';
-import useIsAdmin from '../../hooks/useIsAdmin';
+
+import useAccountType from '../../hooks/useAccountType';
 
 const ServiceForm = () => {
-  const isAdmin = useIsAdmin();
+  const accountType = useAccountType();
   const { identity } = useGetIdentity();
   if (!identity?.id) return;
   return (
     <SimpleForm>
       <TextInput source="pair:label" fullWidth validate={[required()]} />
-      <PlaceInput source="pair:offeredBy" validate={[required()]} filter={isAdmin ? {} : { 'cdlt:proposedBy': identity?.id }} />
+      <PlaceInput
+        source="pair:offeredBy"
+        validate={[required()]}
+        filter={accountType === 'admin' ? {} : { 'cdlt:proposedBy': identity?.id }}
+      />
       <TypeInput source="cdlt:hasServiceType" filter={{ a: 'cdlt:ServiceType' }} />
       <MarkdownInput source="pair:description" fullWidth />
       <ImageInput source="pair:depictedBy" accept="image/*" validate={[required()]}>

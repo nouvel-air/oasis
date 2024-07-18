@@ -3,40 +3,44 @@ import { SimpleList, Datagrid, TextField, EditButton, useGetIdentity } from 'rea
 import { ListWithPermissions } from '@semapps/auth-provider';
 import { ReferenceField } from '@semapps/field-components';
 import { useMediaQuery } from '@mui/material';
-import useIsAdmin from '../../hooks/useIsAdmin';
+import useAccountType from '../../hooks/useAccountType';
 
-const defaultToArray = value => !value ? [] : Array.isArray(value) ? value : [value];
+const defaultToArray = value => (!value ? [] : Array.isArray(value) ? value : [value]);
 
-const filterByPlaces = places => ([
+const filterByPlaces = places => [
   {
-    type: "values",
+    type: 'values',
     values: places.map(placeUri => ({
-      "?placeUri": {
-        termType: "NamedNode",
+      '?placeUri': {
+        termType: 'NamedNode',
         value: placeUri
       }
     }))
   },
   {
-    type: "bgp",
+    type: 'bgp',
     triples: [
       {
-        subject: { termType: "Variable", value: "s1" },
-        predicate: { termType: "NameNode", value: "http://virtual-assembly.org/ontologies/pair#offeredBy" },
-        object: { termType: "Variable", value: "placeUri" }
+        subject: { termType: 'Variable', value: 's1' },
+        predicate: { termType: 'NameNode', value: 'http://virtual-assembly.org/ontologies/pair#offeredBy' },
+        object: { termType: 'Variable', value: 'placeUri' }
       }
     ]
   }
-]);
+];
 
 const ServiceList = props => {
-  const isAdmin = useIsAdmin();
+  const accountType = useAccountType();
   const { identity } = useGetIdentity();
   const ownedPlaces = defaultToArray(identity?.webIdData?.['cdlt:proposes']);
   const xs = useMediaQuery(theme => theme.breakpoints.down('sm'));
   if (!identity?.id) return;
   return (
-    <ListWithPermissions filter={isAdmin ? {} : { sparqlWhere: filterByPlaces(ownedPlaces) }} perPage={25} {...props}>
+    <ListWithPermissions
+      filter={accountType === 'admin' ? {} : { sparqlWhere: filterByPlaces(ownedPlaces) }}
+      perPage={25}
+      {...props}
+    >
       {xs ? (
         <SimpleList
           primaryText="%{pair:label}"
@@ -59,7 +63,7 @@ const ServiceList = props => {
         </Datagrid>
       )}
     </ListWithPermissions>
-  )
+  );
 };
 
 export default ServiceList;

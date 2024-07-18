@@ -28,45 +28,9 @@ module.exports = {
         containerUri = await this.actions.getContainerUri({ webId }, { parentCtx: ctx });
       }
 
-      // If the user created the account himself (through auth.signup), process it normally
+      // If the user created the account himself (through auth.signup), process normally
       if (ctx.meta.isSignup) {
-        const webId = await ctx.call('ldp.container.post', { containerUri, resource, contentType, webId });
-
-        const emailVerificationToken = await ctx.call('auth.generateEmailVerificationToken', { webId });
-
-        await ctx.call('ldp.resource.patch', {
-          resourceUri: webId,
-          triplesToAdd: [
-            triple(
-              namedNode(webId),
-              namedNode('http://virtual-assembly.org/ontologies/pair#hasStatus'),
-              namedNode(STATUS_EMAIL_NOT_VERIFIED)
-            )
-          ],
-          webId
-        });
-
-        await ctx.call('mailer.confirmEmail', { webId, emailVerificationToken });
-
-        if (arrayOf(resource['pair:hasType']).includes(TYPE_ACTOR)) {
-          const membershipVerificationToken = await ctx.call('auth.generateMembershipVerificationToken', { webId });
-
-          await ctx.call('ldp.resource.patch', {
-            resourceUri: webId,
-            triplesToAdd: [
-              triple(
-                namedNode(webId),
-                namedNode('http://virtual-assembly.org/ontologies/pair#hasStatus'),
-                namedNode(STATUS_MEMBERSHIP_NOT_VERIFIED)
-              )
-            ],
-            webId
-          });
-
-          await ctx.call('mailer.confirmMembership', { webId, membershipVerificationToken });
-        }
-
-        return actorUri;
+        return await ctx.call('ldp.container.post', { containerUri, resource, contentType, webId });
       }
 
       const accountData = await ctx.call('auth.account.create', { email: resource['pair:e-mail'] });

@@ -4,6 +4,7 @@ const MailerService = require('moleculer-mail');
 const { MIME_TYPES } = require('@semapps/mime-types');
 const { getSlugFromUri, arrayOf } = require('@semapps/ldp');
 const CONFIG = require('../config/config');
+const { STATUS_MEMBERSHIP_VERIFIED } = require('../constants');
 
 module.exports = {
   name: 'mailer',
@@ -182,8 +183,17 @@ module.exports = {
       // Add the email of other existing members
       for (const memberUri of arrayOf(organization['pair:affiliates'])) {
         if (memberUri !== webId) {
-          const account = await ctx.call('auth.account.findByWebId', { webId });
-          emails.push(account.email);
+          const member = await ctx.call('ldp.resource.get', {
+            resourceUri: memberUri,
+            accept: MIME_TYPES.JSON,
+            webId: 'system'
+          });
+
+          // Ensure the member is verified
+          if (arrayOf(member['pair:hasStatus']).includes(STATUS_MEMBERSHIP_VERIFIED)) {
+            const account = await ctx.call('auth.account.findByWebId', { webId: memberUri });
+            if (account) emails.push(account.email);
+          }
         }
       }
 
