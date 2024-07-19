@@ -17,15 +17,22 @@ export const PersonForm = ({ isCreate }) => {
         {({ formData, ...rest }) => (
           <>
             {formData['pair:hasType'] === process.env.REACT_APP_MIDDLEWARE_URL + 'types/actor' && (
-              <OrganizationOrPlaceInput source="pair:affiliatedBy" validate={required()} {...rest} />
+              <OrganizationOrPlaceInput
+                source="pair:affiliatedBy"
+                validate={required()}
+                disabled={accountType !== 'admin'}
+                {...rest}
+              />
             )}
             {formData['pair:hasType'] === process.env.REACT_APP_MIDDLEWARE_URL + 'types/member' && (
-              <GroupInput source="pair:partOf" validate={required()} {...rest} />
+              <GroupInput source="pair:partOf" validate={required()} disabled={accountType !== 'admin'} {...rest} />
             )}
           </>
         )}
       </FormDataConsumer>
-      {accountType === 'admin' && <StatusesInput source="pair:hasStatus" filter={{ a: 'pair:ActorStatus' }} />}
+      {accountType === 'admin' && !isCreate && (
+        <StatusesInput source="pair:hasStatus" label={false} filter={{ a: 'pair:ActorStatus' }} />
+      )}
     </SimpleForm>
   );
 };

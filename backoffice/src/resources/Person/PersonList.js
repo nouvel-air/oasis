@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SimpleList, Datagrid, TextField, EditButton, useGetIdentity, useRedirect } from 'react-admin';
 import { ReferenceField } from '@semapps/field-components';
 import { ListWithPermissions } from '@semapps/auth-provider';
@@ -11,36 +11,37 @@ const PersonList = props => {
   const { identity } = useGetIdentity();
   const redirect = useRedirect();
 
-  if (!accountType || !identity?.id) return null;
+  useEffect(() => {
+    if (accountType !== 'admin' && identity?.id) {
+      redirect('show', 'Person', identity?.id);
+    }
+  }, [accountType, identity, redirect]);
 
-  if (accountType !== 'admin') {
-    redirect('show', 'Person', identity?.id);
-    return null;
-  } else {
-    return (
-      <ListWithPermissions perPage={25} {...props}>
-        {xs ? (
-          <SimpleList
-            primaryText="%{pair:label}"
-            secondaryText={
-              <ReferenceField source="pair:hasType" reference="Type" link={false}>
-                <TextField source="pair:label" />
-              </ReferenceField>
-            }
-          />
-        ) : (
-          <Datagrid rowClick="edit">
-            <TextField source="pair:firstName" />
-            <TextField source="pair:lastName" />
+  if (accountType !== 'admin') return null;
+
+  return (
+    <ListWithPermissions perPage={25} {...props}>
+      {xs ? (
+        <SimpleList
+          primaryText="%{pair:label}"
+          secondaryText={
             <ReferenceField source="pair:hasType" reference="Type" link={false}>
               <TextField source="pair:label" />
             </ReferenceField>
-            <EditButton />
-          </Datagrid>
-        )}
-      </ListWithPermissions>
-    );
-  }
+          }
+        />
+      ) : (
+        <Datagrid rowClick="edit">
+          <TextField source="pair:firstName" />
+          <TextField source="pair:lastName" />
+          <ReferenceField source="pair:hasType" reference="Type" link={false}>
+            <TextField source="pair:label" />
+          </ReferenceField>
+          <EditButton />
+        </Datagrid>
+      )}
+    </ListWithPermissions>
+  );
 };
 
 export default PersonList;

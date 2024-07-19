@@ -3,10 +3,11 @@
     <img src="https://destination-oasis.fr/title.png" alt="Destination Oasis" style="max-width: 100%; max-height: 80px;">
   </a>
   <p>{{actor.pair:firstName}},</p>
-  <p>Vous avez été invité à contribuer à la base de donnée ouverte de la Coopérative Oasis en tant que sociétaire.</p>
-  <p>Cela vous permettra d'éditer la page de votre oasis ou organisation: {{place.pair:label}}.</p>
+  <p>Vous avez été invité à contribuer à la base de donnée ouverte de la Coopérative Oasis en tant que {{actorType}}.</p>
+  {{#if organization}}
+  <p>Cela vous permettra d'éditer la page de votre oasis ou organisation: {{organization.pair:label}}.</p>
+  {{/if}}
   <p>Pour initialiser votre mot de passe, rendez-vous sur <a href="{{resetUrl}}">ce lien</a>.</p>
-  <p>Vous pourrez vous ensuite vous connecter et éditer votre oasis ou organisation.</a>.</p>
   <p>En cas de problème, n'hésitez pas à nous contacter !</p>
   <p>
       Cordialement,<br/>

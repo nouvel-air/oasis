@@ -27,6 +27,14 @@ module.exports = [
     }
   },
   {
+    path: '/offers-and-needs',
+    acceptedTypes: ['cdlt:OfferAndNeed', 'pair:Event'],
+    permissions: {
+      ...anonReadPermissions,
+      ...writePermissionToActors
+    }
+  },
+  {
     path: '/groups',
     acceptedTypes: ['pair:Group'],
     permissions: {

@@ -1,17 +1,17 @@
 import React from 'react';
-import { SelectInput, AutocompleteArrayInput, SelectArrayInput } from 'react-admin';
+import { SelectInput, AutocompleteArrayInput, CheckboxGroupInput } from 'react-admin';
 import { ReferenceInput, ReferenceArrayInput } from '@semapps/input-components';
 
 const ifTwoLetters = ({ q }) => !!(q && q.length > 1);
 
 export const UserInput = props => (
-  <ReferenceInput reference="Person" {...props}>
+  <ReferenceInput reference="Person" perPage={1000} {...props}>
     <SelectInput optionText="pair:label" fullWidth />
   </ReferenceInput>
 );
 
 export const UsersInput = props => (
-  <ReferenceArrayInput reference="Person" enableGetChoices={ifTwoLetters} {...props}>
+  <ReferenceArrayInput reference="Person" enableGetChoices={ifTwoLetters} perPage={1000} {...props}>
     <AutocompleteArrayInput
       optionText="pair:label"
       shouldRenderSuggestions={value => value.length > 1}
@@ -22,13 +22,13 @@ export const UsersInput = props => (
 );
 
 export const PlaceInput = ({ validate, ...rest }) => (
-  <ReferenceInput reference="Place" {...rest}>
+  <ReferenceInput reference="Place" perPage={1000} {...rest}>
     <SelectInput optionText="pair:label" validate={validate} fullWidth />
   </ReferenceInput>
 );
 
 export const PlacesInput = props => (
-  <ReferenceArrayInput reference="Place" enableGetChoices={ifTwoLetters} {...props}>
+  <ReferenceArrayInput reference="Place" enableGetChoices={ifTwoLetters} perPage={1000} {...props}>
     <AutocompleteArrayInput
       optionText="pair:label"
       shouldRenderSuggestions={value => value.length > 1}
@@ -39,37 +39,58 @@ export const PlacesInput = props => (
 );
 
 export const TypeInput = ({ validate, disabled, ...rest }) => (
-  <ReferenceInput reference="Type" {...rest}>
+  <ReferenceInput reference="Type" perPage={1000} {...rest}>
     <SelectInput optionText="pair:label" validate={validate} disabled={disabled} fullWidth />
   </ReferenceInput>
 );
 
 export const StatusInput = ({ validate, ...rest }) => (
-  <ReferenceInput reference="Status" {...rest}>
+  <ReferenceInput reference="Status" perPage={1000} {...rest}>
     <SelectInput optionText="pair:label" validate={validate} fullWidth />
   </ReferenceInput>
 );
 
-export const StatusesInput = props => (
-  <ReferenceArrayInput reference="Status" {...props}>
-    <SelectArrayInput optionText="pair:label" fullWidth />
+export const StatusesInput = ({ validate, label, helperText, ...rest }) => (
+  <ReferenceArrayInput reference="Status" perPage={1000} {...rest}>
+    <CheckboxGroupInput optionText="pair:label" validate={validate} label={label} helperText={helperText} fullWidth />
   </ReferenceArrayInput>
 );
 
-export const OrganizationInput = ({ validate, label, helperText, ...rest }) => (
-  <ReferenceInput reference="Organization" {...rest}>
-    <SelectInput optionText="pair:label" validate={validate} label={label} helperText={helperText} fullWidth />
+export const OrganizationInput = ({ validate, label, disabled, helperText, ...rest }) => (
+  <ReferenceInput reference="Organization" perPage={1000} {...rest}>
+    <SelectInput
+      optionText="pair:label"
+      validate={validate}
+      label={label}
+      disabled={disabled}
+      helperText={helperText}
+      fullWidth
+    />
   </ReferenceInput>
 );
 
-export const OrganizationOrPlaceInput = ({ validate, label, helperText, ...rest }) => (
-  <ReferenceInput reference="OrganizationOrPlace" {...rest}>
-    <SelectInput optionText="pair:label" validate={validate} label={label} helperText={helperText} fullWidth />
+export const OrganizationOrPlaceInput = ({ validate, label, disabled, helperText, ...rest }) => (
+  <ReferenceInput reference="OrganizationOrPlace" perPage={1000} {...rest}>
+    <SelectInput
+      optionText="pair:label"
+      validate={validate}
+      label={label}
+      disabled={disabled}
+      helperText={helperText}
+      fullWidth
+    />
   </ReferenceInput>
 );
 
-export const GroupInput = ({ validate, label, helperText, ...rest }) => (
-  <ReferenceInput reference="Group" {...rest}>
-    <SelectInput optionText="pair:label" validate={validate} label={label} helperText={helperText} fullWidth />
+export const GroupInput = ({ validate, label, disabled, helperText, ...rest }) => (
+  <ReferenceInput reference="Group" perPage={1000} {...rest}>
+    <SelectInput
+      optionText="pair:label"
+      validate={validate}
+      label={label}
+      disabled={disabled}
+      helperText={helperText}
+      fullWidth
+    />
   </ReferenceInput>
 );

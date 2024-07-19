@@ -14,7 +14,7 @@ export default {
     }
   },
   dataModel: {
-    types: ['cdlt:ServiceType', 'pair:PersonType'],
+    types: ['cdlt:ServiceType', 'cdlt:OfferAndNeedType', 'pair:PersonType'],
     list: {
       servers: '@default'
     },

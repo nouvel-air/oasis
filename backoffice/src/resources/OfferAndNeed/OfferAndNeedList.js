@@ -1,26 +1,20 @@
 import React from 'react';
 import { SimpleList, Datagrid, TextField, EditButton, useGetIdentity } from 'react-admin';
-import { ReferenceField } from '@semapps/field-components';
 import { ListWithPermissions } from '@semapps/auth-provider';
+import { ReferenceField } from '@semapps/field-components';
 import { useMediaQuery } from '@mui/material';
-import useAccountType from '../../hooks/useAccountType';
 
-const OrganizationList = props => {
-  const xs = useMediaQuery(theme => theme.breakpoints.down('sm'));
-  const accountType = useAccountType();
+const OfferAndNeedList = props => {
   const { identity } = useGetIdentity();
-  if (!identity?.id) return null;
+  const xs = useMediaQuery(theme => theme.breakpoints.down('sm'));
+  if (!identity?.id) return;
   return (
-    <ListWithPermissions
-      filter={accountType === 'admin' ? {} : { 'pair:affiliates': identity?.id }}
-      perPage={25}
-      {...props}
-    >
+    <ListWithPermissions perPage={25} {...props}>
       {xs ? (
         <SimpleList
           primaryText="%{pair:label}"
           secondaryText={
-            <ReferenceField source="pair:partOf" reference="Group" link={false}>
+            <ReferenceField source="pair:offeredBy" reference="Place" link={false}>
               <TextField source="pair:label" />
             </ReferenceField>
           }
@@ -28,10 +22,12 @@ const OrganizationList = props => {
       ) : (
         <Datagrid rowClick="edit">
           <TextField source="pair:label" />
-          <ReferenceField source="pair:partOf" reference="Group" link={false}>
+          <ReferenceField source="pair:hasType" reference="Type" link={false}>
             <TextField source="pair:label" />
           </ReferenceField>
-          <TextField source="pair:e-mail" />
+          <ReferenceField source="pair:offeredBy" reference="Place" link={false}>
+            <TextField source="pair:label" />
+          </ReferenceField>
           <EditButton />
         </Datagrid>
       )}
@@ -39,4 +35,4 @@ const OrganizationList = props => {
   );
 };
 
-export default OrganizationList;
+export default OfferAndNeedList;

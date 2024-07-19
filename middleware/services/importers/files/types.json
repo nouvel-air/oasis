@@ -38,5 +38,68 @@
   {
     "type": "cdlt:ServiceType",
     "pair:label": "Hébergements insolites"
+  },
+  {
+    "type": "cdlt:OfferAndNeedType",
+    "pair:label": "Vivre en oasis"
+  },
+  {
+    "type": "cdlt:OfferAndNeedType",
+    "slug": "financement",
+    "pair:label": "Financement participatif"
+  },
+  {
+    "type": "cdlt:OfferAndNeedType",
+    "slug": "emploi-benevolat",
+    "pair:label": "Emploi/Bénévolat/Volontariat"
+  },
+  {
+    "type": "cdlt:OfferAndNeedType",
+    "slug": "evenement",
+    "pair:label": "Formation/Séjour/Chantier/Festivité"
+  },
+  {
+    "type": "cdlt:OfferAndNeedType",
+    "slug": "immobilier",
+    "pair:label": "Immobilier/Foncier"
+  },
+  {
+    "type": "cdlt:OfferAndNeedType",
+    "pair:label": "Autre"
+  },
+  {
+    "type": "cdlt:OfferAndNeedType",
+    "pair:label": "Emploi",
+    "pair:partOf": "emploi-benevolat"
+  },
+  {
+    "type": "cdlt:OfferAndNeedType",
+    "pair:label": "Bénévolat",
+    "pair:partOf": "emploi-benevolat"
+  },
+  {
+    "type": "cdlt:OfferAndNeedType",
+    "pair:label": "Volontariat",
+    "pair:partOf": "emploi-benevolat"
+  },
+  {
+    "type": "cdlt:OfferAndNeedType",
+    "pair:label": "Formation",
+    "pair:partOf": "evenement"
+  },
+  {
+    "type": "cdlt:OfferAndNeedType",
+    "pair:label": "Séjour",
+    "pair:partOf": "evenement"
+  },
+  {
+    "type": "cdlt:OfferAndNeedType",
+    "pair:label": "Chantier",
+    "pair:partOf": "evenement"
+  },
+  {
+    "type": "cdlt:OfferAndNeedType",
+    "pair:label": "Festivité",
+    "pair:partOf": "evenement"
   }
 ]

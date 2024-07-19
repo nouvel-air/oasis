@@ -15,7 +15,7 @@ export default {
     recordRepresentation: 'pair:label'
   },
   dataModel: {
-    types: ['pair:Person'],
+    types: ['pair:Person', 'foaf:Person', 'Person'],
     list: {
       servers: '@default'
     },

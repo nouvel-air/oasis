@@ -16,7 +16,7 @@ const ServiceForm = () => {
       <PlaceInput
         source="pair:offeredBy"
         validate={[required()]}
-        filter={accountType === 'admin' ? {} : { 'cdlt:proposedBy': identity?.id }}
+        filter={accountType === 'admin' ? {} : { 'pair:affiliates': identity?.id }}
       />
       <TypeInput source="cdlt:hasServiceType" filter={{ a: 'cdlt:ServiceType' }} />
       <MarkdownInput source="pair:description" fullWidth />

@@ -4,7 +4,14 @@ const MailerService = require('moleculer-mail');
 const { MIME_TYPES } = require('@semapps/mime-types');
 const { getSlugFromUri, arrayOf } = require('@semapps/ldp');
 const CONFIG = require('../config/config');
-const { STATUS_MEMBERSHIP_VERIFIED } = require('../constants');
+const { STATUS_MEMBERSHIP_VERIFIED, TYPE_ACTOR, TYPE_ADMIN, TYPE_AGENT, TYPE_MEMBER } = require('../constants');
+
+const translatedTypes = {
+  [TYPE_ADMIN]: 'administrateur·rice',
+  [TYPE_ACTOR]: "member d'une organisation sociétaire",
+  [TYPE_AGENT]: 'utilisateur·rice',
+  [TYPE_MEMBER]: 'sociétaire'
+};
 
 module.exports = {
   name: 'mailer',
@@ -75,23 +82,22 @@ module.exports = {
         }
       });
     },
-    async inviteActor(ctx) {
-      let { actorUri, place, accountData, token } = ctx.params;
+    async inviteUser(ctx) {
+      let { actorUri, organization, accountData, token } = ctx.params;
 
       const actor = await ctx.call('ldp.resource.get', {
         resourceUri: actorUri,
         accept: MIME_TYPES.JSON
       });
 
-      const redirectUrl = urlJoin(CONFIG.BACKOFFICE_URL, 'Place', encodeURIComponent(place.id));
-
       await ctx.call('mailer.send', {
         to: accountData.email,
         replyTo: this.settings.from,
-        template: 'invite-actor',
+        template: 'invite-user',
         data: {
           actor,
-          place,
+          actorType: translatedTypes[actor['pair:hasType']],
+          organization,
           account: accountData,
           resetUrl:
             urlJoin(CONFIG.BACKOFFICE_URL, 'login') +
@@ -100,35 +106,7 @@ module.exports = {
             '&email=' +
             encodeURIComponent(accountData.email) +
             '&redirect=' +
-            encodeURIComponent(redirectUrl)
-        }
-      });
-    },
-    async inviteAdmin(ctx) {
-      let { actorUri, accountData, token } = ctx.params;
-
-      const actor = await ctx.call('ldp.resource.get', {
-        resourceUri: actorUri,
-        accept: MIME_TYPES.JSON
-      });
-
-      const redirectUrl = urlJoin(CONFIG.BACKOFFICE_URL, 'Person', encodeURIComponent(actor.id));
-
-      await ctx.call('mailer.send', {
-        to: accountData.email,
-        replyTo: this.settings.from,
-        template: 'invite-admin',
-        data: {
-          actor,
-          account: accountData,
-          resetUrl:
-            urlJoin(CONFIG.BACKOFFICE_URL, 'login') +
-            '?new_password=true&token=' +
-            token +
-            '&email=' +
-            encodeURIComponent(accountData.email) +
-            '&redirect=' +
-            encodeURIComponent(redirectUrl)
+            encodeURIComponent(CONFIG.BACKOFFICE_URL)
         }
       });
     },

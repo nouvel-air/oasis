@@ -9,7 +9,7 @@ import validatePasswordStrength from './validatePasswordStrength';
 import PasswordStrengthIndicator from './PasswordStrengthIndicator';
 import PreSignupForm from './PreSignupForm';
 import defaultPasswordScorer from './passwordScorer';
-import { OrganizationInput } from '../../common/input';
+import { OrganizationOrPlaceInput } from '../../common/input';
 import WaitingCard from './WaitingCard';
 
 const useStyles = makeStyles(theme => ({
@@ -92,7 +92,7 @@ const SignupForm = ({ passwordScorer = defaultPasswordScorer, additionalSignupVa
             </Typography>
           )}
           {signupType === 'societaire' && (
-            <OrganizationInput source="pair:affiliatedBy" label="Organisation" validate={[required()]} />
+            <OrganizationOrPlaceInput source="pair:affiliatedBy" label="Organisation" validate={[required()]} />
           )}
           <TextInput source="pair:firstName" label="Prénom" fullWidth validate={[required()]} />
           <TextInput source="pair:lastName" label="Nom de famille" fullWidth validate={[required()]} />
