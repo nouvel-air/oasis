@@ -31,7 +31,7 @@ export default {
         'pair:label': 'Titre',
         'pair:description': 'Contenu',
         'pair:depictedBy': 'Images',
-        'pair:offeredBy': 'Organisation',
+        'pair:offeredBy': 'Proposée par',
         'pair:startDate': 'Date de début',
         'pair:endDate': 'Date de fin',
         'pair:homePage': 'Lien',

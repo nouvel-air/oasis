@@ -4,40 +4,17 @@ import { ListWithPermissions } from '@semapps/auth-provider';
 import { ReferenceField } from '@semapps/field-components';
 import { useMediaQuery } from '@mui/material';
 import useAccountType from '../../hooks/useAccountType';
-
-const defaultToArray = value => (!value ? [] : Array.isArray(value) ? value : [value]);
-
-const filterByPlaces = places => [
-  {
-    type: 'values',
-    values: places.map(placeUri => ({
-      '?placeUri': {
-        termType: 'NamedNode',
-        value: placeUri
-      }
-    }))
-  },
-  {
-    type: 'bgp',
-    triples: [
-      {
-        subject: { termType: 'Variable', value: 's1' },
-        predicate: { termType: 'NameNode', value: 'http://virtual-assembly.org/ontologies/pair#offeredBy' },
-        object: { termType: 'Variable', value: 'placeUri' }
-      }
-    ]
-  }
-];
+import { arrayOf, offeredByFilter } from '../../utils';
 
 const ServiceList = props => {
   const accountType = useAccountType();
   const { identity } = useGetIdentity();
-  const ownedPlaces = defaultToArray(identity?.webIdData?.['cdlt:proposes']);
+  const organizations = arrayOf(identity?.webIdData?.['pair:affiliatedBy']);
   const xs = useMediaQuery(theme => theme.breakpoints.down('sm'));
   if (!identity?.id) return;
   return (
     <ListWithPermissions
-      filter={accountType === 'admin' ? {} : { sparqlWhere: filterByPlaces(ownedPlaces) }}
+      filter={accountType === 'admin' ? {} : { sparqlWhere: offeredByFilter(organizations) }}
       perPage={25}
       {...props}
     >

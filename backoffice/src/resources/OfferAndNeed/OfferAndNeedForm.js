@@ -1,9 +1,18 @@
 import React, { useEffect } from 'react';
-import { TextInput, ImageField, required, useGetIdentity, email, useDataProvider } from 'react-admin';
+import {
+  TextInput,
+  ImageField,
+  required,
+  useGetIdentity,
+  email,
+  useDataProvider,
+  CheckboxGroupInput
+} from 'react-admin';
 import { useFormContext } from 'react-hook-form';
+import Markdown from 'markdown-to-jsx';
 import { MarkdownInput } from '@semapps/markdown-components';
 import { ImageInput } from '@semapps/input-components';
-import { OrganizationOrPlaceInput, TypeInput } from '../../common/input';
+import { OrganizationOrPlaceInput, TypeInput, StatusInput } from '../../common/input';
 import DateTimeInput from '../../common/input/DateTimeInput';
 import useAccountType from '../../hooks/useAccountType';
 import LocationInput from '../../common/input/LocationInput';
@@ -40,7 +49,25 @@ const filterNoParent = [
   }
 ];
 
-const OfferAndNeedForm = () => {
+const MarkdownChoice = ({ name }) => {
+  return (
+    <Markdown
+      options={{
+        overrides: {
+          a: {
+            props: {
+              target: '_blank'
+            }
+          }
+        }
+      }}
+    >
+      {name}
+    </Markdown>
+  );
+};
+
+const OfferAndNeedForm = ({ isCreate }) => {
   const accountType = useAccountType();
   const { identity } = useGetIdentity();
   const form = useFormContext();
@@ -63,11 +90,14 @@ const OfferAndNeedForm = () => {
 
   return (
     <>
-      <TypeInput
-        source="pair:hasType"
-        filter={{ a: 'cdlt:OfferAndNeedType', sparqlWhere: filterNoParent }}
-        validate={[required()]}
-      />
+      <TextInput source="pair:label" fullWidth validate={[required()]} />
+      {accountType !== 'agent' && (
+        <TypeInput
+          source="pair:hasType"
+          filter={{ a: 'cdlt:OfferAndNeedType', sparqlWhere: filterNoParent }}
+          validate={[required()]}
+        />
+      )}
       {(formData['pair:hasType'] === TYPE_ANNONCE_EVENEMENT || formData['pair:hasType'] === TYPE_ANNONCE_EMPLOI) && (
         <TypeInput
           source="cdlt:hasSubType"
@@ -82,9 +112,8 @@ const OfferAndNeedForm = () => {
           filter={accountType === 'admin' ? {} : { 'pair:affiliates': identity?.id }}
         />
       )}
-      <LocationInput source="pair:hasPostalAddress" validate={[required()]} fullWidth />
-      <TextInput source="pair:label" fullWidth validate={[required()]} />
       <MarkdownInput source="pair:description" fullWidth validate={[required()]} />
+      <LocationInput source="pair:hasPostalAddress" validate={[required()]} fullWidth />
       <TextInput source="pair:homePage" fullWidth />
       <ImageInput source="pair:depictedBy" accept="image/*" validate={[required()]}>
         <ImageField source="src" />
@@ -99,6 +128,28 @@ const OfferAndNeedForm = () => {
       )}
       <TextInput source="pair:e-mail" fullWidth validate={[required(), email()]} />
       <TextInput source="pair:phone" fullWidth validate={[required()]} />
+      {accountType === 'agent' && isCreate && (
+        <CheckboxGroupInput
+          source="payment"
+          choices={[
+            {
+              id: 'yes',
+              name: 'Je certifie avoir payé XXX€ via [HelloAsso](https://www.helloasso.com/associations/cooperative-oasis). Mon annonce sera validée une fois le paiement vérifié.'
+            }
+          ]}
+          label={false}
+          validate={required()}
+          optionText={MarkdownChoice}
+        />
+      )}
+      {accountType === 'admin' && (
+        <StatusInput
+          source="cdlt:hasPublicationStatus"
+          filter={{ a: 'cdlt:PublicationStatus' }}
+          label={false}
+          validate={[required()]}
+        />
+      )}
     </>
   );
 };

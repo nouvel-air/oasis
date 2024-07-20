@@ -3,7 +3,7 @@ import { EditWithPermissions } from '@semapps/auth-provider';
 import ServiceForm from './ServiceForm';
 
 const ServiceEdit = () => (
-  <EditWithPermissions redirect="edit">
+  <EditWithPermissions redirect="list">
     <ServiceForm />
   </EditWithPermissions>
 );

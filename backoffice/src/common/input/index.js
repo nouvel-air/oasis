@@ -1,5 +1,5 @@
 import React from 'react';
-import { SelectInput, AutocompleteArrayInput, CheckboxGroupInput } from 'react-admin';
+import { SelectInput, AutocompleteArrayInput, CheckboxGroupInput, RadioButtonGroupInput } from 'react-admin';
 import { ReferenceInput, ReferenceArrayInput } from '@semapps/input-components';
 
 const ifTwoLetters = ({ q }) => !!(q && q.length > 1);
@@ -44,9 +44,9 @@ export const TypeInput = ({ validate, disabled, ...rest }) => (
   </ReferenceInput>
 );
 
-export const StatusInput = ({ validate, ...rest }) => (
+export const StatusInput = ({ validate, label, disabled, ...rest }) => (
   <ReferenceInput reference="Status" perPage={1000} {...rest}>
-    <SelectInput optionText="pair:label" validate={validate} fullWidth />
+    <RadioButtonGroupInput optionText="pair:label" label={label} disabled={disabled} validate={validate} fullWidth />
   </ReferenceInput>
 );
 

@@ -10,6 +10,7 @@ import dataProvider from './config/dataProvider';
 import theme from './config/theme';
 import * as resources from './resources';
 import Layout from './Layout';
+import HomePage from './pages/HomePage';
 
 const App = () => (
   <StyledEngineProvider injectFirst>
@@ -23,6 +24,7 @@ const App = () => (
           i18nProvider={i18nProvider}
           layout={Layout}
           theme={theme}
+          dashboard={HomePage}
           loginPage={LocalLoginPage}
           store={memoryStore()}
         >

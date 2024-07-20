@@ -4,7 +4,7 @@ import { EditWithPermissions } from '@semapps/auth-provider';
 import OfferAndNeedForm from './OfferAndNeedForm';
 
 const OfferAndNeedEdit = () => (
-  <EditWithPermissions redirect="edit">
+  <EditWithPermissions redirect="list">
     <SimpleForm>
       <OfferAndNeedForm />
     </SimpleForm>

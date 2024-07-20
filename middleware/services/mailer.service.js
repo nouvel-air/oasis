@@ -190,6 +190,59 @@ module.exports = {
         }
       });
     },
+    async moderateOfferAndNeed(ctx) {
+      const { webId, resourceUri } = ctx.params;
+
+      const actor = await ctx.call('ldp.resource.get', {
+        resourceUri: webId,
+        accept: MIME_TYPES.JSON
+      });
+
+      const resource = await ctx.call('ldp.resource.get', {
+        resourceUri: resourceUri,
+        accept: MIME_TYPES.JSON
+      });
+
+      const editUrl = urlJoin(CONFIG.BACKOFFICE_URL, 'OfferAndNeed', encodeURIComponent(resourceUri));
+
+      await ctx.call('mailer.send', {
+        to: 'moderator@cooperative-oasis.org',
+        replyTo: this.settings.from,
+        template: 'moderate-offer-and-need',
+        data: {
+          actor,
+          resource,
+          editUrl
+        }
+      });
+    },
+    async offerAndNeedValidated(ctx) {
+      const { webId, resource } = ctx.params;
+
+      const actor = await ctx.call('ldp.resource.get', {
+        resourceUri: webId,
+        accept: MIME_TYPES.JSON
+      });
+
+      const editUrl = urlJoin(
+        CONFIG.BACKOFFICE_URL,
+        'OfferAndNeed',
+        encodeURIComponent(resource['@id'] || resource.id)
+      );
+
+      const account = await ctx.call('auth.account.findByWebId', { webId });
+
+      await ctx.call('mailer.send', {
+        to: account.email,
+        replyTo: this.settings.from,
+        template: 'offer-and-need-validated',
+        data: {
+          actor,
+          resource,
+          editUrl
+        }
+      });
+    },
     async accountActivated(ctx) {
       const { webId } = ctx.params;
 

@@ -1,20 +1,26 @@
 import React from 'react';
-import { SimpleForm } from 'react-admin';
+import { SimpleForm, useGetIdentity } from 'react-admin';
 import { CreateWithPermissions } from '@semapps/auth-provider';
 import OfferAndNeedForm from './OfferAndNeedForm';
 import { TYPE_ANNONCE_EVENEMENT } from '../../constants';
+import useAccountType from '../../hooks/useAccountType';
 
-const transform = data => ({
-  '@type': data?.['pair:hasType'] === TYPE_ANNONCE_EVENEMENT ? 'pair:Event' : 'cdlt:OfferAndNeed',
-  ...data
-});
-
-const OfferAndNeedCreate = () => (
-  <CreateWithPermissions transform={transform}>
-    <SimpleForm>
-      <OfferAndNeedForm />
-    </SimpleForm>
-  </CreateWithPermissions>
-);
+const OfferAndNeedCreate = () => {
+  const { data: identity } = useGetIdentity();
+  const accountType = useAccountType();
+  return (
+    <CreateWithPermissions
+      transform={data => ({
+        '@type': data?.['pair:hasType'] === TYPE_ANNONCE_EVENEMENT ? 'pair:Event' : 'cdlt:OfferAndNeed',
+        'pair:offeredBy': accountType === 'agent' || accountType === 'member' ? identity?.id : undefined,
+        ...data
+      })}
+    >
+      <SimpleForm>
+        <OfferAndNeedForm isCreate />
+      </SimpleForm>
+    </CreateWithPermissions>
+  );
+};
 
 export default OfferAndNeedCreate;

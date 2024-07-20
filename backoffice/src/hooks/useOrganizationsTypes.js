@@ -10,10 +10,12 @@ const useOrganizationsTypes = () => {
 
   useEffect(() => {
     (async () => {
-      const { data } = await dataProvider.getMany('OrganizationOrPlace', {
-        ids: arrayOf(identity?.webIdData?.['pair:affiliatedBy'])
-      });
-      setOrganizationsTypes([...new Set(data.map(o => o.type))]);
+      if (identity?.webIdData?.['pair:affiliatedBy']) {
+        const { data } = await dataProvider.getMany('OrganizationOrPlace', {
+          ids: arrayOf(identity?.webIdData?.['pair:affiliatedBy'])
+        });
+        setOrganizationsTypes([...new Set(data.map(o => o.type))]);
+      }
     })();
   }, [identity, dataProvider, setOrganizationsTypes]);
 

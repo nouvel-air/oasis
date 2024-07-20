@@ -3,13 +3,21 @@ import { SimpleList, Datagrid, TextField, EditButton, useGetIdentity } from 'rea
 import { ListWithPermissions } from '@semapps/auth-provider';
 import { ReferenceField } from '@semapps/field-components';
 import { useMediaQuery } from '@mui/material';
+import useAccountType from '../../hooks/useAccountType';
+import { arrayOf, offeredByFilter } from '../../utils';
 
 const OfferAndNeedList = props => {
   const { identity } = useGetIdentity();
+  const accountType = useAccountType();
+  const offeredByUris = [...arrayOf(identity?.webIdData?.['pair:affiliatedBy']), identity?.id];
   const xs = useMediaQuery(theme => theme.breakpoints.down('sm'));
   if (!identity?.id) return;
   return (
-    <ListWithPermissions perPage={25} {...props}>
+    <ListWithPermissions
+      filter={accountType === 'admin' ? {} : { sparqlWhere: offeredByFilter(offeredByUris) }}
+      perPage={25}
+      {...props}
+    >
       {xs ? (
         <SimpleList
           primaryText="%{pair:label}"
