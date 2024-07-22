@@ -5,10 +5,7 @@ import urlJoin from 'url-join';
 import { Button, CardContent, CircularProgress, Typography } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { useSignup } from '@semapps/auth-provider';
-import validatePasswordStrength from './validatePasswordStrength';
-import PasswordStrengthIndicator from './PasswordStrengthIndicator';
 import PreSignupForm from './PreSignupForm';
-import defaultPasswordScorer from './passwordScorer';
 import { OrganizationOrPlaceInput } from '../../common/input';
 import WaitingCard from './WaitingCard';
 
@@ -18,7 +15,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SignupForm = ({ passwordScorer = defaultPasswordScorer, additionalSignupValues }) => {
+const SignupForm = ({ additionalSignupValues }) => {
   const [loading, setLoading] = useSafeSetState(false);
   const [waiting, setWaiting] = useSafeSetState(false);
   const signup = useSignup();
@@ -28,7 +25,6 @@ const SignupForm = ({ passwordScorer = defaultPasswordScorer, additionalSignupVa
   const [searchParams] = useSearchParams();
   const interactionId = searchParams.get('interaction_id');
   const signupType = searchParams.get('type');
-  const [password, setPassword] = React.useState('');
 
   const submit = values => {
     setLoading(true);
@@ -104,24 +100,14 @@ const SignupForm = ({ passwordScorer = defaultPasswordScorer, additionalSignupVa
             disabled={loading || (searchParams.has('email') && searchParams.has('force-email'))}
             validate={[required(), email()]}
           />
-          {passwordScorer && password && !(searchParams.has('email') && searchParams.has('force-email')) && (
-            <>
-              <Typography variant="caption" style={{ marginBottom: 3 }}>
-                {translate('auth.input.password_strength')}:{' '}
-              </Typography>
-              <PasswordStrengthIndicator password={password} scorer={passwordScorer} sx={{ width: '100%' }} />
-            </>
-          )}
           <TextInput
             source="password"
             type="password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
             label={translate('ra.auth.password')}
             autoComplete="new-password"
             fullWidth
             disabled={loading || (searchParams.has('email') && searchParams.has('force-email'))}
-            validate={[required(), validatePasswordStrength(passwordScorer)]}
+            validate={[required()]}
           />
           <Button
             variant="contained"

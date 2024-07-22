@@ -10,7 +10,6 @@ import NewPasswordForm from './NewPasswordForm';
 import ResetPasswordForm from './ResetPasswordForm';
 import SimpleBox from './SimpleBox';
 import getSearchParamsRest from './getSearchParamsRest';
-import defaultPasswordScorer from './passwordScorer';
 
 const useStyles = makeStyles(() => ({
   switch: {
@@ -28,9 +27,6 @@ const useStyles = makeStyles(() => ({
  * @param {string} props.postSignupRedirect Location to redirect to after signup.
  * @param {string} props.postLoginRedirect Location to redirect to after login.
  * @param {object} props.additionalSignupValues
- * @param {object} props.passwordScorer Scorer to evaluate and indicate password strength.
- *  Set to `null` or `false`, if you don't want password strength checks. Default is
- *  passwordStrength's `defaultPasswordScorer`.
  * @returns
  */
 const LocalLoginPage = ({
@@ -38,8 +34,7 @@ const LocalLoginPage = ({
   allowUsername,
   postSignupRedirect,
   postLoginRedirect,
-  additionalSignupValues,
-  passwordScorer = defaultPasswordScorer
+  additionalSignupValues
 }) => {
   const classes = useStyles();
   const navigate = useNavigate();
@@ -106,11 +101,10 @@ const LocalLoginPage = ({
             delayBeforeRedirect={4000}
             postSignupRedirect={postSignupRedirect}
             additionalSignupValues={additionalSignupValues}
-            passwordScorer={passwordScorer}
           />
         )}
         {isResetPassword && <ResetPasswordForm />}
-        {isNewPassword && <NewPasswordForm redirectTo={redirectTo} passwordScorer={passwordScorer} />}
+        {isNewPassword && <NewPasswordForm redirectTo={redirectTo} />}
         {isLogin && <LoginForm postLoginRedirect={postLoginRedirect} allowUsername={allowUsername} />}
         <div className={classes.switch}>
           {isSignup && (
