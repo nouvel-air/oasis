@@ -21,7 +21,6 @@ module.exports = {
     },
     containers,
     ontologies: [semapps, as, foaf, cdlt, oasis, pair],
-    activitypub: { activitiesPath: '/activities', collectionsPath: '/collections', activateTombstones: false },
     api: { port: CONFIG.PORT },
     ldp: {
       preferredViewForResource: async (resourceUri, containerPreferredView) => {
@@ -34,6 +33,8 @@ module.exports = {
       description: CONFIG.INSTANCE_DESCRIPTION
     },
     webacl: { superAdmins: [] },
+    keys: false,
+    activitypub: false,
     webId: false
   }
 };

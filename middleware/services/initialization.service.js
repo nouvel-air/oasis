@@ -13,7 +13,7 @@ module.exports = {
         {
           containerUri: urlJoin(CONFIG.HOME_URL, 'users'),
           resource: {
-            '@type': ['pair:Person', 'foaf:Person', 'Person'],
+            '@type': ['pair:Person', 'foaf:Person'],
             'pair:label': 'Administrateur',
             'pair:firstName': 'Administrateur',
             'pair:e-mail': email,

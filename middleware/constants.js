@@ -23,6 +23,9 @@ const STATUS_EXPIRED = urlJoin(CONFIG.HOME_URL, 'status', 'expired');
 // Types annonces
 const TYPE_IMMOBILIER = urlJoin(CONFIG.HOME_URL, 'types', 'immobilier');
 
+// College
+const GROUP_OASIS = urlJoin(CONFIG.HOME_URL, 'groups', 'oasis');
+
 module.exports = {
   STATUS_EMAIL_VERIFIED,
   STATUS_EMAIL_NOT_VERIFIED,
@@ -37,5 +40,6 @@ module.exports = {
   STATUS_MODERATED,
   STATUS_DRAFT,
   STATUS_REJECTED,
-  STATUS_EXPIRED
+  STATUS_EXPIRED,
+  GROUP_OASIS
 };

@@ -1,6 +1,5 @@
 const { WebIdService } = require('@semapps/webid');
 const { arrayOf } = require('@semapps/ldp');
-const { ACTOR_TYPES } = require('@semapps/activitypub');
 const { MIME_TYPES } = require('@semapps/mime-types');
 const CONFIG = require('../config/config');
 const { anonReadPermissions } = require('../config/permissions');
@@ -12,7 +11,7 @@ module.exports = {
   settings: {
     baseUrl: CONFIG.HOME_URL,
     path: '/users',
-    acceptedTypes: ['pair:Person', 'foaf:Person', ACTOR_TYPES.PERSON],
+    acceptedTypes: ['pair:Person', 'foaf:Person'],
     permissions: anonReadPermissions,
     excludeFromMirror: false
   },
@@ -33,6 +32,8 @@ module.exports = {
 
       // If the user created the account himself (through auth.signup), process normally
       if (ctx.meta.isSignup) {
+        resource.type = this.settings.acceptedTypes;
+
         const actorUri = await ctx.call('ldp.container.post', { containerUri, resource, contentType, webId });
 
         if (resource['pair:hasType'] === TYPE_ACTOR) {

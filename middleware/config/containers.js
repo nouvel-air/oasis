@@ -43,12 +43,6 @@ module.exports = [
     }
   },
   {
-    path: '/bots',
-    acceptedTypes: ['Application'],
-    permissions: anonReadPermissions,
-    newResourcesPermissions: anonReadPermissions
-  },
-  {
     path: '/types',
     acceptedTypes: ['cdlt:ServiceType', 'pair:PersonType'],
     permissions: anonReadPermissions,
