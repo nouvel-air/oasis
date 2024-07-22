@@ -16,7 +16,29 @@ import { OrganizationOrPlaceInput, TypeInput, StatusInput } from '../../common/i
 import DateTimeInput from '../../common/input/DateTimeInput';
 import useAccountType from '../../hooks/useAccountType';
 import LocationInput from '../../common/input/LocationInput';
-import { TYPE_ANNONCE_EVENEMENT, TYPE_ANNONCE_EMPLOI } from '../../constants';
+import { TYPE_ANNONCE_AGENDA, TYPE_ANNONCE_EMPLOI } from '../../constants';
+
+const max6months = value => {
+  let date = new Date();
+  date.setMonth(date.getMonth() + 6);
+  if (value && new Date(value) > date) {
+    return 'Les annonces ne peuvent pas excéder 6 mois';
+  }
+};
+
+const futureDate = value => {
+  if (value && new Date(value) <= new Date()) {
+    return 'Doit être dans le futur';
+  }
+};
+
+const afterStartDate = (value, allValues) => {
+  if (allValues['pair:startDate']) {
+    const endDate = new Date(value);
+    const startDate = new Date(allValues['pair:startDate']);
+    if (endDate <= startDate) return "Doit être après la date de début de l'événement";
+  }
+};
 
 const filterNoParent = [
   {
@@ -82,6 +104,9 @@ const OfferAndNeedForm = ({ isCreate }) => {
         if (data && data['pair:hasPostalAddress'] && !formData['pair:hasPostalAddress']) {
           form.setValue('pair:hasPostalAddress', data['pair:hasPostalAddress']);
         }
+        if (data && data['pair:e-mail'] && !formData['pair:e-mail']) {
+          form.setValue('pair:e-mail', data['pair:e-mail']);
+        }
       }
     })();
   }, [form, formData, dataProvider]);
@@ -98,7 +123,7 @@ const OfferAndNeedForm = ({ isCreate }) => {
           validate={[required()]}
         />
       )}
-      {(formData['pair:hasType'] === TYPE_ANNONCE_EVENEMENT || formData['pair:hasType'] === TYPE_ANNONCE_EMPLOI) && (
+      {(formData['pair:hasType'] === TYPE_ANNONCE_AGENDA || formData['pair:hasType'] === TYPE_ANNONCE_EMPLOI) && (
         <TypeInput
           source="cdlt:hasSubType"
           filter={{ 'pair:partOf': formData['pair:hasType'] }}
@@ -118,13 +143,17 @@ const OfferAndNeedForm = ({ isCreate }) => {
       <ImageInput source="pair:depictedBy" accept="image/*" validate={[required()]}>
         <ImageField source="src" />
       </ImageInput>
-      {formData['pair:hasType'] === TYPE_ANNONCE_EVENEMENT ? (
+      {formData['pair:hasType'] === TYPE_ANNONCE_AGENDA ? (
         <>
-          <DateTimeInput source="pair:startDate" />
-          <DateTimeInput source="pair:endDate" />
+          <DateTimeInput source="pair:startDate" validate={[required(), futureDate]} />
+          <DateTimeInput source="pair:endDate" validate={[required(), afterStartDate]} />
         </>
       ) : (
-        <DateTimeInput source="pair:endDate" label="Date d'expiration" />
+        <DateTimeInput
+          source="pair:endDate"
+          label="Date d'expiration"
+          validate={[required(), futureDate, max6months]}
+        />
       )}
       <TextInput source="pair:e-mail" fullWidth validate={[required(), email()]} />
       <TextInput source="pair:phone" fullWidth validate={[required()]} />

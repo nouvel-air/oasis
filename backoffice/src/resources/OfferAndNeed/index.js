@@ -36,7 +36,8 @@ export default {
         'pair:endDate': 'Date de fin',
         'pair:homePage': 'Lien',
         'pair:e-mail': 'Adresse mail',
-        'pair:phone': 'Téléphone'
+        'pair:phone': 'Téléphone',
+        'cdlt:hasPublicationStatus': 'Statut'
       }
     }
   }

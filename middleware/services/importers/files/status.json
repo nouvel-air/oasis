@@ -18,5 +18,30 @@
     "type": "pair:ActorStatus",
     "slug": "membership-verified",
     "pair:label": "Appartenance vérifiée"
+  },
+  {
+    "type": "cdlt:PublicationStatus",
+    "slug": "published",
+    "pair:label": "Publié"
+  },
+  {
+    "type": "cdlt:PublicationStatus",
+    "slug": "moderated",
+    "pair:label": "En cours de modération"
+  },
+  {
+    "type": "cdlt:PublicationStatus",
+    "slug": "draft",
+    "pair:label": "Brouillon"
+  },
+  {
+    "type": "cdlt:PublicationStatus",
+    "slug": "rejected",
+    "pair:label": "Rejeté"
+  },
+  {
+    "type": "cdlt:PublicationStatus",
+    "slug": "expired",
+    "pair:label": "Expiré"
   }
 ]

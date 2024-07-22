@@ -3,9 +3,7 @@ import { useNotify, useRecordContext, useResourceContext, useUpdate } from 'reac
 import { Button } from '@mui/material';
 import PublishIcon from '@mui/icons-material/Publish';
 import GetAppIcon from '@mui/icons-material/GetApp';
-
-const PUBLISHED_STATUS = 'https://data.lescheminsdelatransition.org/publication-status/valide';
-const UNPUBLISHED_STATUS = 'https://data.lescheminsdelatransition.org/publication-status/en-cours';
+import { STATUS_PUBLISHED, STATUS_DRAFT } from '../../constants';
 
 const PublishButton = () => {
   const record = useRecordContext();
@@ -13,25 +11,30 @@ const PublishButton = () => {
   const notify = useNotify();
   const [update] = useUpdate();
 
-  const isPublished = record['cdlt:hasPublicationStatus'] === PUBLISHED_STATUS;
+  const isPublished = record['cdlt:hasPublicationStatus'] === STATUS_PUBLISHED;
 
-  const publish = (e) => {
+  const publish = e => {
     e.stopPropagation();
-    update(resource, { id: record.id, data: { ...record, 'cdlt:hasPublicationStatus': PUBLISHED_STATUS }, previousData: record });
+    update(resource, {
+      id: record.id,
+      data: { ...record, 'cdlt:hasPublicationStatus': STATUS_PUBLISHED },
+      previousData: record
+    });
     notify('La ressource a été publié');
   };
 
-  const unpublish = (e) => {
+  const unpublish = e => {
     e.stopPropagation();
-    update(resource, { id: record.id, data: { ...record, 'cdlt:hasPublicationStatus': UNPUBLISHED_STATUS }, previousData: record });
+    update(resource, {
+      id: record.id,
+      data: { ...record, 'cdlt:hasPublicationStatus': STATUS_DRAFT },
+      previousData: record
+    });
     notify('La ressource a été dépublié');
   };
 
   return (
-    <Button
-      startIcon={isPublished ? <GetAppIcon /> : <PublishIcon />}
-      onClick={isPublished ? unpublish : publish}
-    >
+    <Button startIcon={isPublished ? <GetAppIcon /> : <PublishIcon />} onClick={isPublished ? unpublish : publish}>
       {isPublished ? 'Dépublier' : 'Publier'}
     </Button>
   );

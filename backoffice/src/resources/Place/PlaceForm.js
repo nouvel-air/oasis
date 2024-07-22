@@ -23,6 +23,7 @@ const PlaceForm = () => {
         source="cdlt:hasPublicationStatus"
         filter={{ a: 'cdlt:PublicationStatus' }}
         validate={[required()]}
+        label={false}
       />
     </>
   );

@@ -101,7 +101,7 @@ module.exports = {
             await ctx.call('mailer.accountActivated', { webId });
 
             ctx.meta.$statusCode = 302;
-            ctx.meta.$location = urlJoin(CONFIG.BACKOFFICE_URL, 'login');
+            ctx.meta.$location = urlJoin(CONFIG.BACKOFFICE_URL, 'login') + '?activated=true';
           }
         }
       }

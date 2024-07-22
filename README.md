@@ -39,19 +39,19 @@ yarn run dev
 
 > This will launch Moleculer in [REPL mode](https://moleculer.services/docs/0.14/moleculer-repl.html), allowing you to call actions directly.
 
-
 ### Initialize the data
 
 Run these commands on Moleculer [REPL](https://moleculer.services/docs/0.14/moleculer-repl.html):
 
 ```bash
 call importers.types.freshImport
+call importers.groups.freshImport
+call importers.status.freshImport
 call initialization.createAdmin --email youremail@domain.com
 call webacl.resource.refreshContainersRights
 ```
 
-The second commands will send an email to the given address. Go to http://localhost:1080 if you launched MailCatcher. This will allow you to set a password and connect to the backoffice.
-
+The `initialization.createAdmin` command will send an email to the given address. Go to http://localhost:1080 if you launched MailCatcher. This will allow you to set a password and connect to the backoffice.
 
 ### Backoffice
 
@@ -63,7 +63,6 @@ yarn install
 yarn start
 ```
 
-
 ### Frontoffice
 
 Launch the frontoffice on port 5000:
@@ -73,7 +72,6 @@ cd frontoffice
 yarn install
 yarn start
 ```
-
 
 ## Linking to SemApps packages
 
@@ -99,5 +97,5 @@ cd /OASIS_REPO/frontoffice
 yarn run link-semapps-packages
 ```
 
-Additionally, frontend packages need to be rebuilt, or your changes will not be taken into account. 
+Additionally, frontend packages need to be rebuilt, or your changes will not be taken into account.
 You can use `yarn run build` to build a package once, or `yarn run dev` to rebuild a package on every change.

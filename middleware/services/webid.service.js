@@ -1,5 +1,5 @@
 const { WebIdService } = require('@semapps/webid');
-const { defaultToArray } = require('@semapps/ldp');
+const { arrayOf } = require('@semapps/ldp');
 const { ACTOR_TYPES } = require('@semapps/activitypub');
 const { MIME_TYPES } = require('@semapps/mime-types');
 const CONFIG = require('../config/config');
@@ -27,57 +27,69 @@ module.exports = {
         containerUri = await this.actions.getContainerUri({ webId }, { parentCtx: ctx });
       }
 
-      // If the user created the account himself (through auth.signup), process normally
-      if (ctx.meta.isSignup) {
-        return await ctx.call('ldp.container.post', { containerUri, resource, contentType, webId });
-      }
-
-      const accountData = await ctx.call('auth.account.create', { email: resource['pair:e-mail'] });
-      delete resource['pair:e-mail'];
-
       // Keep track of organization URI, but don't post it with the user, otherwise the AuthorizerService will not work.
       const organizationUri = resource['pair:affiliatedBy'];
       delete resource['pair:affiliatedBy'];
 
-      try {
-        resource['pair:hasStatus'] =
-          resource['pair:hasType'] === TYPE_ACTOR
-            ? [STATUS_EMAIL_VERIFIED, STATUS_MEMBERSHIP_VERIFIED]
-            : STATUS_EMAIL_VERIFIED;
-
-        const actorUri = await ctx.call('ldp.container.post', { containerUri, resource, contentType });
-
-        await ctx.call('auth.account.attachWebId', { accountUri: accountData['@id'], webId: actorUri });
-
-        const token = await ctx.call('auth.account.generateResetPasswordToken', { webId: actorUri });
-
-        let organization;
+      // If the user created the account himself (through auth.signup), process normally
+      if (ctx.meta.isSignup) {
+        const actorUri = await ctx.call('ldp.container.post', { containerUri, resource, contentType, webId });
 
         if (resource['pair:hasType'] === TYPE_ACTOR) {
-          organization = await ctx.call('ldp.resource.get', {
-            resourceUri: organizationUri,
-            accept: MIME_TYPES.JSON
-          });
-
-          organization['pair:affiliates'] = organization['pair:affiliates']
-            ? [...defaultToArray(organization['pair:affiliates']), actorUri]
-            : actorUri;
-
-          await ctx.call('ldp.resource.put', {
-            resource: organization,
-            contentType: MIME_TYPES.JSON,
-            webId: 'system'
-          });
+          await this.actions.addToOrganization({ organizationUri, actorUri }, { parentCtx: ctx });
         }
 
-        await ctx.call('mailer.inviteUser', { actorUri, organization, accountData, token });
-
         return actorUri;
-      } catch (e) {
-        // Delete account if resource creation failed, or it may cause problems when retrying
-        await ctx.call('auth.account.remove', { id: accountData['@id'] });
-        throw e;
+      } else {
+        // If the user is added through the backoffice, create the account manually
+        try {
+          const accountData = await ctx.call('auth.account.create', { email: resource['pair:e-mail'] });
+          delete resource['pair:e-mail'];
+
+          resource['pair:hasStatus'] =
+            resource['pair:hasType'] === TYPE_ACTOR
+              ? [STATUS_EMAIL_VERIFIED, STATUS_MEMBERSHIP_VERIFIED]
+              : STATUS_EMAIL_VERIFIED;
+
+          const actorUri = await ctx.call('ldp.container.post', { containerUri, resource, contentType });
+
+          await ctx.call('auth.account.attachWebId', { accountUri: accountData['@id'], webId: actorUri });
+
+          const token = await ctx.call('auth.account.generateResetPasswordToken', { webId: actorUri });
+
+          const organization =
+            resource['pair:hasType'] === TYPE_ACTOR &&
+            (await this.actions.addToOrganization({ organizationUri, actorUri }, { parentCtx: ctx }));
+
+          await ctx.call('mailer.inviteUser', { actorUri, organization, accountData, token });
+
+          return actorUri;
+        } catch (e) {
+          // Delete account if resource creation failed, or it may cause problems when retrying
+          await ctx.call('auth.account.remove', { id: accountData['@id'] });
+          throw e;
+        }
       }
+    },
+    async addToOrganization(ctx) {
+      const { organizationUri, actorUri } = ctx.params;
+
+      let organization = await ctx.call('ldp.resource.get', {
+        resourceUri: organizationUri,
+        accept: MIME_TYPES.JSON
+      });
+
+      organization['pair:affiliates'] = organization['pair:affiliates']
+        ? [...arrayOf(organization['pair:affiliates']), actorUri]
+        : actorUri;
+
+      await ctx.call('ldp.resource.put', {
+        resource: organization,
+        contentType: MIME_TYPES.JSON,
+        webId: 'system'
+      });
+
+      return organization;
     }
   },
   hooks: {

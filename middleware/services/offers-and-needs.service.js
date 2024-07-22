@@ -1,6 +1,6 @@
 const { ControlledContainerMixin } = require('@semapps/ldp');
 const { anonReadPermissions, writePermissionToActors } = require('../config/permissions');
-const { TYPE_AGENT, TYPE_IMMOBILIER, STATUS_PUBLISHED, STATUS_UNPUBLISHED } = require('../constants');
+const { TYPE_AGENT, TYPE_IMMOBILIER, STATUS_PUBLISHED, STATUS_MODERATED } = require('../constants');
 
 module.exports = {
   name: 'offers-and-needs',
@@ -20,7 +20,7 @@ module.exports = {
         const actor = await ctx.call(`webid.get`, { resourceUri: webId, webId });
 
         if (actor['pair:hasType'] === TYPE_AGENT) {
-          ctx.params.resource['cdlt:hasPublicationStatus'] = STATUS_UNPUBLISHED;
+          ctx.params.resource['cdlt:hasPublicationStatus'] = STATUS_MODERATED;
           ctx.params.resource['pair:hasType'] = TYPE_IMMOBILIER;
         } else {
           ctx.params.resource['cdlt:hasPublicationStatus'] = STATUS_PUBLISHED;
@@ -38,7 +38,7 @@ module.exports = {
 
         // If the resource is being published
         if (
-          oldResource['cdlt:hasPublicationStatus'] === STATUS_UNPUBLISHED &&
+          oldResource['cdlt:hasPublicationStatus'] === STATUS_MODERATED &&
           ctx.params.resource['cdlt:hasPublicationStatus'] === STATUS_PUBLISHED
         ) {
           await ctx.call('mailer.offerAndNeedValidated', { webId, resource: ctx.params.resource });
@@ -48,7 +48,7 @@ module.exports = {
     after: {
       async post(ctx, res) {
         const webId = ctx.meta.webId;
-        if (ctx.params.resource['cdlt:hasPublicationStatus'] === STATUS_UNPUBLISHED) {
+        if (ctx.params.resource['cdlt:hasPublicationStatus'] === STATUS_MODERATED) {
           await ctx.call('mailer.moderateOfferAndNeed', { webId, resourceUri: res });
         }
         return res;

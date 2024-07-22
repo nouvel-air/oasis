@@ -13,10 +13,10 @@ export const MyMenu = () => {
   return accountType === 'admin' ? (
     <Menu>
       <Menu.ResourceItem name="Place" />
+      <Menu.ResourceItem name="Organization" />
+      <Menu.ResourceItem name="Person" />
       <Menu.ResourceItem name="Service" />
       <Menu.ResourceItem name="OfferAndNeed" />
-      <Menu.ResourceItem name="Person" />
-      <Menu.ResourceItem name="Organization" />
       <Menu.ResourceItem name="Type" />
       <Menu.ResourceItem name="Page" />
     </Menu>

@@ -40,7 +40,7 @@ export default {
         'pair:hasPostalAddress': 'Adresse postale',
         'pair:hasPostalAddress.pair:label': 'Adresse postale',
         'pair:depictedBy': 'Image',
-        'pair:affiliates': 'Membres',
+        'pair:affiliates': 'Référents',
         'pair:e-mail': 'Adresse e-mail',
         'pair:homePage': 'Site web',
         'cdlt:hasServiceType': 'Types de services',

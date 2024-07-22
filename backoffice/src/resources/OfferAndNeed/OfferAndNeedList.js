@@ -36,6 +36,9 @@ const OfferAndNeedList = props => {
           <ReferenceField source="pair:offeredBy" reference="Place" link={false}>
             <TextField source="pair:label" />
           </ReferenceField>
+          <ReferenceField source="cdlt:hasPublicationStatus" reference="Status" link={false}>
+            <TextField source="pair:label" />
+          </ReferenceField>
           <EditButton />
         </Datagrid>
       )}

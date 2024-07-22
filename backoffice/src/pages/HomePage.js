@@ -11,6 +11,8 @@ const HomePage = () => {
   const organizationsTypes = useOrganizationsTypes();
   const redirect = useRedirect();
 
+  console.log('organizationsTypes', organizationsTypes);
+
   useEffect(() => {
     if (accountType && organizationsTypes) {
       switch (accountType) {
@@ -21,7 +23,7 @@ const HomePage = () => {
         case 'actor':
           if (organizationsTypes.includes('pair:Place')) {
             redirect('list', 'Place');
-          } else {
+          } else if (organizationsTypes.includes('pair:Organization')) {
             redirect('list', 'Organization');
           }
           break;

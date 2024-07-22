@@ -2,7 +2,7 @@ import React from 'react';
 import { SimpleForm, useGetIdentity } from 'react-admin';
 import { CreateWithPermissions } from '@semapps/auth-provider';
 import OfferAndNeedForm from './OfferAndNeedForm';
-import { TYPE_ANNONCE_EVENEMENT } from '../../constants';
+import { TYPE_ANNONCE_AGENDA } from '../../constants';
 import useAccountType from '../../hooks/useAccountType';
 
 const OfferAndNeedCreate = () => {
@@ -11,7 +11,7 @@ const OfferAndNeedCreate = () => {
   return (
     <CreateWithPermissions
       transform={data => ({
-        '@type': data?.['pair:hasType'] === TYPE_ANNONCE_EVENEMENT ? 'pair:Event' : 'cdlt:OfferAndNeed',
+        '@type': data?.['pair:hasType'] === TYPE_ANNONCE_AGENDA ? 'pair:Event' : 'cdlt:OfferAndNeed',
         'pair:offeredBy': accountType === 'agent' || accountType === 'member' ? identity?.id : undefined,
         ...data
       })}

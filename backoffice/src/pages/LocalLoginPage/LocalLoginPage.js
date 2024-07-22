@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { useTranslate, useGetIdentity, useAuthProvider } from 'react-admin';
+import { useTranslate, useGetIdentity, useAuthProvider, useNotify } from 'react-admin';
 import { Card, Typography } from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
 import makeStyles from '@mui/styles/makeStyles';
@@ -46,13 +46,21 @@ const LocalLoginPage = ({
   const translate = useTranslate();
   const authProvider = useAuthProvider();
   const [searchParams] = useSearchParams();
+  const notify = useNotify();
   const isSignup = hasSignup && searchParams.has('signup');
   const isResetPassword = searchParams.has('reset_password');
+  const isActivated = searchParams.has('activated');
   const isNewPassword = searchParams.has('new_password');
   const isLogin = !isSignup && !isResetPassword && !isNewPassword;
   const redirectTo = searchParams.get('redirect');
   const interactionId = searchParams.get('interaction_id');
   const { data: identity, isLoading } = useGetIdentity();
+
+  useEffect(() => {
+    if (isActivated) {
+      notify('Votre compte a bien été activé', { type: 'success' });
+    }
+  }, [isActivated, notify]);
 
   useEffect(() => {
     (async () => {

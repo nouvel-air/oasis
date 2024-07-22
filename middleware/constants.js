@@ -14,8 +14,11 @@ const TYPE_AGENT = urlJoin(CONFIG.HOME_URL, 'types', 'agent');
 const TYPE_MEMBER = urlJoin(CONFIG.HOME_URL, 'types', 'member');
 
 // Statuts annonces
-const STATUS_PUBLISHED = 'https://data.lescheminsdelatransition.org/publication-status/valide';
-const STATUS_UNPUBLISHED = 'https://data.lescheminsdelatransition.org/publication-status/en-cours';
+const STATUS_PUBLISHED = urlJoin(CONFIG.HOME_URL, 'status', 'published');
+const STATUS_MODERATED = urlJoin(CONFIG.HOME_URL, 'status', 'moderated');
+const STATUS_DRAFT = urlJoin(CONFIG.HOME_URL, 'status', 'draft');
+const STATUS_REJECTED = urlJoin(CONFIG.HOME_URL, 'status', 'rejected');
+const STATUS_EXPIRED = urlJoin(CONFIG.HOME_URL, 'status', 'expired');
 
 // Types annonces
 const TYPE_IMMOBILIER = urlJoin(CONFIG.HOME_URL, 'types', 'immobilier');
@@ -31,5 +34,8 @@ module.exports = {
   TYPE_MEMBER,
   TYPE_IMMOBILIER,
   STATUS_PUBLISHED,
-  STATUS_UNPUBLISHED
+  STATUS_MODERATED,
+  STATUS_DRAFT,
+  STATUS_REJECTED,
+  STATUS_EXPIRED
 };

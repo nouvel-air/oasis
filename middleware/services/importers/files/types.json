@@ -2,7 +2,7 @@
   {
     "type": "pair:PersonType",
     "slug": "admin",
-    "pair:label": "Administrateur"
+    "pair:label": "Administrateur·rice"
   },
   {
     "type": "pair:PersonType",
@@ -55,8 +55,8 @@
   },
   {
     "type": "cdlt:OfferAndNeedType",
-    "slug": "evenement",
-    "pair:label": "Formation/Séjour/Chantier/Festivité"
+    "slug": "agenda",
+    "pair:label": "Formation/Séjour/Chantier/Événement"
   },
   {
     "type": "cdlt:OfferAndNeedType",
@@ -85,21 +85,21 @@
   {
     "type": "cdlt:OfferAndNeedType",
     "pair:label": "Formation",
-    "pair:partOf": "evenement"
+    "pair:partOf": "agenda"
   },
   {
     "type": "cdlt:OfferAndNeedType",
     "pair:label": "Séjour",
-    "pair:partOf": "evenement"
+    "pair:partOf": "agenda"
   },
   {
     "type": "cdlt:OfferAndNeedType",
     "pair:label": "Chantier",
-    "pair:partOf": "evenement"
+    "pair:partOf": "agenda"
   },
   {
     "type": "cdlt:OfferAndNeedType",
     "pair:label": "Festivité",
-    "pair:partOf": "evenement"
+    "pair:partOf": "agenda"
   }
 ]
