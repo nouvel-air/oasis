@@ -13,17 +13,17 @@ module.exports = {
       const { resourceUri, zipCodes } = ctx.params;
       let regionsUris = [];
 
-      for( let zipCode of zipCodes ) {
+      for (let zipCode of zipCodes) {
         const regionUri = await this.getRegionUriFromZip(zipCode);
-        if( regionUri ) regionsUris.push(regionUri);
+        if (regionUri) regionsUris.push(regionUri);
       }
 
       // Remove duplicates
-      regionsUris = regionsUris.filter(function(item, pos, self) {
+      regionsUris = regionsUris.filter(function (item, pos, self) {
         return self.indexOf(item) === pos;
       });
 
-      if( regionsUris.length > 0 ) {
+      if (regionsUris.length > 0) {
         // Delete hasRegion relation
         await ctx.call('triplestore.update', {
           query: `
@@ -66,8 +66,19 @@ module.exports = {
   },
   methods: {
     async tagPlace(placeUri, place) {
-      if( place['pair:hasPostalAddress'] ) {
-        await this.actions.tag({ resourceUri: placeUri, zipCodes: [place['pair:hasPostalAddress']['pair:addressZipCode']] });
+      if (place['pair:hasPostalAddress']) {
+        await this.actions.tag({
+          resourceUri: placeUri,
+          zipCodes: [place['pair:hasPostalAddress']['pair:addressZipCode']]
+        });
+      }
+    },
+    async tagOfferAndNeed(offerAndNeedUri, offerAndNeed) {
+      if (offerAndNeed['pair:hasPostalAddress']) {
+        await this.actions.tag({
+          resourceUri: offerAndNeedUri,
+          zipCodes: [offerAndNeed['pair:hasPostalAddress']['pair:addressZipCode']]
+        });
       }
     },
     getRegionNameFromZip(zip) {
@@ -80,12 +91,12 @@ module.exports = {
     async getRegionUriFromZip(zip) {
       const regionName = this.getRegionNameFromZip(zip);
 
-      if( regionName ) {
-        const regionSlug = createSlug(regionName, {lang: 'fr', custom: {'.': '.'}});
+      if (regionName) {
+        const regionSlug = createSlug(regionName, { lang: 'fr', custom: { '.': '.' } });
         const regionUri = urlJoin(CONFIG.HOME_URL, 'regions', regionSlug);
 
         // Create region if it doesn't exist yet
-        const regionExists = await this.broker.call('ldp.resource.exist', {resourceUri: regionUri});
+        const regionExists = await this.broker.call('ldp.resource.exist', { resourceUri: regionUri });
         if (!regionExists) {
           await this.broker.call('ldp.container.post', {
             resource: {
@@ -110,18 +121,24 @@ module.exports = {
     async 'ldp.resource.created'(ctx) {
       const { resourceUri, newData } = ctx.params;
 
-      switch(getContainerFromUri(resourceUri)){
+      switch (getContainerFromUri(resourceUri)) {
         case CONFIG.HOME_URL + 'places':
           await this.tagPlace(resourceUri, newData);
+          break;
+        case CONFIG.HOME_URL + 'offers-and-needs':
+          await this.tagOfferAndNeed(resourceUri, newData);
           break;
       }
     },
     async 'ldp.resource.updated'(ctx) {
       const { resourceUri, newData } = ctx.params;
 
-      switch(getContainerFromUri(resourceUri)){
+      switch (getContainerFromUri(resourceUri)) {
         case CONFIG.HOME_URL + 'places':
           await this.tagPlace(resourceUri, newData);
+          break;
+        case CONFIG.HOME_URL + 'offers-and-needs':
+          await this.tagOfferAndNeed(resourceUri, newData);
           break;
       }
     }
