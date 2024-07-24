@@ -99,7 +99,12 @@
   },
   {
     "type": "cdlt:OfferAndNeedType",
-    "pair:label": "Festivité",
+    "pair:label": "Événement",
+    "pair:partOf": "agenda"
+  },
+  {
+    "type": "cdlt:OfferAndNeedType",
+    "pair:label": "Stage",
     "pair:partOf": "agenda"
   }
 ]
