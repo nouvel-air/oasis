@@ -198,17 +198,19 @@ module.exports = {
   events: {
     async 'ldp.resource.created'(ctx) {
       const { resourceUri, newData } = ctx.params;
-      if (
-        hasType(newData, 'cdlt:OfferAndNeed') ||
-        hasType(newData, 'pair:Event') ||
-        hasType(newData, 'cdlt:HostingService')
-      ) {
+      if (hasType(newData, 'cdlt:OfferAndNeed') || hasType(newData, 'pair:Event')) {
         const resource = await ctx.call('ldp.resource.awaitCreateComplete', {
           resourceUri,
           predicates: ['cdlt:hasRegion'],
           webId: 'system'
         });
         const wordpressData = await this.transform(resource);
+        if (wordpressData) {
+          await this.create(resourceUri, wordpressData);
+        }
+      } else if (hasType(newData, 'cdlt:HostingService')) {
+        // We don't need to wait for the cdlt:hasRegion predicate
+        const wordpressData = await this.transform(newData);
         if (wordpressData) {
           await this.create(resourceUri, wordpressData);
         }
