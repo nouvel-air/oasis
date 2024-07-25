@@ -41,6 +41,7 @@ module.exports = {
           ],
           webId: 'system'
         });
+        ctx.emit('expiration.expired', { resourceUri });
       }
     }
   },

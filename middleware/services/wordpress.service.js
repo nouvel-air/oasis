@@ -232,7 +232,7 @@ module.exports = {
           // If it is not published anymore, delete it and remove the link from the resource
           if (newData['cdlt:exportedTo']) {
             await this.delete(newData['cdlt:exportedTo']);
-            await this.broker.call('ldp.resource.patch', {
+            await ctx.call('ldp.resource.patch', {
               resourceUri: resourceUri,
               triplesToRemove: [
                 triple(
@@ -249,7 +249,7 @@ module.exports = {
         if (newData['cdlt:hasPublicationStatus'] === STATUS_PUBLISHED) {
           // If the place is published, update or create all its services
           for (const serviceUri of arrayOf(newData['pair:offers'])) {
-            const service = await this.broker.call('ldp.resource.get', {
+            const service = await ctx.call('ldp.resource.get', {
               resourceUri: serviceUri,
               accept: MIME_TYPES.JSON,
               webId: 'system'
@@ -266,14 +266,14 @@ module.exports = {
         } else {
           // If the place is unpublished, unpublish all its services
           for (const serviceUri of arrayOf(newData['pair:offers'])) {
-            const service = await this.broker.call('ldp.resource.get', {
+            const service = await ctx.call('ldp.resource.get', {
               resourceUri: serviceUri,
               accept: MIME_TYPES.JSON,
               webId: 'system'
             });
             if (service['cdlt:exportedTo']) {
               await this.delete(service['cdlt:exportedTo']);
-              await this.broker.call('ldp.resource.patch', {
+              await ctx.call('ldp.resource.patch', {
                 resourceUri: serviceUri,
                 triplesToRemove: [
                   triple(
@@ -308,7 +308,7 @@ module.exports = {
           });
           if (service['cdlt:exportedTo']) {
             await this.delete(service['cdlt:exportedTo']);
-            await this.broker.call('ldp.resource.patch', {
+            await ctx.call('ldp.resource.patch', {
               resourceUri: serviceUri,
               triplesToRemove: [
                 triple(
@@ -321,6 +321,18 @@ module.exports = {
             });
           }
         }
+      }
+    },
+    async 'expiration.expired'(ctx) {
+      // We could handle this through ldp.resource.patched, but it's easier with a custom event
+      const { resourceUri } = ctx.params;
+      const offerAndNeed = await ctx.call('ldp.resource.get', {
+        resourceUri: resourceUri,
+        accept: MIME_TYPES.JSON,
+        webId: 'system'
+      });
+      if (offerAndNeed['cdlt:exportedTo']) {
+        await this.delete(offerAndNeed['cdlt:exportedTo']);
       }
     }
   }
