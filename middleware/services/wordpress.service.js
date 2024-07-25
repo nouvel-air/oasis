@@ -1,7 +1,7 @@
 const urlJoin = require('url-join');
 const fetch = require('node-fetch');
 const { namedNode, triple } = require('@rdfjs/data-model');
-const { hasType, getParentContainerUri } = require('@semapps/ldp');
+const { hasType, getParentContainerUri, arrayOf } = require('@semapps/ldp');
 const { MIME_TYPES } = require('@semapps/mime-types');
 const { STATUS_PUBLISHED } = require('../constants');
 const CONFIG = require('../config/config');
@@ -59,8 +59,8 @@ module.exports = {
   },
   methods: {
     async transform(data) {
-      // Only publish
-      if (data['cdlt:hasPublicationStatus'] !== STATUS_PUBLISHED) return false;
+      const isHostingService = hasType(data, 'cdlt:HostingService');
+      const isEvent = hasType(data, 'pair:Event');
 
       const organization = await this.broker.call('ldp.resource.get', {
         resourceUri: data['pair:offeredBy'],
@@ -68,34 +68,55 @@ module.exports = {
         webId: 'system'
       });
 
+      const publicationStatus = isHostingService
+        ? organization['cdlt:hasPublicationStatus']
+        : data['cdlt:hasPublicationStatus'];
+
+      // Only publish to Wordpress if it has the published status
+      if (publicationStatus !== STATUS_PUBLISHED) return false;
+
+      const postalAddress = isHostingService ? organization['pair:hasPostalAddress'] : data['pair:hasPostalAddress'];
+
+      const content = isHostingService
+        ? `${data['pair:description']}\n\nCapacité: ${data['cdlt:capacity']}\nPrix: ${data['cdlt:price']}`
+        : data['pair:description'];
+
+      const region = isHostingService
+        ? mapUrlToWordpressId(organization['cdlt:hasRegion'], regionsMapping)
+        : mapUrlToWordpressId(data['cdlt:hasRegion'], regionsMapping);
+
       return {
         title: data['pair:label'],
         status: 'publish',
-        // date: '2024-07-23T11:01:00',
-        'annonce-categorie': data['pair:hasType'] ? [mapUrlToWordpressId(data['pair:hasType'], categoriesMapping)] : [],
+        'annonce-categorie': isHostingService
+          ? [121]
+          : data['pair:hasType']
+          ? [mapUrlToWordpressId(data['pair:hasType'], categoriesMapping)]
+          : [],
         'annonce-etiquette': data['cdlt:hasSubType'] ? [mapUrlToWordpressId(data['cdlt:hasSubType'], tagsMapping)] : [],
-        region: data['cdlt:hasRegion'] ? [mapUrlToWordpressId(data['cdlt:hasRegion'], regionsMapping)] : [],
+        region: region ? [region] : [],
         acf: {
-          contenu: data['pair:description'],
-          nom_du_lieu: data['pair:hasPostalAddress']?.['pair:label'],
-          adresse: data['pair:hasPostalAddress']?.['pair:addressStreet'],
-          code_postal: data['pair:hasPostalAddress']?.['pair:addressZipCode'],
-          ville: data['pair:hasPostalAddress']?.['pair:addressLocality'],
-          departement: getDepartmentFromZipCode(data['pair:hasPostalAddress']?.['pair:addressZipCode']),
-          latitude: data['pair:hasPostalAddress']?.['pair:latitude'],
-          longitude: data['pair:hasPostalAddress']?.['pair:longitude'],
+          contenu: content,
+          nom_du_lieu: isHostingService ? organization['pair:label'] : postalAddress?.['pair:label'],
+          adresse: postalAddress?.['pair:addressStreet'],
+          code_postal:
+            postalAddress?.['pair:addressZipCode'].length === 5 ? postalAddress?.['pair:addressZipCode'] : undefined,
+          ville: postalAddress?.['pair:addressLocality'],
+          departement: getDepartmentFromZipCode(postalAddress?.['pair:addressZipCode']),
+          latitude: postalAddress ? `${postalAddress['pair:latitude']}` : undefined,
+          longitude: postalAddress ? `${postalAddress['pair:longitude']}` : undefined,
           propose_par: organization['pair:label'],
-          lien: data['pair:homePage'],
+          lien: isHostingService ? data['cdlt:registrationLink'] : data['pair:homePage'],
           images: null,
-          mail: data['pair:e-mail'],
+          mail: isHostingService ? organization['pair:e-mail'] : data['pair:e-mail'],
           telephone: data['pair:phone'],
-          date_expiration: transformDate(data['pair:endDate']),
-          date_debut: hasType(data, 'pair:Event') ? transformDate(data['pair:startDate']) : undefined,
-          date_fin: hasType(data, 'pair:Event') ? transformDate(data['pair:endDate']) : undefined
+          date_expiration: isHostingService ? undefined : transformDate(data['pair:endDate']),
+          date_debut: isEvent ? transformDate(data['pair:startDate']) : undefined,
+          date_fin: isEvent ? transformDate(data['pair:endDate']) : undefined
         }
       };
     },
-    async fetchApi(url, options) {
+    async fetchApi(url, options = {}) {
       let headers = options.headers || {};
       headers['Authorization'] = `Basic ${Buffer.from(
         `${CONFIG.WORDPRESS_API_USER}:${CONFIG.WORDPRESS_API_PASSWORD}`
@@ -115,14 +136,22 @@ module.exports = {
         }
         return returnValue;
       } else {
-        this.logger.warn(
-          `Could not ${options.method} to Wordpress API ${url} with body ${options.body}. Error ${response.status} (${response.statusText})`
-        );
+        try {
+          const errorMessage = await response.json();
+          this.logger.warn(
+            `Could not ${options.method} to Wordpress API ${url} with body ${options.body}. Error ${errorMessage.code}: ${errorMessage.message})`
+          );
+        } catch (e) {
+          this.logger.warn(
+            `Could not ${options.method} to Wordpress API ${url} with body ${options.body}. Error ${response.status}: ${response.statusText})`
+          );
+        }
         return false;
       }
     },
     async create(resourceUri, wordpressData) {
-      const wordpressId = await this.fetchApi('https://cooperative-oasis.org/wp-json/wp/v2/annonces', {
+      this.logger.info(`Creating new post on Wordpress for ${resourceUri}...`);
+      const annonce = await this.fetchApi('https://cooperative-oasis.org/wp-json/wp/v2/annonces', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -130,12 +159,16 @@ module.exports = {
         body: JSON.stringify(wordpressData)
       });
 
-      const wordpressUrl = `https://cooperative-oasis.org/wp-json/wp/v2/annonces/${wordpressId}`;
+      const wordpressUrl = `https://cooperative-oasis.org/wp-json/wp/v2/annonces/${annonce.id}`;
 
       await this.broker.call('ldp.resource.patch', {
         resourceUri: resourceUri,
         triplesToAdd: [
-          triple(namedNode(resourceUri), namedNode('http://purl.org/dc/elements/1.1/relation'), namedNode(wordpressUrl))
+          triple(
+            namedNode(resourceUri),
+            namedNode('http://virtual-assembly.org/ontologies/cdlt#exportedTo'),
+            namedNode(wordpressUrl)
+          )
         ],
         webId: 'system'
       });
@@ -143,6 +176,7 @@ module.exports = {
       return wordpressUrl;
     },
     async update(wordpressUrl, wordpressData) {
+      this.logger.info(`Updating Wordpress post ${wordpressUrl}...`);
       await this.fetchApi(wordpressUrl, {
         method: 'POST',
         headers: {
@@ -152,6 +186,7 @@ module.exports = {
       });
     },
     async delete(wordpressUrl) {
+      this.logger.info(`Deleting Wordpress post ${wordpressUrl}...`);
       await this.fetchApi(wordpressUrl, {
         method: 'DELETE'
       });
@@ -168,7 +203,12 @@ module.exports = {
         hasType(newData, 'pair:Event') ||
         hasType(newData, 'cdlt:HostingService')
       ) {
-        const wordpressData = await this.transform(newData);
+        const resource = await ctx.call('ldp.resource.awaitCreateComplete', {
+          resourceUri,
+          predicates: ['cdlt:hasRegion'],
+          webId: 'system'
+        });
+        const wordpressData = await this.transform(resource);
         if (wordpressData) {
           await this.create(resourceUri, wordpressData);
         }
@@ -183,18 +223,104 @@ module.exports = {
       ) {
         const wordpressData = await this.transform(newData);
         if (wordpressData) {
-          if (newData['dc:relation']) {
-            await this.update(newData['dc:relation'], wordpressData);
+          if (newData['cdlt:exportedTo']) {
+            await this.update(newData['cdlt:exportedTo'], wordpressData);
           } else {
             await this.create(resourceUri, wordpressData);
+          }
+        } else {
+          // If it is not published anymore, delete it and remove the link from the resource
+          if (newData['cdlt:exportedTo']) {
+            await this.delete(newData['cdlt:exportedTo']);
+            await this.broker.call('ldp.resource.patch', {
+              resourceUri: resourceUri,
+              triplesToRemove: [
+                triple(
+                  namedNode(resourceUri),
+                  namedNode('http://virtual-assembly.org/ontologies/cdlt#exportedTo'),
+                  namedNode(newData['cdlt:exportedTo'])
+                )
+              ],
+              webId: 'system'
+            });
+          }
+        }
+      } else if (hasType(newData, 'pair:Place')) {
+        if (newData['cdlt:hasPublicationStatus'] === STATUS_PUBLISHED) {
+          // If the place is published, update or create all its services
+          for (const serviceUri of arrayOf(newData['pair:offers'])) {
+            const service = await this.broker.call('ldp.resource.get', {
+              resourceUri: serviceUri,
+              accept: MIME_TYPES.JSON,
+              webId: 'system'
+            });
+            const wordpressData = await this.transform(service);
+            if (wordpressData) {
+              if (service['cdlt:exportedTo']) {
+                await this.update(service['cdlt:exportedTo'], wordpressData);
+              } else {
+                await this.create(serviceUri, wordpressData);
+              }
+            }
+          }
+        } else {
+          // If the place is unpublished, unpublish all its services
+          for (const serviceUri of arrayOf(newData['pair:offers'])) {
+            const service = await this.broker.call('ldp.resource.get', {
+              resourceUri: serviceUri,
+              accept: MIME_TYPES.JSON,
+              webId: 'system'
+            });
+            if (service['cdlt:exportedTo']) {
+              await this.delete(service['cdlt:exportedTo']);
+              await this.broker.call('ldp.resource.patch', {
+                resourceUri: serviceUri,
+                triplesToRemove: [
+                  triple(
+                    namedNode(serviceUri),
+                    namedNode('http://virtual-assembly.org/ontologies/cdlt#exportedTo'),
+                    namedNode(service['cdlt:exportedTo'])
+                  )
+                ],
+                webId: 'system'
+              });
+            }
           }
         }
       }
     },
     async 'ldp.resource.deleted'(ctx) {
       const { oldData } = ctx.params;
-      if (oldData['dc:relation']) {
-        await this.delete(oldData['dc:relation']);
+      if (
+        hasType(oldData, 'cdlt:OfferAndNeed') ||
+        hasType(oldData, 'pair:Event') ||
+        hasType(oldData, 'cdlt:HostingService')
+      ) {
+        if (oldData['cdlt:exportedTo']) {
+          await this.delete(oldData['cdlt:exportedTo']);
+        }
+      } else if (hasType(oldData, 'pair:Place')) {
+        for (const serviceUri of arrayOf(oldData['pair:offers'])) {
+          const service = await this.broker.call('ldp.resource.get', {
+            resourceUri: serviceUri,
+            accept: MIME_TYPES.JSON,
+            webId: 'system'
+          });
+          if (service['cdlt:exportedTo']) {
+            await this.delete(service['cdlt:exportedTo']);
+            await this.broker.call('ldp.resource.patch', {
+              resourceUri: serviceUri,
+              triplesToRemove: [
+                triple(
+                  namedNode(serviceUri),
+                  namedNode('http://virtual-assembly.org/ontologies/cdlt#exportedTo'),
+                  namedNode(service['cdlt:exportedTo'])
+                )
+              ],
+              webId: 'system'
+            });
+          }
+        }
       }
     }
   }

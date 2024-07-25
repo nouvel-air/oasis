@@ -121,6 +121,7 @@ const OfferAndNeedForm = ({ isCreate }) => {
           source="pair:hasType"
           filter={{ a: 'cdlt:OfferAndNeedType', sparqlWhere: filterNoParent }}
           validate={[required()]}
+          disabled={!isCreate}
         />
       )}
       {(formData['pair:hasType'] === TYPE_ANNONCE_AGENDA || formData['pair:hasType'] === TYPE_ANNONCE_EMPLOI) && (
