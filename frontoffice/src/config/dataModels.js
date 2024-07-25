@@ -53,7 +53,20 @@ const dataModels = {
   Service: {
     types: ['cdlt:HostingService'],
     list: {
-      servers: '@default'
+      servers: '@default',
+      filter: {
+        type: 'cdlt:HostingService'
+      }
+    }
+  },
+  OfferAndNeed: {
+    types: ['cdlt:OfferAndNeed'],
+    list: {
+      servers: '@default',
+      filter: {
+        type: 'cdlt:OfferAndNeed',
+        'cdlt:hasPublicationStatus': STATUS_PUBLISHED
+      }
     }
   },
   Status: {

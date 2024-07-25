@@ -20,6 +20,14 @@ import backgroundTopImage from '../../assets/background-top.png'
 import ScrollToTop from '../../layout/ScrollToTop';
 import ContactDialog from './ContactDialog';
 import DepartmentField from '../../common/field/DepartmentField';
+import OffersAndNeedsList from './OffersAndNeedsList';
+
+const OffersAndNeedsHeader = () => (
+  <>
+    <Separator mt={6} mb={3} />
+    <Typography variant="h3" mb={4}>Petites annonces</Typography>
+  </>
+);
 
 const DetailsPage = () => {
   const xs = useMediaQuery(theme => theme.breakpoints.down('sm'), { noSsr: true });
@@ -84,8 +92,11 @@ const DetailsPage = () => {
           </Grid>
           <Separator mt={4} mb={3} />
           <Typography variant="h3" mb={4}>Les formules</Typography>
-          <ReferenceArrayField source="pair:offers" reference="Service">
+          <ReferenceArrayField source="pair:offers" reference="Service" filter={{ type: 'cdlt:HostingService' }}>
             <ServicesList contact={contact} />
+          </ReferenceArrayField>
+          <ReferenceArrayField source="pair:offers" reference="OfferAndNeed" filter={{ type: 'cdlt:OfferAndNeed' }}>
+            <OffersAndNeedsList Header={OffersAndNeedsHeader} />
           </ReferenceArrayField>
           <Separator mt={6} />
         </Container>
