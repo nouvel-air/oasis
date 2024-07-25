@@ -52,8 +52,8 @@ module.exports = {
     async clearAll() {
       const posts = await this.list();
       for (const post of posts) {
-        this.logger.info(`Deleting https://cooperative-oasis.org/wp-json/wp/v2/annonces/${post.id}...`);
-        await this.delete(`https://cooperative-oasis.org/wp-json/wp/v2/annonces/${post.id}`);
+        this.logger.info(`Deleting ${CONFIG.WORDPRESS_API_BASE}/${post.id}...`);
+        await this.delete(`${CONFIG.WORDPRESS_API_BASE}/${post.id}`);
       }
     }
   },
@@ -117,6 +117,8 @@ module.exports = {
       };
     },
     async fetchApi(url, options = {}) {
+      if (!CONFIG.WORDPRESS_API_BASE) this.logger.info('Wordpress synchronization has been disabled, skipping...');
+
       let headers = options.headers || {};
       headers['Authorization'] = `Basic ${Buffer.from(
         `${CONFIG.WORDPRESS_API_USER}:${CONFIG.WORDPRESS_API_PASSWORD}`
@@ -151,7 +153,7 @@ module.exports = {
     },
     async create(resourceUri, wordpressData) {
       this.logger.info(`Creating new post on Wordpress for ${resourceUri}...`);
-      const annonce = await this.fetchApi('https://cooperative-oasis.org/wp-json/wp/v2/annonces', {
+      const annonce = await this.fetchApi(CONFIG.WORDPRESS_API_BASE, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -159,7 +161,7 @@ module.exports = {
         body: JSON.stringify(wordpressData)
       });
 
-      const wordpressUrl = `https://cooperative-oasis.org/wp-json/wp/v2/annonces/${annonce.id}`;
+      const wordpressUrl = `${CONFIG.WORDPRESS_API_BASE}/${annonce.id}`;
 
       await this.broker.call('ldp.resource.patch', {
         resourceUri: resourceUri,
@@ -192,7 +194,7 @@ module.exports = {
       });
     },
     async list() {
-      return await this.fetchApi('https://cooperative-oasis.org/wp-json/wp/v2/annonces');
+      return await this.fetchApi(CONFIG.WORDPRESS_API_BASE);
     }
   },
   events: {
