@@ -1,14 +1,14 @@
 import React from 'react';
-import { SimpleForm } from 'react-admin';
-import { EditWithPermissions } from '@semapps/auth-provider';
+import { SimpleForm, Edit } from 'react-admin';
 import OfferAndNeedForm from './OfferAndNeedForm';
+import EditToolbar from '../../common/toolbar/EditToolbar';
 
 const OfferAndNeedEdit = () => (
-  <EditWithPermissions redirect="list">
-    <SimpleForm>
+  <Edit redirect="list">
+    <SimpleForm toolbar={<EditToolbar />} warnWhenUnsavedChanges>
       <OfferAndNeedForm />
     </SimpleForm>
-  </EditWithPermissions>
+  </Edit>
 );
 
 export default OfferAndNeedEdit;

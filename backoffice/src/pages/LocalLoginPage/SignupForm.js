@@ -6,7 +6,7 @@ import { Button, CardContent, CircularProgress, Typography } from '@mui/material
 import makeStyles from '@mui/styles/makeStyles';
 import { useSignup } from '@semapps/auth-provider';
 import PreSignupForm from './PreSignupForm';
-import { OrganizationOrPlaceInput } from '../../common/input';
+import { OrganizationOrPlaceAutocompleteInput } from '../../common/input';
 import WaitingCard from './WaitingCard';
 
 const useStyles = makeStyles(theme => ({
@@ -88,7 +88,11 @@ const SignupForm = ({ additionalSignupValues }) => {
             </Typography>
           )}
           {signupType === 'societaire' && (
-            <OrganizationOrPlaceInput source="pair:affiliatedBy" label="Organisation" validate={[required()]} />
+            <OrganizationOrPlaceAutocompleteInput
+              source="pair:affiliatedBy"
+              label="Organisation"
+              validate={[required()]}
+            />
           )}
           <TextInput source="pair:firstName" label="Prénom" fullWidth validate={[required()]} />
           <TextInput source="pair:lastName" label="Nom de famille" fullWidth validate={[required()]} />

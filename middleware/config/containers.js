@@ -37,10 +37,8 @@ module.exports = [
   {
     path: '/organizations',
     acceptedTypes: ['pair:Organization'],
-    permissions: {
-      ...anonReadPermissions,
-      ...writePermissionToActors
-    }
+    permissions: anonReadPermissions,
+    newResourcesPermissions: anonReadPermissions
   },
   {
     path: '/types',

@@ -17,7 +17,7 @@
   {
     "type": "pair:PersonType",
     "slug": "agent",
-    "pair:label": "Agent immobilier"
+    "pair:label": "Annonceur"
   },
   {
     "type": "cdlt:ServiceType",

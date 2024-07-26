@@ -52,7 +52,7 @@ const LoginForm = ({ postLoginRedirect, allowUsername }) => {
   };
 
   return (
-    <Form onSubmit={submit} noValidate defaultValues={{ email: searchParams.get('email') }}>
+    <Form onSubmit={submit} noValidate defaultValues={{ username: searchParams.get('email') }}>
       <CardContent className={classes.content}>
         <TextInput
           source="username"

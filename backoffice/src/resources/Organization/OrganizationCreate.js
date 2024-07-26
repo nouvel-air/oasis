@@ -1,11 +1,13 @@
 import React from 'react';
-import { CreateWithPermissions } from '@semapps/auth-provider';
+import { Create, SimpleForm } from 'react-admin';
 import OrganizationForm from './OrganizationForm';
 
 const OrganizationCreate = () => (
-  <CreateWithPermissions>
-    <OrganizationForm />
-  </CreateWithPermissions>
+  <Create>
+    <SimpleForm warnWhenUnsavedChanges>
+      <OrganizationForm />
+    </SimpleForm>
+  </Create>
 );
 
 export default OrganizationCreate;

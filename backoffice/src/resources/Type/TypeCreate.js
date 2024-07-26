@@ -1,20 +1,19 @@
 import React from 'react';
-import { SimpleForm, TextInput, SelectArrayInput } from 'react-admin';
-import { CreateWithPermissions } from '@semapps/auth-provider';
+import { SimpleForm, TextInput, SelectArrayInput, Create } from 'react-admin';
 
 const TypeCreate = () => (
-  <CreateWithPermissions>
-    <SimpleForm>
+  <Create>
+    <SimpleForm warnWhenUnsavedChanges>
       <TextInput source="pair:label" fullWidth />
       <SelectArrayInput
         source="@type"
         choices={[
           { id: 'cdlt:ServiceType', name: 'ServiceType' },
-          { id: 'pair:PersonType', name: 'PersonType' },
+          { id: 'pair:PersonType', name: 'PersonType' }
         ]}
       />
     </SimpleForm>
-  </CreateWithPermissions>
+  </Create>
 );
 
 export default TypeCreate;

@@ -1,14 +1,13 @@
 import React from 'react';
-import { TabbedForm, ReferenceManyField, Datagrid, TextField, EditButton, DeleteButton } from 'react-admin';
+import { TabbedForm, ReferenceManyField, Datagrid, TextField, EditButton, DeleteButton, Edit } from 'react-admin';
 import { ReferenceField } from '@semapps/field-components';
-import { EditWithPermissions } from '@semapps/auth-provider';
 import PlaceForm from './PlaceForm';
 import AddServiceButton from '../../common/button/AddServiceButton';
 import AddOfferAndNeedButton from '../../common/button/AddOfferAndNeedButton';
 import PlaceToolbar from './PlaceToolbar';
 
 const PlaceEdit = () => (
-  <EditWithPermissions>
+  <Edit>
     <TabbedForm toolbar={<PlaceToolbar />}>
       <TabbedForm.Tab label="Description">
         <PlaceForm />
@@ -47,7 +46,7 @@ const PlaceEdit = () => (
         <AddOfferAndNeedButton />
       </TabbedForm.Tab>
     </TabbedForm>
-  </EditWithPermissions>
+  </Edit>
 );
 
 export default PlaceEdit;

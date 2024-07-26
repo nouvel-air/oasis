@@ -1,7 +1,7 @@
 import React from 'react';
-import { TextInput, ImageField, email, required } from 'react-admin';
+import { TextInput, email, required } from 'react-admin';
 import { MarkdownInput } from '@semapps/markdown-components';
-import { ImageInput } from '@semapps/input-components';
+import ImageInput from '../../common/input/ImageInput';
 import { StatusInput, UsersInput } from '../../common/input';
 import useAccountType from '../../hooks/useAccountType';
 import LocationInput from '../../common/input/LocationInput';
@@ -12,9 +12,7 @@ const PlaceForm = () => {
     <>
       <TextInput source="pair:label" fullWidth validate={[required()]} />
       <MarkdownInput source="pair:description" fullWidth validate={[required()]} isRequired />
-      <ImageInput source="pair:depictedBy" accept="image/*" multiple>
-        <ImageField source="src" />
-      </ImageInput>
+      <ImageInput source="pair:depictedBy" />
       <LocationInput source="pair:hasPostalAddress" validate={[required()]} fullWidth />
       <TextInput source="pair:homePage" fullWidth />
       <TextInput source="pair:e-mail" fullWidth validate={[required(), email()]} />

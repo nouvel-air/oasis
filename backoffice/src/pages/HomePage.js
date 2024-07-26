@@ -11,8 +11,6 @@ const HomePage = () => {
   const organizationsTypes = useOrganizationsTypes();
   const redirect = useRedirect();
 
-  console.log('organizationsTypes', organizationsTypes);
-
   useEffect(() => {
     if (accountType && organizationsTypes) {
       switch (accountType) {

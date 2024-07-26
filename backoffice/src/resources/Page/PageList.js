@@ -1,12 +1,11 @@
 import React from 'react';
-import { SimpleList, Datagrid, TextField, EditButton } from 'react-admin';
-import { ListWithPermissions } from '@semapps/auth-provider';
+import { SimpleList, Datagrid, TextField, EditButton, List } from 'react-admin';
 import { useMediaQuery } from '@mui/material';
 
 const PageList = () => {
   const xs = useMediaQuery(theme => theme.breakpoints.down('sm'));
   return (
-    <ListWithPermissions perPage={25}>
+    <List perPage={25}>
       {xs ? (
         <SimpleList primaryText="semapps:title" />
       ) : (
@@ -15,8 +14,8 @@ const PageList = () => {
           <EditButton />
         </Datagrid>
       )}
-    </ListWithPermissions>
-  )
+    </List>
+  );
 };
 
 export default PageList;

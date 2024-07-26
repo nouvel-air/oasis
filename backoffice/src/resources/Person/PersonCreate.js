@@ -1,13 +1,15 @@
 import React from 'react';
-import { CreateWithPermissions } from '@semapps/auth-provider';
+import { SimpleForm, Create } from 'react-admin';
 import PersonForm from './PersonForm';
 
 const PersonCreate = () => (
-  <CreateWithPermissions
+  <Create
     transform={data => ({ ...data, 'pair:label': `${data['pair:firstName']} ${data['pair:lastName']?.toUpperCase()}` })}
   >
-    <PersonForm isCreate />
-  </CreateWithPermissions>
+    <SimpleForm warnWhenUnsavedChanges>
+      <PersonForm isCreate />
+    </SimpleForm>
+  </Create>
 );
 
 export default PersonCreate;

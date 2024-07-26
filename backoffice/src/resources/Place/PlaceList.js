@@ -1,8 +1,16 @@
 import React from 'react';
-import { SimpleList, Datagrid, TextField, EditButton, SingleFieldList, ChipField, useGetIdentity } from 'react-admin';
+import {
+  SimpleList,
+  Datagrid,
+  TextField,
+  EditButton,
+  SingleFieldList,
+  ChipField,
+  useGetIdentity,
+  List
+} from 'react-admin';
 import { useMediaQuery } from '@mui/material';
 import { ReferenceArrayField } from '@semapps/field-components';
-import { ListWithPermissions } from '@semapps/auth-provider';
 import PublishButton from '../../common/button/PublishButton';
 import useAccountType from '../../hooks/useAccountType';
 
@@ -12,11 +20,7 @@ const PlaceList = props => {
   const xs = useMediaQuery(theme => theme.breakpoints.down('sm'));
   if (!identity?.id) return;
   return (
-    <ListWithPermissions
-      filter={accountType === 'admin' ? {} : { 'pair:affiliates': identity?.id }}
-      perPage={25}
-      {...props}
-    >
+    <List filter={accountType === 'admin' ? {} : { 'pair:affiliates': identity?.id }} perPage={25} {...props}>
       {xs ? (
         <SimpleList primaryText="%{pair:label}" />
       ) : (
@@ -32,7 +36,7 @@ const PlaceList = props => {
           <PublishButton />
         </Datagrid>
       )}
-    </ListWithPermissions>
+    </List>
   );
 };
 

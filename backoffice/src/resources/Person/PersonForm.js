@@ -1,12 +1,12 @@
 import React from 'react';
-import { FormDataConsumer, email, required, SimpleForm, TextInput } from 'react-admin';
+import { FormDataConsumer, email, required, TextInput } from 'react-admin';
 import { TypeInput, OrganizationOrPlaceInput, GroupInput, StatusesInput } from '../../common/input';
 import useAccountType from '../../hooks/useAccountType';
 
 export const PersonForm = ({ isCreate }) => {
   const accountType = useAccountType();
   return (
-    <SimpleForm>
+    <>
       <TextInput source="pair:firstName" fullWidth validate={[required()]} />
       <TextInput source="pair:lastName" fullWidth validate={[required()]} />
       {isCreate && <TextInput source="pair:e-mail" fullWidth validate={[required(), email()]} />}
@@ -33,7 +33,7 @@ export const PersonForm = ({ isCreate }) => {
       {accountType === 'admin' && !isCreate && (
         <StatusesInput source="pair:hasStatus" label={false} filter={{ a: 'pair:ActorStatus' }} />
       )}
-    </SimpleForm>
+    </>
   );
 };
 

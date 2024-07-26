@@ -1,13 +1,16 @@
 import React from 'react';
-import { EditWithPermissions } from '@semapps/auth-provider';
+import { SimpleForm, Edit } from 'react-admin';
 import PersonForm from './PersonForm';
+import PersonToolbar from './PersonToolbar';
 
 export const PersonEdit = () => (
-  <EditWithPermissions
+  <Edit
     transform={data => ({ ...data, 'pair:label': `${data['pair:firstName']} ${data['pair:lastName']?.toUpperCase()}` })}
   >
-    <PersonForm />
-  </EditWithPermissions>
+    <SimpleForm toolbar={<PersonToolbar />} warnWhenUnsavedChanges>
+      <PersonForm />
+    </SimpleForm>
+  </Edit>
 );
 
 export default PersonEdit;

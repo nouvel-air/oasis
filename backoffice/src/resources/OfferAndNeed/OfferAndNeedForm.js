@@ -1,22 +1,28 @@
 import React, { useEffect } from 'react';
 import {
   TextInput,
-  ImageField,
   required,
   useGetIdentity,
   email,
+  maxLength,
+  regex,
   useDataProvider,
   CheckboxGroupInput
 } from 'react-admin';
 import { useFormContext } from 'react-hook-form';
+import ImageInput, { numFiles } from '../../common/input/ImageInput';
 import Markdown from 'markdown-to-jsx';
-import { MarkdownInput } from '@semapps/markdown-components';
-import { ImageInput } from '@semapps/input-components';
 import { OrganizationOrPlaceInput, TypeInput, StatusInput } from '../../common/input';
 import DateTimeInput from '../../common/input/DateTimeInput';
 import useAccountType from '../../hooks/useAccountType';
 import LocationInput from '../../common/input/LocationInput';
 import { TYPE_ANNONCE_AGENDA, TYPE_ANNONCE_EMPLOI } from '../../constants';
+
+// const toolbarCommands = [
+//   ['header', 'bold', 'italic', 'strikethrough'],
+//   ['link'],
+//   ['unordered-list', 'ordered-list']
+// ];
 
 const max6months = value => {
   let date = new Date();
@@ -115,7 +121,7 @@ const OfferAndNeedForm = ({ isCreate }) => {
 
   return (
     <>
-      <TextInput source="pair:label" fullWidth validate={[required()]} />
+      <TextInput source="pair:label" fullWidth validate={[required(), maxLength(100)]} />
       {accountType !== 'agent' && (
         <TypeInput
           source="pair:hasType"
@@ -138,12 +144,21 @@ const OfferAndNeedForm = ({ isCreate }) => {
           filter={accountType === 'admin' ? {} : { 'pair:affiliates': identity?.id }}
         />
       )}
-      <MarkdownInput source="pair:description" fullWidth validate={[required()]} />
+      <TextInput source="pair:description" fullWidth validate={[required(), maxLength(50_000)]} multiline rows={10} />
       <LocationInput source="pair:hasPostalAddress" validate={[required()]} fullWidth />
-      <TextInput source="pair:homePage" fullWidth />
-      <ImageInput source="pair:depictedBy" accept="image/*" validate={[required()]}>
-        <ImageField source="src" />
-      </ImageInput>
+      <TextInput
+        source="pair:homePage"
+        fullWidth
+        placeholder="https://"
+        validate={[
+          regex(
+            /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z0-9\u00a1-\uffff][a-z0-9\u00a1-\uffff_-]{0,62})?[a-z0-9\u00a1-\uffff]\.)+(?:[a-z\u00a1-\uffff]{2,}\.?))(?::\d{2,5})?(?:[/?#]\S*)?$/i,
+            'Seules les URLs de type https:// sont autorisés'
+          ),
+          maxLength(2048)
+        ]}
+      />
+      <ImageInput source="pair:depictedBy" validate={[required(), numFiles(2, 10)]} />
       {formData['pair:hasType'] === TYPE_ANNONCE_AGENDA ? (
         <>
           <DateTimeInput source="pair:startDate" validate={[required(), futureDate]} />
@@ -157,7 +172,11 @@ const OfferAndNeedForm = ({ isCreate }) => {
         />
       )}
       <TextInput source="pair:e-mail" fullWidth validate={[required(), email()]} />
-      <TextInput source="pair:phone" fullWidth validate={[required()]} />
+      <TextInput
+        source="pair:phone"
+        fullWidth
+        validate={[regex(/[0-9 +()]+/gm, 'Seuls les chiffres et les espaces sont autorisés')]}
+      />
       {accountType === 'agent' && isCreate && (
         <CheckboxGroupInput
           source="payment"

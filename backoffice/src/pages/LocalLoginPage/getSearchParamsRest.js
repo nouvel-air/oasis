@@ -1,4 +1,4 @@
-const USED_SEARCH_PARAMS = ['signup', 'reset_password', 'new_password', 'email', 'force-email'];
+const USED_SEARCH_PARAMS = ['signup', 'reset_password', 'new_password', 'email', 'force-email', 'type'];
 
 const getSearchParamsRest = searchParams => {
   const rest = [];
