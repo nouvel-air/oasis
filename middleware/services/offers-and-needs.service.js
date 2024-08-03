@@ -27,7 +27,6 @@ module.exports = {
         }
       },
       async put(ctx) {
-        const webId = ctx.meta.webId;
         const oldResource = await this.actions.get(
           {
             resourceUri: ctx.params.resource['@id'] || ctx.params.resource.id,
@@ -41,7 +40,10 @@ module.exports = {
           oldResource['cdlt:hasPublicationStatus'] === STATUS_MODERATED &&
           ctx.params.resource['cdlt:hasPublicationStatus'] === STATUS_PUBLISHED
         ) {
-          await ctx.call('mailer.offerAndNeedValidated', { webId, resource: ctx.params.resource });
+          await ctx.call('mailer.offerAndNeedValidated', {
+            webId: ctx.params.resource['dc:creator'],
+            resource: ctx.params.resource
+          });
         }
       }
     },
