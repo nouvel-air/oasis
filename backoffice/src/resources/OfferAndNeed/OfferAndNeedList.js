@@ -3,7 +3,9 @@ import { SimpleList, Datagrid, TextField, EditButton, useGetIdentity, List } fro
 import { ReferenceField } from '@semapps/field-components';
 import { useMediaQuery } from '@mui/material';
 import useAccountType from '../../hooks/useAccountType';
-import { arrayOf, offeredByFilter } from '../../utils';
+import { arrayOf } from '../../utils';
+import { offeredByFilter } from '../../queries';
+import OfferAndNeedSidebar from './OfferAndNeedSidebar';
 
 const OfferAndNeedList = props => {
   const { identity } = useGetIdentity();
@@ -14,6 +16,7 @@ const OfferAndNeedList = props => {
   return (
     <List
       filter={accountType === 'admin' ? {} : { sparqlWhere: offeredByFilter(offeredByUris) }}
+      aside={<OfferAndNeedSidebar />}
       perPage={25}
       {...props}
     >

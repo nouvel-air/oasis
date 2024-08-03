@@ -10,25 +10,3 @@ export const arrayOf = value => {
   // Single value is made an array.
   return [value];
 };
-
-export const offeredByFilter = uris => [
-  {
-    type: 'values',
-    values: uris.map(uri => ({
-      '?uri': {
-        termType: 'NamedNode',
-        value: uri
-      }
-    }))
-  },
-  {
-    type: 'bgp',
-    triples: [
-      {
-        subject: { termType: 'Variable', value: 's1' },
-        predicate: { termType: 'NameNode', value: 'http://virtual-assembly.org/ontologies/pair#offeredBy' },
-        object: { termType: 'Variable', value: 'uri' }
-      }
-    ]
-  }
-];

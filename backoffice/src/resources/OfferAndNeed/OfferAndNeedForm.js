@@ -17,6 +17,7 @@ import DateTimeInput from '../../common/input/DateTimeInput';
 import useAccountType from '../../hooks/useAccountType';
 import LocationInput from '../../common/input/LocationInput';
 import { TYPE_ANNONCE_AGENDA, TYPE_ANNONCE_EMPLOI } from '../../constants';
+import { filterNoParent } from '../../queries';
 
 // const toolbarCommands = [
 //   ['header', 'bold', 'italic', 'strikethrough'],
@@ -45,37 +46,6 @@ const afterStartDate = (value, allValues) => {
     if (endDate <= startDate) return "Doit être après la date de début de l'événement";
   }
 };
-
-const filterNoParent = [
-  {
-    type: 'filter',
-    expression: {
-      type: 'operation',
-      operator: 'notexists',
-      args: [
-        {
-          type: 'bgp',
-          triples: [
-            {
-              subject: {
-                termType: 'Variable',
-                value: 's1'
-              },
-              predicate: {
-                termType: 'NamedNode',
-                value: 'http://virtual-assembly.org/ontologies/pair#partOf'
-              },
-              object: {
-                termType: 'Variable',
-                value: 'parent'
-              }
-            }
-          ]
-        }
-      ]
-    }
-  }
-];
 
 const MarkdownChoice = ({ name }) => {
   return (

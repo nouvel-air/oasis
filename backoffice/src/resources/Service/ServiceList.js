@@ -3,7 +3,8 @@ import { SimpleList, Datagrid, TextField, EditButton, useGetIdentity, List } fro
 import { ReferenceField } from '@semapps/field-components';
 import { useMediaQuery } from '@mui/material';
 import useAccountType from '../../hooks/useAccountType';
-import { arrayOf, offeredByFilter } from '../../utils';
+import { arrayOf } from '../../utils';
+import { offeredByFilter } from '../../queries';
 
 const ServiceList = props => {
   const accountType = useAccountType();
