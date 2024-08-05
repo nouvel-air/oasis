@@ -5,7 +5,7 @@ import { grey } from '@mui/material/colors';
 
 export const numFiles = (min, max) => value => {
   if (!value || typeof value === 'string' || value.length < min) {
-    return `Mimum ${min} images requises`;
+    return `Minimum ${min} images requises`;
   } else if (value.length > max) {
     return `Maximum ${max} images autorisées`;
   } else {
@@ -17,6 +17,7 @@ const ImageInput = props => (
   <SemAppsImageInput
     accept="image/png, image/jpeg, image/gif"
     maxSize={2000000}
+    placeholder="Déposez les images à uploader, ou cliquez pour en sélectionner (taille maximale: 2Mb)"
     sx={{
       '& .RaFileInput-dropZone': {
         bgcolor: grey[200],
@@ -25,10 +26,12 @@ const ImageInput = props => (
         borderStyle: 'solid',
         textAlign: 'left',
         paddingLeft: '12px',
-        color: grey[600]
+        color: grey[600],
+        padding: '14px'
       }
     }}
     multiple
+    options={{}}
     {...props}
   >
     <ImageField source="src" />

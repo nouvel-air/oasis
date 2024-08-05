@@ -1,5 +1,6 @@
 import React from 'react';
-import { SimpleList, Datagrid, TextField, EditButton, useGetIdentity, List } from 'react-admin';
+import { SimpleList, Datagrid, TextField, EditButton, useGetIdentity } from 'react-admin';
+import { ListWithPermissions } from '@semapps/auth-provider';
 import { ReferenceField } from '@semapps/field-components';
 import { useMediaQuery } from '@mui/material';
 import useAccountType from '../../hooks/useAccountType';
@@ -10,7 +11,11 @@ const OrganizationList = props => {
   const { identity } = useGetIdentity();
   if (!identity?.id) return null;
   return (
-    <List filter={accountType === 'admin' ? {} : { 'pair:affiliates': identity?.id }} perPage={25} {...props}>
+    <ListWithPermissions
+      filter={accountType === 'admin' ? {} : { 'pair:affiliates': identity?.id }}
+      perPage={25}
+      {...props}
+    >
       {xs ? (
         <SimpleList
           primaryText="%{pair:label}"
@@ -30,7 +35,7 @@ const OrganizationList = props => {
           <EditButton />
         </Datagrid>
       )}
-    </List>
+    </ListWithPermissions>
   );
 };
 

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { SimpleList, Datagrid, TextField, EditButton, useGetIdentity, useRedirect, List } from 'react-admin';
+import { SimpleList, Datagrid, TextField, EditButton, useGetIdentity, useRedirect } from 'react-admin';
+import { ListWithPermissions } from '@semapps/auth-provider';
 import { ReferenceField } from '@semapps/field-components';
 import { useMediaQuery } from '@mui/material';
 import useAccountType from '../../hooks/useAccountType';
@@ -19,7 +20,7 @@ const PersonList = props => {
   if (accountType !== 'admin') return null;
 
   return (
-    <List perPage={25} {...props}>
+    <ListWithPermissions perPage={25} {...props}>
       {xs ? (
         <SimpleList
           primaryText="%{pair:label}"
@@ -39,7 +40,7 @@ const PersonList = props => {
           <EditButton />
         </Datagrid>
       )}
-    </List>
+    </ListWithPermissions>
   );
 };
 

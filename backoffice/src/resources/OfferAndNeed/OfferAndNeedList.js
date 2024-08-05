@@ -1,5 +1,6 @@
 import React from 'react';
-import { SimpleList, Datagrid, TextField, EditButton, useGetIdentity, List } from 'react-admin';
+import { SimpleList, Datagrid, TextField, EditButton, useGetIdentity } from 'react-admin';
+import { ListWithPermissions } from '@semapps/auth-provider';
 import { ReferenceField } from '@semapps/field-components';
 import { useMediaQuery } from '@mui/material';
 import useAccountType from '../../hooks/useAccountType';
@@ -14,7 +15,7 @@ const OfferAndNeedList = props => {
   const xs = useMediaQuery(theme => theme.breakpoints.down('sm'));
   if (!identity?.id) return;
   return (
-    <List
+    <ListWithPermissions
       filter={accountType === 'admin' ? {} : { sparqlWhere: offeredByFilter(offeredByUris) }}
       aside={<OfferAndNeedSidebar />}
       perPage={25}
@@ -44,7 +45,7 @@ const OfferAndNeedList = props => {
           <EditButton />
         </Datagrid>
       )}
-    </List>
+    </ListWithPermissions>
   );
 };
 

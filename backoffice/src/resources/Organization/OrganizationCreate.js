@@ -5,7 +5,7 @@ import OrganizationForm from './OrganizationForm';
 const OrganizationCreate = () => (
   <Create>
     <SimpleForm warnWhenUnsavedChanges>
-      <OrganizationForm />
+      <OrganizationForm isCreate />
     </SimpleForm>
   </Create>
 );

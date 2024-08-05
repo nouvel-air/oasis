@@ -2,6 +2,7 @@ import urlJoin from 'url-join';
 
 export const TYPE_ANNONCE_AGENDA = urlJoin(process.env.REACT_APP_MIDDLEWARE_URL, 'types', 'agenda');
 export const TYPE_ANNONCE_EMPLOI = urlJoin(process.env.REACT_APP_MIDDLEWARE_URL, 'types', 'emploi-benevolat');
+export const TYPE_ANNONCE_IMMOBILIER = urlJoin(process.env.REACT_APP_MIDDLEWARE_URL, 'types', 'immobilier');
 
 export const TYPE_ADMIN = urlJoin(process.env.REACT_APP_MIDDLEWARE_URL, 'types', 'admin');
 export const TYPE_ACTOR = urlJoin(process.env.REACT_APP_MIDDLEWARE_URL, 'types', 'actor');

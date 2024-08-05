@@ -7,7 +7,8 @@ import {
   maxLength,
   regex,
   useDataProvider,
-  CheckboxGroupInput
+  CheckboxGroupInput,
+  FormDataConsumer
 } from 'react-admin';
 import { useFormContext } from 'react-hook-form';
 import ImageInput, { numFiles } from '../../common/input/ImageInput';
@@ -71,10 +72,9 @@ const OfferAndNeedForm = ({ isCreate }) => {
   const form = useFormContext();
   const dataProvider = useDataProvider();
 
-  const formData = form.getValues();
-
   useEffect(() => {
     (async () => {
+      const formData = form.getValues();
       if (formData['pair:offeredBy']) {
         const { data } = await dataProvider.getOne('OrganizationOrPlace', { id: formData['pair:offeredBy'] });
         if (data && data['pair:hasPostalAddress'] && !formData['pair:hasPostalAddress']) {
@@ -85,7 +85,7 @@ const OfferAndNeedForm = ({ isCreate }) => {
         }
       }
     })();
-  }, [form, formData, dataProvider]);
+  }, [form, dataProvider]);
 
   if (!identity?.id) return;
 
@@ -100,13 +100,17 @@ const OfferAndNeedForm = ({ isCreate }) => {
           disabled={!isCreate}
         />
       )}
-      {(formData['pair:hasType'] === TYPE_ANNONCE_AGENDA || formData['pair:hasType'] === TYPE_ANNONCE_EMPLOI) && (
-        <TypeInput
-          source="cdlt:hasSubType"
-          filter={{ 'pair:partOf': formData['pair:hasType'] }}
-          validate={[required()]}
-        />
-      )}
+      <FormDataConsumer>
+        {({ formData }) =>
+          (formData['pair:hasType'] === TYPE_ANNONCE_AGENDA || formData['pair:hasType'] === TYPE_ANNONCE_EMPLOI) && (
+            <TypeInput
+              source="cdlt:hasSubType"
+              filter={{ 'pair:partOf': formData['pair:hasType'] }}
+              validate={[required()]}
+            />
+          )
+        }
+      </FormDataConsumer>
       {(accountType === 'actor' || accountType === 'admin') && (
         <OrganizationOrPlaceInput
           source="pair:offeredBy"
@@ -128,19 +132,23 @@ const OfferAndNeedForm = ({ isCreate }) => {
           maxLength(2048)
         ]}
       />
-      <ImageInput source="pair:depictedBy" validate={[required(), numFiles(2, 10)]} />
-      {formData['pair:hasType'] === TYPE_ANNONCE_AGENDA ? (
-        <>
-          <DateTimeInput source="pair:startDate" validate={[required(), futureDate]} />
-          <DateTimeInput source="pair:endDate" validate={[required(), afterStartDate]} />
-        </>
-      ) : (
-        <DateTimeInput
-          source="pair:endDate"
-          label="Date d'expiration"
-          validate={[required(), futureDate, max6months]}
-        />
-      )}
+      <ImageInput source="pair:depictedBy" validate={[required(), numFiles(1, 10)]} />
+      <FormDataConsumer>
+        {({ formData }) =>
+          formData['pair:hasType'] === TYPE_ANNONCE_AGENDA ? (
+            <>
+              <DateTimeInput source="pair:startDate" validate={[required(), futureDate]} />
+              <DateTimeInput source="pair:endDate" validate={[required(), afterStartDate]} />
+            </>
+          ) : (
+            <DateTimeInput
+              source="pair:endDate"
+              label="Date d'expiration"
+              validate={[required(), futureDate, max6months]}
+            />
+          )
+        }
+      </FormDataConsumer>
       <TextInput source="pair:e-mail" fullWidth validate={[required(), email()]} />
       <TextInput
         source="pair:phone"

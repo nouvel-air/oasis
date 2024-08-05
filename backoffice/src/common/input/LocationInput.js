@@ -13,7 +13,7 @@ const LocationInput = props => (
     mapboxConfig={{
       access_token: process.env.REACT_APP_MAPBOX_ACCESS_TOKEN,
       types: ['place', 'address'],
-      country: ['fr', 'be', 'ch']
+      country: ['fr', 'be', 'ch', 'gp', 'mq', 're', 'pf', 'nc', 'gf', 'wf']
     }}
     parse={value => {
       const countryName = extractContext(value.context, 'country');
