@@ -5,10 +5,7 @@ import { STATUS_DRAFT, GROUP_OASIS } from '../../constants';
 
 const PlaceCreate = () => (
   <Create>
-    <SimpleForm
-      defaultValues={{ 'cdlt:hasPublicationStatus': STATUS_DRAFT, 'pair:partOf': GROUP_OASIS }}
-      warnWhenUnsavedChanges
-    >
+    <SimpleForm defaultValues={{ 'cdlt:hasPublicationStatus': STATUS_DRAFT, 'pair:partOf': GROUP_OASIS }}>
       <PlaceForm />
     </SimpleForm>
   </Create>

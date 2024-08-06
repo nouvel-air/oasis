@@ -21,7 +21,7 @@ const ServiceCreate = () => {
       mutationOptions={/*placeUri ? { onSuccess } :*/ undefined}
       redirect={/*placeUri ? false : 'edit'*/ undefined}
     >
-      <SimpleForm warnWhenUnsavedChanges>
+      <SimpleForm>
         <ServiceForm />
       </SimpleForm>
     </Create>

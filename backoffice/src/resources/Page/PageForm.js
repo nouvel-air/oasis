@@ -3,7 +3,7 @@ import { SimpleForm, TextInput } from 'react-admin';
 import { MarkdownInput } from '@semapps/markdown-components';
 
 const PageForm = () => (
-  <SimpleForm warnWhenUnsavedChanges>
+  <SimpleForm>
     <TextInput source="semapps:title" fullWidth />
     <MarkdownInput source="semapps:content" fullWidth />
   </SimpleForm>

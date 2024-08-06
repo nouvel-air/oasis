@@ -5,7 +5,7 @@ import EditToolbar from '../../common/toolbar/EditToolbar';
 
 const OfferAndNeedEdit = () => (
   <Edit redirect="list">
-    <SimpleForm toolbar={<EditToolbar />} warnWhenUnsavedChanges>
+    <SimpleForm toolbar={<EditToolbar />}>
       <OfferAndNeedForm />
     </SimpleForm>
   </Edit>

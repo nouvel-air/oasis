@@ -3,7 +3,7 @@ import { SimpleForm, TextInput, SelectArrayInput, Create } from 'react-admin';
 
 const TypeCreate = () => (
   <Create>
-    <SimpleForm warnWhenUnsavedChanges>
+    <SimpleForm>
       <TextInput source="pair:label" fullWidth />
       <SelectArrayInput
         source="@type"

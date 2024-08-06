@@ -4,12 +4,15 @@ import OfferAndNeedForm from './OfferAndNeedForm';
 import { TYPE_ANNONCE_AGENDA } from '../../constants';
 import useAccountType from '../../hooks/useAccountType';
 
+const defaultValues = () => {
+  const endDate = new Date();
+  endDate.setMonth(endDate.getMonth() + 6);
+  return { 'pair:endDate': endDate };
+};
+
 const OfferAndNeedCreate = () => {
   const { data: identity } = useGetIdentity();
   const accountType = useAccountType();
-
-  const endDate = new Date();
-  endDate.setMonth(endDate.getMonth() + 6);
 
   return (
     <Create
@@ -19,12 +22,7 @@ const OfferAndNeedCreate = () => {
         ...data
       })}
     >
-      <SimpleForm
-        defaultValues={{
-          'pair:endDate': endDate.toISOString()
-        }}
-        warnWhenUnsavedChanges
-      >
+      <SimpleForm defaultValues={defaultValues}>
         <OfferAndNeedForm isCreate />
       </SimpleForm>
     </Create>

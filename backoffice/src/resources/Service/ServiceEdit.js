@@ -4,7 +4,7 @@ import ServiceForm from './ServiceForm';
 
 const ServiceEdit = () => (
   <Edit redirect="list">
-    <SimpleForm warnWhenUnsavedChanges>
+    <SimpleForm>
       <ServiceForm />
     </SimpleForm>
   </Edit>

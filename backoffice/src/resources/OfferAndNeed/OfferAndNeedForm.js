@@ -10,7 +10,7 @@ import {
   CheckboxGroupInput,
   FormDataConsumer
 } from 'react-admin';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 import ImageInput, { numFiles } from '../../common/input/ImageInput';
 import Markdown from 'markdown-to-jsx';
 import { OrganizationOrPlaceInput, TypeInput, StatusInput } from '../../common/input';
@@ -69,23 +69,25 @@ const MarkdownChoice = ({ name }) => {
 const OfferAndNeedForm = ({ isCreate }) => {
   const accountType = useAccountType();
   const { identity } = useGetIdentity();
-  const form = useFormContext();
+  const { setValue, getValues } = useFormContext();
   const dataProvider = useDataProvider();
+
+  const offeredByUri = useWatch({ name: 'pair:offeredBy' });
 
   useEffect(() => {
     (async () => {
-      const formData = form.getValues();
-      if (formData['pair:offeredBy']) {
-        const { data } = await dataProvider.getOne('OrganizationOrPlace', { id: formData['pair:offeredBy'] });
+      if (offeredByUri) {
+        const formData = getValues();
+        const { data } = await dataProvider.getOne('OrganizationOrPlace', { id: offeredByUri });
         if (data && data['pair:hasPostalAddress'] && !formData['pair:hasPostalAddress']) {
-          form.setValue('pair:hasPostalAddress', data['pair:hasPostalAddress']);
+          setValue('pair:hasPostalAddress', data['pair:hasPostalAddress']);
         }
         if (data && data['pair:e-mail'] && !formData['pair:e-mail']) {
-          form.setValue('pair:e-mail', data['pair:e-mail']);
+          setValue('pair:e-mail', data['pair:e-mail']);
         }
       }
     })();
-  }, [form, dataProvider]);
+  }, [offeredByUri, setValue, getValues, dataProvider]);
 
   if (!identity?.id) return;
 
@@ -153,7 +155,7 @@ const OfferAndNeedForm = ({ isCreate }) => {
       <TextInput
         source="pair:phone"
         fullWidth
-        validate={[regex(/[0-9 +()]+/gm, 'Seuls les chiffres et les espaces sont autorisés')]}
+        validate={[regex(/^[\d\s\+\(\)]*$/, 'Seuls les chiffres et les espaces sont autorisés')]}
       />
       {accountType === 'agent' && isCreate && (
         <CheckboxGroupInput

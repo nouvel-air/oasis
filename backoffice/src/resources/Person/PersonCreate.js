@@ -6,7 +6,7 @@ const PersonCreate = () => (
   <Create
     transform={data => ({ ...data, 'pair:label': `${data['pair:firstName']} ${data['pair:lastName']?.toUpperCase()}` })}
   >
-    <SimpleForm warnWhenUnsavedChanges>
+    <SimpleForm>
       <PersonForm isCreate />
     </SimpleForm>
   </Create>

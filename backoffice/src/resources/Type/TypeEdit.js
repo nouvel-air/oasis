@@ -3,7 +3,7 @@ import { SimpleForm, TextInput, Edit } from 'react-admin';
 
 export const ThemeEdit = () => (
   <Edit>
-    <SimpleForm warnWhenUnsavedChanges>
+    <SimpleForm>
       <TextInput source="pair:label" fullWidth />
     </SimpleForm>
   </Edit>

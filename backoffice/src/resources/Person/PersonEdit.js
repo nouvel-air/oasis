@@ -7,7 +7,7 @@ export const PersonEdit = () => (
   <Edit
     transform={data => ({ ...data, 'pair:label': `${data['pair:firstName']} ${data['pair:lastName']?.toUpperCase()}` })}
   >
-    <SimpleForm toolbar={<PersonToolbar />} warnWhenUnsavedChanges>
+    <SimpleForm toolbar={<PersonToolbar />}>
       <PersonForm />
     </SimpleForm>
   </Edit>

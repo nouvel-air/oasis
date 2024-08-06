@@ -5,7 +5,7 @@ import EditToolbar from '../../common/toolbar/EditToolbar';
 
 export const OrganizationEdit = () => (
   <Edit>
-    <SimpleForm toolbar={<EditToolbar adminOnlyDelete />} warnWhenUnsavedChanges>
+    <SimpleForm toolbar={<EditToolbar adminOnlyDelete />}>
       <OrganizationForm />
     </SimpleForm>
   </Edit>

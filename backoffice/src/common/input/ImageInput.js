@@ -2,11 +2,13 @@ import React from 'react';
 import { ImageField } from 'react-admin';
 import { ImageInput as SemAppsImageInput } from '@semapps/input-components';
 import { grey } from '@mui/material/colors';
+import { arrayOf } from '../../utils';
 
 export const numFiles = (min, max) => value => {
-  if (!value || typeof value === 'string' || value.length < min) {
+  const files = arrayOf(value);
+  if (files.length < min) {
     return `Minimum ${min} images requises`;
-  } else if (value.length > max) {
+  } else if (files.length > max) {
     return `Maximum ${max} images autorisées`;
   } else {
     return undefined;
