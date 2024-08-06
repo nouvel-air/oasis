@@ -14,7 +14,7 @@ module.exports = {
           SELECT ?resourceUri
           WHERE {
               ?resourceUri pair:endDate ?expirationTime .
-              ?resourceUri cdlt:hasPublicationStatus "${STATUS_PUBLISHED}" .
+              ?resourceUri cdlt:hasPublicationStatus <${STATUS_PUBLISHED}> .
               FILTER(NOW() > ?expirationTime) .
           }
         `,
