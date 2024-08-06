@@ -72,7 +72,7 @@ module.exports = {
         const account = await ctx.call('auth.account.findByWebId', { webId });
 
         if (account.emailVerificationToken !== token || account.email !== email) {
-          return this.htmlMessage('Token ou adresse mail invalide');
+          return this.htmlMessage(ctx, 'Token ou adresse mail invalide');
         } else {
           await ctx.call('ldp.resource.patch', {
             resourceUri: webId,
@@ -108,6 +108,7 @@ module.exports = {
       }
 
       return this.htmlMessage(
+        ctx,
         'Votre adresse mail est bien vérifiée. Veuillez attendre la validation de votre compte par mail.'
       );
     },
@@ -120,7 +121,7 @@ module.exports = {
         const account = await ctx.call('auth.account.findByWebId', { webId });
 
         if (account.membershipVerificationToken !== token) {
-          return this.htmlMessage('Token invalide');
+          return this.htmlMessage(ctx, 'Token invalide');
         } else {
           await ctx.call('ldp.resource.patch', {
             resourceUri: webId,
@@ -147,7 +148,7 @@ module.exports = {
         }
       }
 
-      return this.htmlMessage('Le compte a bien été validé.');
+      return this.htmlMessage(ctx, 'Le compte a bien été validé.');
     },
     async generateEmailVerificationToken(ctx) {
       const { webId } = ctx.params;
@@ -186,7 +187,7 @@ module.exports = {
         });
       });
     },
-    htmlMessage(message) {
+    htmlMessage(ctx, message) {
       ctx.meta.$responseType = 'text/html';
       return `
         <html lang="fr">
