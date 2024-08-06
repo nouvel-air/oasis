@@ -11,9 +11,11 @@ const departments = require('../config/departments.json');
 const transformDate = isoDate => isoDate.substring(0, 10).replaceAll('-', '/');
 
 const getDepartmentFromZipCode = zip => {
-  const departmentNumber = zip.slice(0, 2);
-  const department = departments.find(d => d.num_dep.toString() === departmentNumber);
-  if (department) return department.dep_name;
+  if (zip) {
+    const departmentNumber = zip.slice(0, 2);
+    const department = departments.find(d => d.num_dep.toString() === departmentNumber);
+    if (department) return department.dep_name;
+  }
 };
 
 const mapUrlToWordpressId = (uri, mapping) => {
@@ -100,7 +102,9 @@ module.exports = {
           nom_du_lieu: isHostingService ? organization['pair:label'] : postalAddress?.['pair:label'],
           adresse: postalAddress?.['pair:addressStreet'],
           code_postal:
-            postalAddress?.['pair:addressZipCode'].length === 5 ? postalAddress?.['pair:addressZipCode'] : undefined,
+            postalAddress?.['pair:addressZipCode'] && postalAddress?.['pair:addressZipCode'].length === 5
+              ? postalAddress?.['pair:addressZipCode']
+              : undefined,
           ville: postalAddress?.['pair:addressLocality'],
           departement: getDepartmentFromZipCode(postalAddress?.['pair:addressZipCode']),
           latitude: postalAddress ? `${postalAddress['pair:latitude']}` : undefined,
