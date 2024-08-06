@@ -31,7 +31,10 @@ const regionsMapping = {
   109: 'nouvelle-aquitaine',
   110: 'occitanie',
   111: 'pays-de-la-loire',
-  112: 'provence-alpes-cote-d-azur'
+  112: 'provence-alpes-cote-d-azur',
+  122: 'suisse',
+  123: 'belgique',
+  124: 'dom-tom'
 };
 
 module.exports = {
