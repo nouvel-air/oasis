@@ -117,7 +117,10 @@ module.exports = {
       };
     },
     async fetchApi(url, options = {}) {
-      if (!CONFIG.WORDPRESS_API_BASE) this.logger.info('Wordpress synchronization has been disabled, skipping...');
+      if (!CONFIG.WORDPRESS_API_BASE) {
+        this.logger.info('Wordpress synchronization has been disabled, skipping...');
+        return;
+      }
 
       let headers = options.headers || {};
       headers['Authorization'] = `Basic ${Buffer.from(
