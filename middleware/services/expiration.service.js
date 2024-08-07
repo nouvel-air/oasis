@@ -5,8 +5,23 @@ const { STATUS_EXPIRED, STATUS_PUBLISHED } = require('../constants');
 module.exports = {
   name: 'expiration',
   mixins: [CronMixin],
+  settings: {
+    cronJobs: [
+      {
+        name: 'expirationCheck',
+        cronTime: '*/2 * * * *',
+        onTick: async function () {
+          console.log('checking');
+          await this.broker.call('expiration.tagExpired');
+        },
+        timeZone: 'Europe/Paris'
+      }
+    ]
+  },
   actions: {
     async tagExpired(ctx) {
+      this.logger.info(`Checking for expired offers or needs...`);
+
       const results = await ctx.call('triplestore.query', {
         query: `
           PREFIX pair: <http://virtual-assembly.org/ontologies/pair#>
@@ -44,14 +59,5 @@ module.exports = {
         ctx.emit('expiration.expired', { resourceUri });
       }
     }
-  },
-  crons: [
-    {
-      cronTime: '*/15 * * * *',
-      onTick: function () {
-        this.call('expiration.tagExpired');
-      },
-      timeZone: 'Europe/Paris'
-    }
-  ]
+  }
 };
