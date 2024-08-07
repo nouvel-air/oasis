@@ -69,9 +69,10 @@ const MarkdownChoice = ({ name }) => {
 const OfferAndNeedForm = ({ isCreate }) => {
   const accountType = useAccountType();
   const { identity } = useGetIdentity();
-  const { setValue, getValues } = useFormContext();
+  const { setValue, getValues, resetField } = useFormContext();
   const dataProvider = useDataProvider();
 
+  const categoryUri = useWatch({ name: 'pair:hasType' });
   const offeredByUri = useWatch({ name: 'pair:offeredBy' });
 
   useEffect(() => {
@@ -88,6 +89,25 @@ const OfferAndNeedForm = ({ isCreate }) => {
       }
     })();
   }, [offeredByUri, setValue, getValues, dataProvider]);
+
+  useEffect(() => {
+    (async () => {
+      if (categoryUri) {
+        if (categoryUri === TYPE_ANNONCE_AGENDA) {
+          resetField('pair:startDate');
+          resetField('pair:endDate');
+        } else {
+          const formData = getValues();
+          // If the expiration date is not set yet, set it in 6 months
+          if (!formData['pair:endDate']) {
+            const endDate = new Date();
+            endDate.setMonth(endDate.getMonth() + 6);
+            setValue('pair:endDate', endDate.toISOString());
+          }
+        }
+      }
+    })();
+  }, [categoryUri, setValue, resetField, getValues]);
 
   if (!identity?.id) return;
 
@@ -155,7 +175,7 @@ const OfferAndNeedForm = ({ isCreate }) => {
       <TextInput
         source="pair:phone"
         fullWidth
-        validate={[regex(/^[\d\s\+\(\)]*$/, 'Seuls les chiffres et les espaces sont autorisés')]}
+        validate={[regex(/^[\d\s+()]*$/, 'Seuls les chiffres et les espaces sont autorisés')]}
       />
       {accountType === 'agent' && isCreate && (
         <CheckboxGroupInput

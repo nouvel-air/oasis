@@ -1,14 +1,8 @@
 import React from 'react';
 import { Create, SimpleForm, useGetIdentity } from 'react-admin';
 import OfferAndNeedForm from './OfferAndNeedForm';
-import { TYPE_ANNONCE_AGENDA } from '../../constants';
+import { TYPE_ANNONCE_AGENDA, TYPE_ANNONCE_IMMOBILIER } from '../../constants';
 import useAccountType from '../../hooks/useAccountType';
-
-const defaultValues = () => {
-  const endDate = new Date();
-  endDate.setMonth(endDate.getMonth() + 6);
-  return { 'pair:endDate': endDate };
-};
 
 const OfferAndNeedCreate = () => {
   const { data: identity } = useGetIdentity();
@@ -22,7 +16,7 @@ const OfferAndNeedCreate = () => {
         ...data
       })}
     >
-      <SimpleForm defaultValues={defaultValues}>
+      <SimpleForm defaultValues={accountType === 'agent' ? { 'pair:hasType': TYPE_ANNONCE_IMMOBILIER } : {}}>
         <OfferAndNeedForm isCreate />
       </SimpleForm>
     </Create>
