@@ -111,12 +111,15 @@ module.exports = {
           longitude: postalAddress ? `${postalAddress['pair:longitude']}` : undefined,
           propose_par: organization['pair:label'],
           lien: isHostingService ? data['cdlt:registrationLink'] : data['pair:homePage'],
-          images: null,
+          image_principale: arrayOf(data['pair:depictedBy'])[0], // First image
           mail: isHostingService ? organization['pair:e-mail'] : data['pair:e-mail'],
           telephone: data['pair:phone'],
           date_expiration: isHostingService ? undefined : transformDate(data['pair:endDate']),
           date_debut: isEvent ? transformDate(data['pair:startDate']) : undefined,
           date_fin: isEvent ? transformDate(data['pair:endDate']) : undefined
+        },
+        yoast_meta: {
+          yoast_wpseo_metadesc: content.length > 140 ? `${content.substring(0, 137)}...` : content
         }
       };
     },
