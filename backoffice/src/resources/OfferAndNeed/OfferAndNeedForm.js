@@ -154,7 +154,12 @@ const OfferAndNeedForm = ({ isCreate }) => {
           maxLength(2048)
         ]}
       />
-      <ImageInput source="pair:depictedBy" validate={[required(), numFiles(1, 10)]} />
+      <ImageInput
+        source="pair:depictedBy"
+        validate={[required(), numFiles(1, 1)]}
+        multiple={false}
+        placeholder="Déposez ici l'image à uploader, ou cliquez pour en sélectionner (taille maximale: 2Mb)"
+      />
       <FormDataConsumer>
         {({ formData }) =>
           formData['pair:hasType'] === TYPE_ANNONCE_AGENDA ? (
