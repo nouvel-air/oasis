@@ -109,6 +109,9 @@ module.exports = {
           departement: getDepartmentFromZipCode(postalAddress?.['pair:addressZipCode']),
           latitude: postalAddress ? `${postalAddress['pair:latitude']}` : undefined,
           longitude: postalAddress ? `${postalAddress['pair:longitude']}` : undefined,
+          latitude_longitude: postalAddress
+            ? `${postalAddress['pair:latitude']}, ${postalAddress['pair:longitude']}`
+            : undefined,
           propose_par: organization['pair:label'],
           lien: isHostingService ? data['cdlt:registrationLink'] : data['pair:homePage'],
           image_principale: arrayOf(data['pair:depictedBy'])[0], // First image
