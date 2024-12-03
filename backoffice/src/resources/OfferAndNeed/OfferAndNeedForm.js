@@ -5,15 +5,15 @@ import {
   useGetIdentity,
   email,
   maxLength,
+  minLength,
   regex,
   useDataProvider,
-  CheckboxGroupInput,
-  FormDataConsumer
+  FormDataConsumer,
+  BooleanInput
 } from 'react-admin';
 import { useFormContext, useWatch } from 'react-hook-form';
 import ImageInput, { numFiles } from '../../common/input/ImageInput';
-import Markdown from 'markdown-to-jsx';
-import { OrganizationOrPlaceInput, TypeInput, StatusInput } from '../../common/input';
+import { PersonOrganizationOrPlaceInput, OrganizationOrPlaceInput, TypeInput, StatusInput } from '../../common/input';
 import DateTimeInput from '../../common/input/DateTimeInput';
 import useAccountType from '../../hooks/useAccountType';
 import LocationInput from '../../common/input/LocationInput';
@@ -46,24 +46,6 @@ const afterStartDate = (value, allValues) => {
     const startDate = new Date(allValues['pair:startDate']);
     if (endDate <= startDate) return "Doit être après la date de début de l'événement";
   }
-};
-
-const MarkdownChoice = ({ name }) => {
-  return (
-    <Markdown
-      options={{
-        overrides: {
-          a: {
-            props: {
-              target: '_blank'
-            }
-          }
-        }
-      }}
-    >
-      {name}
-    </Markdown>
-  );
 };
 
 const OfferAndNeedForm = ({ isCreate }) => {
@@ -133,14 +115,21 @@ const OfferAndNeedForm = ({ isCreate }) => {
           )
         }
       </FormDataConsumer>
-      {(accountType === 'actor' || accountType === 'admin') && (
+      {accountType === 'actor' && (
         <OrganizationOrPlaceInput
           source="pair:offeredBy"
           validate={[required()]}
-          filter={accountType === 'admin' ? {} : { 'pair:affiliates': identity?.id }}
+          filter={{ 'pair:affiliates': identity?.id }}
         />
       )}
-      <TextInput source="pair:description" fullWidth validate={[required(), maxLength(50_000)]} multiline rows={10} />
+      {accountType === 'admin' && <PersonOrganizationOrPlaceInput source="pair:offeredBy" validate={[required()]} />}
+      <TextInput
+        source="pair:description"
+        fullWidth
+        validate={[required(), maxLength(50_000), minLength(50)]}
+        multiline
+        rows={10}
+      />
       <LocationInput source="pair:hasPostalAddress" validate={[required()]} fullWidth />
       <TextInput
         source="pair:homePage"
@@ -181,28 +170,39 @@ const OfferAndNeedForm = ({ isCreate }) => {
         fullWidth
         validate={[regex(/^[\d\s+()]*$/, 'Seuls les chiffres et les espaces sont autorisés')]}
       />
-      {accountType === 'agent' && isCreate && (
-        <CheckboxGroupInput
-          source="payment"
-          choices={[
-            {
-              id: 'yes',
-              name: 'Je certifie avoir payé XXX€ via [HelloAsso](https://www.helloasso.com/associations/cooperative-oasis). Mon annonce sera validée une fois le paiement vérifié.'
-            }
-          ]}
-          label={false}
-          validate={required()}
-          optionText={MarkdownChoice}
-        />
-      )}
       {accountType === 'admin' && (
         <StatusInput
           source="cdlt:hasPublicationStatus"
           filter={{ a: 'cdlt:PublicationStatus' }}
           label={false}
           validate={[required()]}
+          // sx={{ '& p': { display: 'none' }, marginTop: -0.5 }}
         />
       )}
+      {accountType === 'agent' && isCreate && (
+        <BooleanInput
+          source="cdlt:paymentAccepted"
+          label={
+            <span>
+              Je certifie avoir payé XXX€ via{' '}
+              <a href="https://www.helloasso.com/associations/cooperative-oasis">HelloAsso</a>. Mon annonce sera validée
+              une fois le paiement vérifié.
+            </span>
+          }
+          required
+          sx={{ '& p': { display: 'none' } }}
+        />
+      )}
+      <BooleanInput
+        source="cdlt:publishOnEcovillageGlobal"
+        label={
+          <span>
+            Je souhaite que mon annonce soit diffusée sur <a href="https://ecovillageglobal.fr/">Ecovillage Global</a>.
+            J'accepte d'être contacté à ce sujet.
+          </span>
+        }
+        sx={{ '& p': { display: 'none' } }}
+      />
     </>
   );
 };

@@ -37,8 +37,16 @@ const regionsMapping = {
   124: 'dom-tom'
 };
 
+const countriesMapping = {
+  France: 'FR',
+  Suisse: 'CH',
+  Belgique: 'BE',
+  Canada: 'CA'
+};
+
 module.exports = {
   categoriesMapping,
   tagsMapping,
-  regionsMapping
+  regionsMapping,
+  countriesMapping
 };

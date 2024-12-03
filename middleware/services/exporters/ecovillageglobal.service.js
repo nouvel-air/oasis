@@ -1,8 +1,9 @@
 const { namedNode, triple } = require('@rdfjs/data-model');
-const { hasType } = require('@semapps/ldp');
+const { hasType, arrayOf } = require('@semapps/ldp');
 const { MIME_TYPES } = require('@semapps/mime-types');
 const ExporterMixin = require('./exporter.mixin');
 const { STATUS_PUBLISHED } = require('../../constants');
+const { countriesMapping } = require('../../mappings');
 const CONFIG = require('../../config/config');
 
 const transformDate = isoDate => isoDate.substring(0, 10).replaceAll('-', '/');
@@ -19,6 +20,11 @@ module.exports = {
   },
   methods: {
     async transform(data) {
+      if (!data['cdlt:publishOnEcovillageGlobal']) {
+        this.logger.info(`Owner chose not to publish on ecovillage global, skipping...`);
+        return false;
+      }
+
       const isHostingService = hasType(data, 'cdlt:HostingService');
       const isEvent = hasType(data, 'pair:Event');
 
@@ -28,11 +34,11 @@ module.exports = {
         webId: 'system'
       });
 
-      const creator = await this.broker.call('ldp.resource.get', {
-        resourceUri: data['dc:creator'],
-        accept: MIME_TYPES.JSON,
-        webId: 'system'
-      });
+      // const creator = await this.broker.call('ldp.resource.get', {
+      //   resourceUri: data['dc:creator'],
+      //   accept: MIME_TYPES.JSON,
+      //   webId: 'system'
+      // });
 
       const publicationStatus = isHostingService
         ? organization['cdlt:hasPublicationStatus']
@@ -47,13 +53,16 @@ module.exports = {
         ? `${data['pair:description']}\n\nCapacité: ${data['cdlt:capacity']}\nPrix: ${data['cdlt:price']}`
         : data['pair:description'];
 
+      const categoryName = await this.getCategoryName(data);
+      const subCategoryName = await this.getSubCategoryName(data);
+
       // https://annuel2.framapad.org/p/api_sync_evg-r0d49?lang=fr
       return {
         titre: data['pair:label'],
         texte: content,
         contact: {
-          prenom: creator['pair:firstName'],
-          nom: creator['pair:lastName'],
+          // prenom: creator['pair:firstName'],
+          // nom: creator['pair:lastName'],
           structure: organization['pair:label'],
           adresse: postalAddress?.['pair:addressStreet'],
           cp:
@@ -61,17 +70,18 @@ module.exports = {
               ? postalAddress?.['pair:addressZipCode']
               : undefined,
           ville: postalAddress?.['pair:addressLocality'],
-          pays: postalAddress?.['pair:addressCountry'],
+          pays: countriesMapping[postalAddress?.['pair:addressCountry']],
           tel: data['pair:phone'],
-          email: isHostingService ? organization['pair:e-mail'] : data['pair:e-mail']
+          email: isHostingService ? organization['pair:e-mail'] : data['pair:e-mail'],
+          site: isHostingService ? data['cdlt:registrationLink'] : data['pair:homePage']
         },
         sync_ref: data.id,
-        texte_court: content.length > 140 ? `${content.substring(0, 137)}...` : content,
+        texte_court: content.length > 600 ? `${content.substring(0, 597)}...` : content,
         evenement_debut: isEvent ? transformDate(data['pair:startDate']) : undefined,
         evenement_fin: isEvent ? transformDate(data['pair:endDate']) : undefined,
-        categorie: data['pair:hasType'],
-        themes: data['cdlt:hasSubType'],
-        type_annonceur: 'externe'
+        categorie: categoryName,
+        themes: subCategoryName,
+        documents: arrayOf(data['pair:depictedBy'])
       };
     },
     async create(resourceUri, transformedData) {
@@ -85,8 +95,8 @@ module.exports = {
         body: JSON.stringify(transformedData)
       });
 
-      if (result.id_annonce) {
-        const remoteUrl = `${this.settings.remoteApi.baseUrl}/${result.id_annonce}`;
+      if (result.ressource) {
+        const remoteUrl = `${this.settings.remoteApi.baseUrl}/${result.ressource.id_annonce}`;
 
         await this.broker.call('ldp.resource.patch', {
           resourceUri: resourceUri,
@@ -120,6 +130,35 @@ module.exports = {
       await this.fetchApi(remoteUrl, {
         method: 'DELETE'
       });
+    },
+    async getCategoryName(data) {
+      if (hasType(data, 'cdlt:HostingService')) {
+        return "Offre d'hébergement";
+      } else {
+        const category = await this.broker.call('ldp.resource.get', {
+          resourceUri: data['pair:hasType'],
+          accept: MIME_TYPES.JSON,
+          webId: 'system'
+        });
+        return category['pair:label'];
+      }
+    },
+    async getSubCategoryName(data) {
+      if (hasType(data, 'cdlt:HostingService')) {
+        const category = await this.broker.call('ldp.resource.get', {
+          resourceUri: data['cdlt:hasServiceType'],
+          accept: MIME_TYPES.JSON,
+          webId: 'system'
+        });
+        return category['pair:label'];
+      } else {
+        const category = await this.broker.call('ldp.resource.get', {
+          resourceUri: data['cdlt:hasSubType'],
+          accept: MIME_TYPES.JSON,
+          webId: 'system'
+        });
+        return category['pair:label'];
+      }
     }
   }
 };

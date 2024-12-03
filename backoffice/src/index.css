@@ -16,3 +16,7 @@ code {
 button[aria-label="Permissions"] {
   display: none;
 }
+
+a {
+  color: blue;
+}

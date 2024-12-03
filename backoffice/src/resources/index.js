@@ -8,5 +8,6 @@ export { default as Type } from './Type';
 
 // Non-editable resources
 export { default as Group } from './Group';
+export { default as PersonOrganizationOrPlace } from './PersonOrganizationOrPlace';
 export { default as OrganizationOrPlace } from './OrganizationOrPlace';
 export { default as Status } from './Status';

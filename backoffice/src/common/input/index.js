@@ -58,9 +58,9 @@ export const TypeInput = ({ validate, disabled, ...rest }) => (
   </ReferenceInput>
 );
 
-export const StatusInput = ({ validate, label, disabled, ...rest }) => (
+export const StatusInput = ({ validate, label, disabled, sx, ...rest }) => (
   <ReferenceInput reference="Status" perPage={1000} sort={{ field: 'pair:label', order: 'ASC' }} {...rest}>
-    <RadioButtonGroupInput optionText="pair:label" label={label} disabled={disabled} validate={validate} />
+    <RadioButtonGroupInput optionText="pair:label" label={label} disabled={disabled} validate={validate} sx={sx} />
   </ReferenceInput>
 );
 
@@ -72,6 +72,24 @@ export const StatusesInput = ({ validate, label, helperText, ...rest }) => (
 
 export const OrganizationInput = ({ validate, label, disabled, helperText, ...rest }) => (
   <ReferenceInput reference="Organization" perPage={1000} sort={{ field: 'pair:label', order: 'ASC' }} {...rest}>
+    <SelectInput
+      optionText="pair:label"
+      validate={validate}
+      label={label}
+      disabled={disabled}
+      helperText={helperText}
+      fullWidth
+    />
+  </ReferenceInput>
+);
+
+export const PersonOrganizationOrPlaceInput = ({ validate, label, disabled, helperText, ...rest }) => (
+  <ReferenceInput
+    reference="PersonOrganizationOrPlace"
+    perPage={1000}
+    sort={{ field: 'pair:label', order: 'ASC' }}
+    {...rest}
+  >
     <SelectInput
       optionText="pair:label"
       validate={validate}

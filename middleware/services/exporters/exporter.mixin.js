@@ -96,80 +96,122 @@ module.exports = {
   },
   events: {
     async 'ldp.resource.created'(ctx) {
-      const { resourceUri, newData } = ctx.params;
-      if (hasType(newData, 'cdlt:OfferAndNeed') || hasType(newData, 'pair:Event')) {
-        const resource = await ctx.call('ldp.resource.awaitCreateComplete', {
-          resourceUri,
-          predicates: ['cdlt:hasRegion'],
-          webId: 'system'
-        });
-        const transformedData = await this.transform(resource);
-        if (transformedData) {
-          await this.create(resourceUri, transformedData);
-        }
-      } else if (hasType(newData, 'cdlt:HostingService')) {
-        // We don't need to wait for the cdlt:hasRegion predicate
-        const transformedData = await this.transform(newData);
-        if (transformedData) {
-          await this.create(resourceUri, transformedData);
+      if (this.settings.remoteApi.baseUrl) {
+        const { resourceUri, newData } = ctx.params;
+        if (hasType(newData, 'cdlt:OfferAndNeed') || hasType(newData, 'pair:Event')) {
+          const resource = await ctx.call('ldp.resource.awaitCreateComplete', {
+            resourceUri,
+            predicates: ['cdlt:hasRegion'],
+            webId: 'system'
+          });
+          const transformedData = await this.transform(resource);
+          if (transformedData) {
+            await this.create(resourceUri, transformedData);
+          }
+        } else if (hasType(newData, 'cdlt:HostingService')) {
+          // We don't need to wait for the cdlt:hasRegion predicate
+          const transformedData = await this.transform(newData);
+          if (transformedData) {
+            await this.create(resourceUri, transformedData);
+          }
         }
       }
     },
     async 'ldp.resource.updated'(ctx) {
-      const { resourceUri, newData } = ctx.params;
-      if (
-        hasType(newData, 'cdlt:OfferAndNeed') ||
-        hasType(newData, 'pair:Event') ||
-        hasType(newData, 'cdlt:HostingService')
-      ) {
-        const transformedData = await this.transform(newData);
-        const remoteUrl = this.getRemoteUrl(newData);
-        if (transformedData) {
-          if (remoteUrl) {
-            await this.update(remoteUrl, transformedData);
+      if (this.settings.remoteApi.baseUrl) {
+        const { resourceUri, newData } = ctx.params;
+        if (
+          hasType(newData, 'cdlt:OfferAndNeed') ||
+          hasType(newData, 'pair:Event') ||
+          hasType(newData, 'cdlt:HostingService')
+        ) {
+          const transformedData = await this.transform(newData);
+          const remoteUrl = this.getRemoteUrl(newData);
+          if (transformedData) {
+            if (remoteUrl) {
+              await this.update(remoteUrl, transformedData);
+            } else {
+              await this.create(resourceUri, transformedData);
+            }
           } else {
-            await this.create(resourceUri, transformedData);
+            // If it is not published anymore, delete it and remove the link from the resource
+            if (remoteUrl) {
+              await this.delete(remoteUrl);
+              await ctx.call('ldp.resource.patch', {
+                resourceUri: resourceUri,
+                triplesToRemove: [
+                  triple(
+                    namedNode(resourceUri),
+                    namedNode('http://virtual-assembly.org/ontologies/cdlt#exportedTo'),
+                    namedNode(remoteUrl)
+                  )
+                ],
+                webId: 'system'
+              });
+            }
           }
-        } else {
-          // If it is not published anymore, delete it and remove the link from the resource
-          if (remoteUrl) {
-            await this.delete(remoteUrl);
-            await ctx.call('ldp.resource.patch', {
-              resourceUri: resourceUri,
-              triplesToRemove: [
-                triple(
-                  namedNode(resourceUri),
-                  namedNode('http://virtual-assembly.org/ontologies/cdlt#exportedTo'),
-                  namedNode(remoteUrl)
-                )
-              ],
-              webId: 'system'
-            });
-          }
-        }
-      } else if (hasType(newData, 'pair:Place')) {
-        if (newData['cdlt:hasPublicationStatus'] === STATUS_PUBLISHED) {
-          // If the place is published, update or create all its services
-          for (const serviceUri of arrayOf(newData['pair:offers'])) {
-            const service = await ctx.call('ldp.resource.get', {
-              resourceUri: serviceUri,
-              accept: MIME_TYPES.JSON,
-              webId: 'system'
-            });
-            const transformedData = await this.transform(service);
-            if (transformedData) {
+        } else if (hasType(newData, 'pair:Place')) {
+          if (newData['cdlt:hasPublicationStatus'] === STATUS_PUBLISHED) {
+            // If the place is published, update or create all its services
+            for (const serviceUri of arrayOf(newData['pair:offers'])) {
+              const service = await ctx.call('ldp.resource.get', {
+                resourceUri: serviceUri,
+                accept: MIME_TYPES.JSON,
+                webId: 'system'
+              });
+              const transformedData = await this.transform(service);
+              if (transformedData) {
+                const remoteUrl = this.getRemoteUrl(service);
+                if (remoteUrl) {
+                  await this.update(remoteUrl, transformedData);
+                } else {
+                  await this.create(serviceUri, transformedData);
+                }
+              }
+            }
+          } else {
+            // If the place is unpublished, unpublish all its services
+            for (const serviceUri of arrayOf(newData['pair:offers'])) {
+              const service = await ctx.call('ldp.resource.get', {
+                resourceUri: serviceUri,
+                accept: MIME_TYPES.JSON,
+                webId: 'system'
+              });
               const remoteUrl = this.getRemoteUrl(service);
               if (remoteUrl) {
-                await this.update(remoteUrl, transformedData);
-              } else {
-                await this.create(serviceUri, transformedData);
+                await this.delete(remoteUrl);
+                await ctx.call('ldp.resource.patch', {
+                  resourceUri: serviceUri,
+                  triplesToRemove: [
+                    triple(
+                      namedNode(serviceUri),
+                      namedNode('http://virtual-assembly.org/ontologies/cdlt#exportedTo'),
+                      namedNode(remoteUrl)
+                    )
+                  ],
+                  webId: 'system'
+                });
               }
             }
           }
-        } else {
-          // If the place is unpublished, unpublish all its services
-          for (const serviceUri of arrayOf(newData['pair:offers'])) {
-            const service = await ctx.call('ldp.resource.get', {
+        }
+      }
+    },
+    async 'ldp.resource.deleted'(ctx) {
+      if (this.settings.remoteApi.baseUrl) {
+        const { oldData } = ctx.params;
+        if (
+          hasType(oldData, 'cdlt:OfferAndNeed') ||
+          hasType(oldData, 'pair:Event') ||
+          hasType(oldData, 'cdlt:HostingService')
+        ) {
+          const remoteUrl = this.getRemoteUrl(oldData);
+          if (remoteUrl) {
+            await this.delete(remoteUrl);
+          }
+        } else if (hasType(oldData, 'pair:Place')) {
+          for (const serviceUri of arrayOf(oldData['pair:offers'])) {
+            const service = await this.broker.call('ldp.resource.get', {
               resourceUri: serviceUri,
               accept: MIME_TYPES.JSON,
               webId: 'system'
@@ -193,53 +235,19 @@ module.exports = {
         }
       }
     },
-    async 'ldp.resource.deleted'(ctx) {
-      const { oldData } = ctx.params;
-      if (
-        hasType(oldData, 'cdlt:OfferAndNeed') ||
-        hasType(oldData, 'pair:Event') ||
-        hasType(oldData, 'cdlt:HostingService')
-      ) {
-        const remoteUrl = this.getRemoteUrl(oldData);
+    async 'expiration.expired'(ctx) {
+      if (this.settings.remoteApi.baseUrl) {
+        // We could handle this through ldp.resource.patched, but it's easier with a custom event
+        const { resourceUri } = ctx.params;
+        const offerAndNeed = await ctx.call('ldp.resource.get', {
+          resourceUri: resourceUri,
+          accept: MIME_TYPES.JSON,
+          webId: 'system'
+        });
+        const remoteUrl = this.getRemoteUrl(offerAndNeed);
         if (remoteUrl) {
           await this.delete(remoteUrl);
         }
-      } else if (hasType(oldData, 'pair:Place')) {
-        for (const serviceUri of arrayOf(oldData['pair:offers'])) {
-          const service = await this.broker.call('ldp.resource.get', {
-            resourceUri: serviceUri,
-            accept: MIME_TYPES.JSON,
-            webId: 'system'
-          });
-          const remoteUrl = this.getRemoteUrl(service);
-          if (remoteUrl) {
-            await this.delete(remoteUrl);
-            await ctx.call('ldp.resource.patch', {
-              resourceUri: serviceUri,
-              triplesToRemove: [
-                triple(
-                  namedNode(serviceUri),
-                  namedNode('http://virtual-assembly.org/ontologies/cdlt#exportedTo'),
-                  namedNode(remoteUrl)
-                )
-              ],
-              webId: 'system'
-            });
-          }
-        }
-      }
-    },
-    async 'expiration.expired'(ctx) {
-      // We could handle this through ldp.resource.patched, but it's easier with a custom event
-      const { resourceUri } = ctx.params;
-      const offerAndNeed = await ctx.call('ldp.resource.get', {
-        resourceUri: resourceUri,
-        accept: MIME_TYPES.JSON,
-        webId: 'system'
-      });
-      const remoteUrl = this.getRemoteUrl(offerAndNeed);
-      if (remoteUrl) {
-        await this.delete(remoteUrl);
       }
     }
   }
