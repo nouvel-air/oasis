@@ -42,9 +42,11 @@ module.exports = {
 
         return actorUri;
       } else {
+        let accountData;
+
         // If the user is added through the backoffice, create the account manually
         try {
-          const accountData = await ctx.call('auth.account.create', { email: resource['pair:e-mail'] });
+          accountData = await ctx.call('auth.account.create', { email: resource['pair:e-mail'] });
           delete resource['pair:e-mail'];
 
           resource['pair:hasStatus'] =
@@ -67,7 +69,7 @@ module.exports = {
           return actorUri;
         } catch (e) {
           // Delete account if resource creation failed, or it may cause problems when retrying
-          await ctx.call('auth.account.remove', { id: accountData['@id'] });
+          if (accountData) await ctx.call('auth.account.remove', { id: accountData['@id'] });
           throw e;
         }
       }

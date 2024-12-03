@@ -11,7 +11,6 @@ module.exports = {
         name: 'expirationCheck',
         cronTime: '*/2 * * * *',
         onTick: async function () {
-          console.log('checking');
           await this.broker.call('expiration.tagExpired');
         },
         timeZone: 'Europe/Paris'
