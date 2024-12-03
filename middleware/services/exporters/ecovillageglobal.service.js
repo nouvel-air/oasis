@@ -151,7 +151,7 @@ module.exports = {
           webId: 'system'
         });
         return category['pair:label'];
-      } else {
+      } else if (data['cdlt:hasSubType']) {
         const category = await this.broker.call('ldp.resource.get', {
           resourceUri: data['cdlt:hasSubType'],
           accept: MIME_TYPES.JSON,
