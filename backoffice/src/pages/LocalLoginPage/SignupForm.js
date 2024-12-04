@@ -78,13 +78,13 @@ const SignupForm = ({ additionalSignupValues }) => {
             <Typography variant="body1" sx={{ pb: 3 }}>
               Pour les annonces immobilières, nous demandons un paiement via{' '}
               <a
-                href="https://www.helloasso.com/associations/cooperative-oasis"
+                href="https://www.helloasso.com/associations/cooperative-oasis/boutiques/publication-d-une-annonce"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 HelloAsso
               </a>{' '}
-              de XXX euros par annonce. Votre annonce ne sera validée qu'une fois le paiement effectué.
+              pour chaque annonce publiée. Votre annonce ne sera validée qu'une fois le paiement effectué.
             </Typography>
           )}
           {signupType === 'societaire' && (

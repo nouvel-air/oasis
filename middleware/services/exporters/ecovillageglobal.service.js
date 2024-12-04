@@ -65,10 +65,7 @@ module.exports = {
           // nom: creator['pair:lastName'],
           structure: organization['pair:label'],
           adresse: postalAddress?.['pair:addressStreet'],
-          cp:
-            postalAddress?.['pair:addressZipCode'] && postalAddress?.['pair:addressZipCode'].length === 5
-              ? postalAddress?.['pair:addressZipCode']
-              : undefined,
+          cp: postalAddress?.['pair:addressZipCode'], // For places, will post the first 2 digits of the department
           ville: postalAddress?.['pair:addressLocality'],
           pays: countriesMapping[postalAddress?.['pair:addressCountry']],
           tel: data['pair:phone'],
