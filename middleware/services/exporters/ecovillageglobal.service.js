@@ -6,7 +6,7 @@ const { STATUS_PUBLISHED } = require('../../constants');
 const { countriesMapping } = require('../../mappings');
 const CONFIG = require('../../config/config');
 
-const transformDate = isoDate => isoDate.substring(0, 10).replaceAll('-', '/');
+const transformDate = isoDate => isoDate.substring(0, 10);
 
 module.exports = {
   name: 'ecovillageglobal',
