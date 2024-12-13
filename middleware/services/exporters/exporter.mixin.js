@@ -52,6 +52,9 @@ module.exports = {
     async delete(remoteUrl) {
       throw new Error(`The delete method must be implemented by the service`);
     },
+    async list(remoteUrl) {
+      throw new Error(`The list method must be implemented by the service`);
+    },
     getRemoteUrl(data) {
       return arrayOf(data['cdlt:exportedTo']).find(url => url.startsWith(this.settings.remoteApi.baseUrl));
     },

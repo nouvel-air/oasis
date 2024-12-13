@@ -18,6 +18,14 @@ module.exports = {
       password: CONFIG.ECOVILLAGEGLOBAL_API_PASSWORD
     }
   },
+  actions: {
+    async clearAll() {
+      const posts = await this.list(this.settings.remoteApi.baseUrl);
+      for (const post of posts) {
+        await this.delete(`${this.settings.remoteApi.baseUrl}/${post.id_annonce}`);
+      }
+    }
+  },
   methods: {
     async transform(data) {
       if (!data['cdlt:publishOnEcovillageGlobal']) {
@@ -127,6 +135,10 @@ module.exports = {
       await this.fetchApi(remoteUrl, {
         method: 'DELETE'
       });
+    },
+    async list(remoteUrl) {
+      const results = await this.fetchApi(remoteUrl);
+      return results?.ressource?.data;
     },
     async getCategoryName(data) {
       if (hasType(data, 'cdlt:HostingService')) {

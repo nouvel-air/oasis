@@ -37,10 +37,9 @@ module.exports = {
   },
   actions: {
     async clearAll() {
-      const posts = await this.list();
+      const posts = await this.list(this.settings.remoteApi.baseUrl);
       for (const post of posts) {
-        this.logger.info(`Deleting ${CONFIG.WORDPRESS_API_BASE}/${post.id}...`);
-        await this.delete(`${CONFIG.WORDPRESS_API_BASE}/${post.id}`);
+        await this.delete(`${this.settings.remoteApi.baseUrl}/${post.id}`);
       }
     }
   },
@@ -154,8 +153,8 @@ module.exports = {
         method: 'DELETE'
       });
     },
-    async list() {
-      return await this.fetchApi(CONFIG.WORDPRESS_API_BASE);
+    async list(remoteUrl) {
+      return await this.fetchApi(remoteUrl);
     }
   }
 };
