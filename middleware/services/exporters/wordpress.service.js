@@ -8,7 +8,7 @@ const CONFIG = require('../../config/config');
 const { categoriesMapping, tagsMapping, regionsMapping } = require('../../mappings');
 const departments = require('../../config/departments.json');
 
-const transformDate = isoDate => isoDate.substring(0, 10).replaceAll('-', '/');
+const transformDate = isoDate => new Date(isoDate).toString().substring(0, 10).replaceAll('-', '/');
 
 const getDepartmentFromZipCode = zip => {
   if (zip) {
