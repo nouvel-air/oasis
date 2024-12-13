@@ -37,6 +37,20 @@ module.exports = {
           this.logger.info('Skipped!');
         }
       }
+    },
+    async clearAllRemoteUrls(ctx) {
+      await ctx.call('triplestore.update', {
+        query: `
+          DELETE {
+            ?subject <http://virtual-assembly.org/ontologies/cdlt#exportedTo> ?object
+          }
+          WHERE {
+            ?subject <http://virtual-assembly.org/ontologies/cdlt#exportedTo> ?object .
+            FILTER(STRSTARTS(STR(?object), "${this.settings.remoteApi.baseUrl}"))
+          }
+        `,
+        webId: 'system'
+      });
     }
   },
   methods: {
