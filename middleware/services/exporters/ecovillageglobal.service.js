@@ -8,7 +8,10 @@ const CONFIG = require('../../config/config');
 
 const transformDate = isoDate => {
   const d = new Date(isoDate);
-  return `${d.getFullYear()}/${d.getMonth().padStart(2, '0')}/${d.getDate().padStart(2, '0')}`;
+  const year = d.getFullYear();
+  const month = (d.getMonth() + 1).toString().padStart(2, '0');
+  const day = d.getDate().toString().padStart(2, '0');
+  return `${year}/${month}/${day}`;
 };
 
 module.exports = {
