@@ -51,6 +51,7 @@ module.exports = {
         `,
         webId: 'system'
       });
+      this.broker.cacher.clean();
     }
   },
   methods: {
