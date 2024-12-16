@@ -6,8 +6,13 @@ const { STATUS_PUBLISHED } = require('../../constants');
 const { countriesMapping } = require('../../mappings');
 const CONFIG = require('../../config/config');
 
-const transformDate = isoDate =>
-  new Date(isoDate).toLocaleString('fr-FR', { timeZone: 'Europe/Paris' }).substring(0, 10).replaceAll('/', '-');
+const transformDate = isoDate => {
+  const d = new Date(new Date(isoDate).toLocaleString('en-US', { timeZone: 'Europe/Paris' }));
+  const year = d.getFullYear();
+  const month = (d.getMonth() + 1).toString().padStart(2, '0');
+  const day = d.getDate().toString().padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
 
 module.exports = {
   name: 'ecovillageglobal',
