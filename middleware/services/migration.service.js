@@ -22,17 +22,17 @@ module.exports = {
     async migratePublishedStatus(ctx) {
       await ctx.call('triplestore.update', {
         query: `
-          DELETE { ?s <https://data.lescheminsdelatransition.org/publication-status/valide> ?o . }
-          INSERT { ?s <${STATUS_PUBLISHED}> ?o . }
-          WHERE { ?s <https://data.lescheminsdelatransition.org/publication-status/valide> ?o . }
+          DELETE { ?s ?p <https://data.lescheminsdelatransition.org/publication-status/valide> . }
+          INSERT { ?s ?p <${STATUS_PUBLISHED}> . }
+          WHERE { ?s ?p <https://data.lescheminsdelatransition.org/publication-status/valide> . }
         `,
         webId: 'system'
       });
       await ctx.call('triplestore.update', {
         query: `
-          DELETE { ?s <https://data.lescheminsdelatransition.org/publication-status/en-cours> ?o . }
-          INSERT { ?s <${STATUS_DRAFT}> ?o . }
-          WHERE { ?s <https://data.lescheminsdelatransition.org/publication-status/en-cours> ?o . }
+          DELETE { ?s ?p <https://data.lescheminsdelatransition.org/publication-status/en-cours> . }
+          INSERT { ?s ?p <${STATUS_DRAFT}> . }
+          WHERE { ?s ?p <https://data.lescheminsdelatransition.org/publication-status/en-cours> . }
         `,
         webId: 'system'
       });
