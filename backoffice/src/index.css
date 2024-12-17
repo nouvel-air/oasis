@@ -12,3 +12,11 @@ code {
     monospace;
 }
 
+/* Never display Permissions buttons */
+button[aria-label="Permissions"] {
+  display: none;
+}
+
+a {
+  color: blue;
+}

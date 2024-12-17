@@ -8,10 +8,7 @@ const TypeList = () => {
   return (
     <ListWithPermissions perPage={25}>
       {xs ? (
-        <SimpleList
-          primaryText="%{pair:label}"
-          secondaryText="%{type}"
-        />
+        <SimpleList primaryText="%{pair:label}" secondaryText="%{type}" />
       ) : (
         <Datagrid rowClick="edit">
           <TextField source="pair:label" />
@@ -21,6 +18,6 @@ const TypeList = () => {
       )}
     </ListWithPermissions>
   );
-}
+};
 
 export default TypeList;

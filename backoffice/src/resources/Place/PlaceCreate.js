@@ -1,14 +1,14 @@
 import React from 'react';
-import { SimpleForm } from 'react-admin';
-import { CreateWithPermissions } from '@semapps/auth-provider';
+import { Create, SimpleForm } from 'react-admin';
 import PlaceForm from './PlaceForm';
+import { STATUS_DRAFT, GROUP_OASIS } from '../../constants';
 
 const PlaceCreate = () => (
-  <CreateWithPermissions>
-    <SimpleForm defaultValues={{ 'cdlt:hasPublicationStatus': 'https://data.lescheminsdelatransition.org/publication-status/en-cours' }}>
+  <Create>
+    <SimpleForm defaultValues={{ 'cdlt:hasPublicationStatus': STATUS_DRAFT, 'pair:partOf': GROUP_OASIS }}>
       <PlaceForm />
     </SimpleForm>
-  </CreateWithPermissions>
+  </Create>
 );
 
 export default PlaceCreate;

@@ -9,11 +9,10 @@ module.exports = [
   {
     path: '/places',
     acceptedTypes: ['pair:Place'],
-    dereference: ['pair:hasPostalAddress'],
     permissions: anonReadPermissions,
     newResourcesPermissions: anonReadPermissions
   },
-    {
+  {
     path: '/regions',
     acceptedTypes: ['pair:Place'],
     permissions: anonReadPermissions,
@@ -28,18 +27,28 @@ module.exports = [
     }
   },
   {
-    path: '/bots',
-    acceptedTypes: ['Application'],
-    dereference: ['sec:publicKey'],
+    path: '/groups',
+    acceptedTypes: ['pair:Group'],
+    permissions: {
+      ...anonReadPermissions,
+      ...writePermissionToActors
+    }
+  },
+  {
+    path: '/organizations',
+    acceptedTypes: ['pair:Organization'],
     permissions: anonReadPermissions,
     newResourcesPermissions: anonReadPermissions
   },
   {
     path: '/types',
-    acceptedTypes: [
-      'cdlt:ServiceType',
-      'pair:PersonType'
-    ],
+    acceptedTypes: ['cdlt:ServiceType', 'pair:PersonType'],
+    permissions: anonReadPermissions,
+    newResourcesPermissions: anonReadPermissions
+  },
+  {
+    path: '/status',
+    acceptedTypes: ['pair:ActorStatus'],
     permissions: anonReadPermissions,
     newResourcesPermissions: anonReadPermissions
   },

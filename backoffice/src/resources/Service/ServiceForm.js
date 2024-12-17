@@ -1,27 +1,30 @@
 import React from 'react';
-import { TextInput, SimpleForm, ImageField, required, useGetIdentity } from 'react-admin';
+import { TextInput, required, useGetIdentity } from 'react-admin';
 import { MarkdownInput } from '@semapps/markdown-components';
-import { ImageInput } from '@semapps/input-components';
+import ImageInput from '../../common/input/ImageInput';
 import { PlaceInput, TypeInput } from '../../common/input';
-import useIsAdmin from '../../hooks/useIsAdmin';
+
+import useAccountType from '../../hooks/useAccountType';
 
 const ServiceForm = () => {
-  const isAdmin = useIsAdmin();
+  const accountType = useAccountType();
   const { identity } = useGetIdentity();
   if (!identity?.id) return;
   return (
-    <SimpleForm>
+    <>
       <TextInput source="pair:label" fullWidth validate={[required()]} />
-      <PlaceInput source="pair:offeredBy" validate={[required()]} filter={isAdmin ? {} : { 'cdlt:proposedBy': identity?.id }} />
+      <PlaceInput
+        source="pair:offeredBy"
+        validate={[required()]}
+        filter={accountType === 'admin' ? {} : { 'pair:affiliates': identity?.id }}
+      />
       <TypeInput source="cdlt:hasServiceType" filter={{ a: 'cdlt:ServiceType' }} />
       <MarkdownInput source="pair:description" fullWidth />
-      <ImageInput source="pair:depictedBy" accept="image/*" validate={[required()]}>
-        <ImageField source="src" />
-      </ImageInput>
+      <ImageInput source="pair:depictedBy" validate={[required()]} />
       <TextInput source="cdlt:price" fullWidth validate={[required()]} />
       <TextInput source="cdlt:capacity" fullWidth validate={[required()]} />
       <TextInput source="cdlt:registrationLink" fullWidth />
-    </SimpleForm>
+    </>
   );
 };
 

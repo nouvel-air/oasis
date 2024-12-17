@@ -1,42 +1,24 @@
 import React from 'react';
 import { SimpleList, Datagrid, TextField, EditButton, useGetIdentity } from 'react-admin';
-import { ListWithPermissions } from '@semapps/auth-provider';
 import { ReferenceField } from '@semapps/field-components';
+import { ListWithPermissions } from '@semapps/auth-provider';
 import { useMediaQuery } from '@mui/material';
-import useIsAdmin from '../../hooks/useIsAdmin';
-
-const defaultToArray = value => !value ? [] : Array.isArray(value) ? value : [value];
-
-const filterByPlaces = places => ([
-  {
-    type: "values",
-    values: places.map(placeUri => ({
-      "?placeUri": {
-        termType: "NamedNode",
-        value: placeUri
-      }
-    }))
-  },
-  {
-    type: "bgp",
-    triples: [
-      {
-        subject: { termType: "Variable", value: "s1" },
-        predicate: { termType: "NameNode", value: "http://virtual-assembly.org/ontologies/pair#offeredBy" },
-        object: { termType: "Variable", value: "placeUri" }
-      }
-    ]
-  }
-]);
+import useAccountType from '../../hooks/useAccountType';
+import { arrayOf } from '../../utils';
+import { offeredByFilter } from '../../queries';
 
 const ServiceList = props => {
-  const isAdmin = useIsAdmin();
+  const accountType = useAccountType();
   const { identity } = useGetIdentity();
-  const ownedPlaces = defaultToArray(identity?.webIdData?.['cdlt:proposes']);
+  const organizations = arrayOf(identity?.webIdData?.['pair:affiliatedBy']);
   const xs = useMediaQuery(theme => theme.breakpoints.down('sm'));
   if (!identity?.id) return;
   return (
-    <ListWithPermissions filter={isAdmin ? {} : { sparqlWhere: filterByPlaces(ownedPlaces) }} perPage={25} {...props}>
+    <ListWithPermissions
+      filter={accountType === 'admin' ? {} : { sparqlWhere: offeredByFilter(organizations) }}
+      perPage={25}
+      {...props}
+    >
       {xs ? (
         <SimpleList
           primaryText="%{pair:label}"
@@ -59,7 +41,7 @@ const ServiceList = props => {
         </Datagrid>
       )}
     </ListWithPermissions>
-  )
+  );
 };
 
 export default ServiceList;

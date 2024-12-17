@@ -1,11 +1,13 @@
 import React from 'react';
-import { EditWithPermissions } from '@semapps/auth-provider';
+import { Edit, SimpleForm } from 'react-admin';
 import ServiceForm from './ServiceForm';
 
 const ServiceEdit = () => (
-  <EditWithPermissions redirect="edit">
-    <ServiceForm />
-  </EditWithPermissions>
+  <Edit redirect="list">
+    <SimpleForm>
+      <ServiceForm />
+    </SimpleForm>
+  </Edit>
 );
 
 export default ServiceEdit;

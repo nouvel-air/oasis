@@ -1,6 +1,6 @@
-const urlJoin = require("url-join");
-const { MIME_TYPES } = require("@semapps/mime-types");
-const CONFIG = require("../config/config");
+const urlJoin = require('url-join');
+const { MIME_TYPES } = require('@semapps/mime-types');
+const CONFIG = require('../config/config');
 
 module.exports = {
   name: 'initialization',
@@ -9,11 +9,11 @@ module.exports = {
       const { email } = ctx.params;
 
       await ctx.call(
-        'users.post', 
+        'webid.post',
         {
           containerUri: urlJoin(CONFIG.HOME_URL, 'users'),
           resource: {
-            '@type': 'pair:Person',
+            '@type': ['pair:Person', 'foaf:Person'],
             'pair:label': 'Administrateur',
             'pair:firstName': 'Administrateur',
             'pair:e-mail': email,

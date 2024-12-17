@@ -16,7 +16,7 @@ const PageList = () => {
         </Datagrid>
       )}
     </ListWithPermissions>
-  )
+  );
 };
 
 export default PageList;

@@ -1,3 +1,5 @@
+import { STATUS_PUBLISHED } from '../constants';
+
 const dataModels = {
   Person: {
     types: ['pair:Person'],
@@ -29,9 +31,9 @@ const dataModels = {
         oasis: ['/places']
       },
       filter: {
-        'cdlt:hasPublicationStatus': 'https://data.lescheminsdelatransition.org/publication-status/valide'
+        'cdlt:hasPublicationStatus': STATUS_PUBLISHED
       },
-      explicitEmbedOnFraming: false, // Increase performance since explicit embed is not necessary
+      explicitEmbedOnFraming: false // Increase performance since explicit embed is not necessary
     },
     fieldsMapping: {
       title: 'pair:label'
@@ -51,13 +53,26 @@ const dataModels = {
   Service: {
     types: ['cdlt:HostingService'],
     list: {
-      servers: '@default'
-    },
+      servers: '@default',
+      filter: {
+        type: 'cdlt:HostingService'
+      }
+    }
+  },
+  OfferAndNeed: {
+    types: ['cdlt:OfferAndNeed'],
+    list: {
+      servers: '@default',
+      filter: {
+        type: 'cdlt:OfferAndNeed',
+        'cdlt:hasPublicationStatus': STATUS_PUBLISHED
+      }
+    }
   },
   Status: {
     types: ['cdlt:PublicationStatus'],
     list: {
-      servers: ['cdlt']
+      servers: '@default'
     }
   },
   Type: {
@@ -69,6 +84,6 @@ const dataModels = {
       title: 'pair:label'
     }
   }
-}
+};
 
 export default dataModels;

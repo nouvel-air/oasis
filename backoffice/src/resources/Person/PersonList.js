@@ -1,11 +1,24 @@
-import React from 'react';
-import { SimpleList, Datagrid, TextField, EditButton } from 'react-admin';
-import { ReferenceField } from '@semapps/field-components';
+import React, { useEffect } from 'react';
+import { SimpleList, Datagrid, TextField, EditButton, useGetIdentity, useRedirect } from 'react-admin';
 import { ListWithPermissions } from '@semapps/auth-provider';
+import { ReferenceField } from '@semapps/field-components';
 import { useMediaQuery } from '@mui/material';
+import useAccountType from '../../hooks/useAccountType';
 
 const PersonList = props => {
   const xs = useMediaQuery(theme => theme.breakpoints.down('sm'));
+  const accountType = useAccountType();
+  const { identity } = useGetIdentity();
+  const redirect = useRedirect();
+
+  useEffect(() => {
+    if (accountType !== 'admin' && identity?.id) {
+      redirect('show', 'Person', identity?.id);
+    }
+  }, [accountType, identity, redirect]);
+
+  if (accountType !== 'admin') return null;
+
   return (
     <ListWithPermissions perPage={25} {...props}>
       {xs ? (
@@ -28,7 +41,7 @@ const PersonList = props => {
         </Datagrid>
       )}
     </ListWithPermissions>
-  )
+  );
 };
 
 export default PersonList;

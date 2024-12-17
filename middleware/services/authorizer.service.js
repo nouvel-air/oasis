@@ -1,6 +1,6 @@
 const { defaultToArray } = require('@semapps/ldp');
 const { AuthorizerBot } = require('@semapps/webacl');
-const { MIME_TYPES } = require("@semapps/mime-types");
+const { MIME_TYPES } = require('@semapps/mime-types');
 
 module.exports = {
   mixins: [AuthorizerBot],
@@ -13,7 +13,16 @@ module.exports = {
           read: true,
           write: true
         },
-        users: record => record['cdlt:proposedBy']
+        users: record => record['pair:affiliates']
+      },
+      {
+        key: 'organization',
+        match: { type: 'pair:Organization' },
+        rights: {
+          read: true,
+          write: true
+        },
+        users: record => record['pair:affiliates']
       },
       {
         key: 'person',
@@ -30,13 +39,13 @@ module.exports = {
   events: {
     async 'authorizer.added'(ctx) {
       const { resourceUri, users, rule } = ctx.params;
-      if (rule.key === 'place') {
-        const place = await ctx.call('ldp.resource.get', {
+      if (rule.key === 'place' || rule.key === 'organization') {
+        const organization = await ctx.call('ldp.resource.get', {
           resourceUri,
           accept: MIME_TYPES.JSON
         });
-        if (place['pair:offers']) {
-          const servicesUris = defaultToArray(place['pair:offers']);
+        if (organization['pair:offers']) {
+          const servicesUris = defaultToArray(organization['pair:offers']);
           for (let serviceUri of servicesUris) {
             for (let userUri of users) {
               await ctx.call('webacl.resource.addRights', {

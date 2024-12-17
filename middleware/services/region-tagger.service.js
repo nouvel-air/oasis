@@ -10,20 +10,31 @@ module.exports = {
   dependencies: ['ldp'],
   actions: {
     async tag(ctx) {
-      const { resourceUri, zipCodes } = ctx.params;
+      const { resourceUri, zipCodes, country } = ctx.params;
       let regionsUris = [];
 
-      for( let zipCode of zipCodes ) {
-        const regionUri = await this.getRegionUriFromZip(zipCode);
-        if( regionUri ) regionsUris.push(regionUri);
+      if (country === 'France') {
+        for (let zipCode of zipCodes) {
+          const regionName = this.getRegionNameFromZip(zipCode);
+          if (regionName) {
+            const regionUri = await this.getRegionUriFromName(regionName);
+            regionsUris.push(regionUri);
+          }
+        }
+        // Remove duplicates
+        regionsUris = regionsUris.filter(function (item, pos, self) {
+          return self.indexOf(item) === pos;
+        });
+      } else if (country === 'Belgique' || country === 'Suisse') {
+        const regionUri = await this.getRegionUriFromName(country);
+        regionsUris.push(regionUri);
+      } else {
+        // All other countries are part of France's DOM-TOM
+        const regionUri = await this.getRegionUriFromName('DOM-TOM');
+        regionsUris.push(regionUri);
       }
 
-      // Remove duplicates
-      regionsUris = regionsUris.filter(function(item, pos, self) {
-        return self.indexOf(item) === pos;
-      });
-
-      if( regionsUris.length > 0 ) {
+      if (regionsUris.length > 0) {
         // Delete hasRegion relation
         await ctx.call('triplestore.update', {
           query: `
@@ -66,8 +77,21 @@ module.exports = {
   },
   methods: {
     async tagPlace(placeUri, place) {
-      if( place['pair:hasPostalAddress'] ) {
-        await this.actions.tag({ resourceUri: placeUri, zipCodes: [place['pair:hasPostalAddress']['pair:addressZipCode']] });
+      if (place['pair:hasPostalAddress']) {
+        await this.actions.tag({
+          resourceUri: placeUri,
+          zipCodes: [place['pair:hasPostalAddress']['pair:addressZipCode']],
+          country: offerAndNeed['pair:hasPostalAddress']['pair:addressCountry']
+        });
+      }
+    },
+    async tagOfferAndNeed(offerAndNeedUri, offerAndNeed) {
+      if (offerAndNeed['pair:hasPostalAddress']) {
+        await this.actions.tag({
+          resourceUri: offerAndNeedUri,
+          zipCodes: [offerAndNeed['pair:hasPostalAddress']['pair:addressZipCode']],
+          country: offerAndNeed['pair:hasPostalAddress']['pair:addressCountry']
+        });
       }
     },
     getRegionNameFromZip(zip) {
@@ -77,51 +101,53 @@ module.exports = {
         if (department) return department.region_name;
       }
     },
-    async getRegionUriFromZip(zip) {
-      const regionName = this.getRegionNameFromZip(zip);
+    async getRegionUriFromName(regionName) {
+      const regionSlug = createSlug(regionName, { lang: 'fr', custom: { '.': '.' } });
+      const regionUri = urlJoin(CONFIG.HOME_URL, 'regions', regionSlug);
 
-      if( regionName ) {
-        const regionSlug = createSlug(regionName, {lang: 'fr', custom: {'.': '.'}});
-        const regionUri = urlJoin(CONFIG.HOME_URL, 'regions', regionSlug);
-
-        // Create region if it doesn't exist yet
-        const regionExists = await this.broker.call('ldp.resource.exist', {resourceUri: regionUri});
-        if (!regionExists) {
-          await this.broker.call('ldp.container.post', {
-            resource: {
-              '@context': {
-                '@vocab': 'http://virtual-assembly.org/ontologies/pair#'
-              },
-              '@type': 'Place',
-              label: regionName
+      // Create region if it doesn't exist yet
+      const regionExists = await this.broker.call('ldp.resource.exist', { resourceUri: regionUri });
+      if (!regionExists) {
+        await this.broker.call('ldp.container.post', {
+          resource: {
+            '@context': {
+              '@vocab': 'http://virtual-assembly.org/ontologies/pair#'
             },
-            containerUri: urlJoin(CONFIG.HOME_URL, 'regions'),
-            slug: regionSlug,
-            contentType: MIME_TYPES.JSON,
-            webId: 'system'
-          });
-        }
-
-        return regionUri;
+            '@type': 'Place',
+            label: regionName
+          },
+          containerUri: urlJoin(CONFIG.HOME_URL, 'regions'),
+          slug: regionSlug,
+          contentType: MIME_TYPES.JSON,
+          webId: 'system'
+        });
       }
+
+      return regionUri;
     }
   },
   events: {
     async 'ldp.resource.created'(ctx) {
       const { resourceUri, newData } = ctx.params;
 
-      switch(getContainerFromUri(resourceUri)){
+      switch (getContainerFromUri(resourceUri)) {
         case CONFIG.HOME_URL + 'places':
           await this.tagPlace(resourceUri, newData);
+          break;
+        case CONFIG.HOME_URL + 'offers-and-needs':
+          await this.tagOfferAndNeed(resourceUri, newData);
           break;
       }
     },
     async 'ldp.resource.updated'(ctx) {
       const { resourceUri, newData } = ctx.params;
 
-      switch(getContainerFromUri(resourceUri)){
+      switch (getContainerFromUri(resourceUri)) {
         case CONFIG.HOME_URL + 'places':
           await this.tagPlace(resourceUri, newData);
+          break;
+        case CONFIG.HOME_URL + 'offers-and-needs':
+          await this.tagOfferAndNeed(resourceUri, newData);
           break;
       }
     }
