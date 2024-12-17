@@ -30,6 +30,7 @@ module.exports = {
       for (const post of posts) {
         await this.delete(`${this.settings.remoteApi.baseUrl}/${post.id_annonce}`);
       }
+      await this.actions.clearAllRemoteUrls();
     }
   },
   methods: {

@@ -39,6 +39,7 @@ module.exports = {
       }
     },
     async clearAllRemoteUrls(ctx) {
+      this.logger.info(`Clearing all remote URLs starting with ${this.settings.remoteApi.baseUrl}...`);
       await ctx.call('triplestore.update', {
         query: `
           DELETE {
@@ -51,6 +52,7 @@ module.exports = {
         `,
         webId: 'system'
       });
+      this.logger.info(`Clearing all Redis cache...`);
       this.broker.cacher.clean();
     }
   },
