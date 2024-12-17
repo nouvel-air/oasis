@@ -11,7 +11,7 @@ export const PersonForm = ({ isCreate }) => {
       <TextInput source="pair:lastName" fullWidth validate={[required()]} />
       {isCreate && <TextInput source="pair:e-mail" fullWidth validate={[required(), email()]} />}
       {accountType === 'admin' && (
-        <TypeInput source="pair:hasType" filter={{ a: 'pair:PersonType' }} fullWidth /*disabled={!isCreate}*/ />
+        <TypeInput source="pair:hasType" filter={{ a: 'pair:PersonType' }} fullWidth disabled={!isCreate} />
       )}
       <FormDataConsumer>
         {({ formData, ...rest }) => (
