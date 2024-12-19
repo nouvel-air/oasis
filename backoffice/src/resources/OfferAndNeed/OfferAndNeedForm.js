@@ -184,7 +184,7 @@ const OfferAndNeedForm = ({ isCreate }) => {
           source="cdlt:paymentAccepted"
           label={
             <span>
-              Je certifie avoir payé pour la pbulication de mon annonce via{' '}
+              Je certifie avoir payé pour la publication de mon annonce via{' '}
               <a href="https://www.helloasso.com/associations/cooperative-oasis/boutiques/publication-d-une-annonce">
                 HelloAsso
               </a>
