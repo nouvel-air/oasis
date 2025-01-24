@@ -13,3 +13,53 @@ export const STATUS_PUBLISHED = urlJoin(process.env.REACT_APP_MIDDLEWARE_URL, 's
 export const STATUS_DRAFT = urlJoin(process.env.REACT_APP_MIDDLEWARE_URL, 'status', 'draft');
 
 export const GROUP_OASIS = urlJoin(process.env.REACT_APP_MIDDLEWARE_URL, 'groups', 'oasis');
+
+export const offerOrEventSparql = [
+  {
+    type: 'bgp',
+    triples: [
+      {
+        subject: { termType: 'Variable', value: 's1' },
+        predicate: { termType: 'NameNode', value: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type' },
+        object: { termType: 'Variable', value: 'type' }
+      }
+    ]
+  },
+  {
+    type: 'filter',
+    expression: {
+      type: 'operation',
+      operator: '||',
+      args: [
+        {
+          type: 'operation',
+          operator: '=',
+          args: [
+            {
+              termType: 'Variable',
+              value: 'type'
+            },
+            {
+              termType: 'NameNode',
+              value: 'http://virtual-assembly.org/ontologies/cdlt#OfferAndNeed'
+            }
+          ]
+        },
+        {
+          type: 'operation',
+          operator: '=',
+          args: [
+            {
+              termType: 'Variable',
+              value: 'type'
+            },
+            {
+              termType: 'NameNode',
+              value: 'http://virtual-assembly.org/ontologies/pair#Event'
+            }
+          ]
+        }
+      ]
+    }
+  }
+];

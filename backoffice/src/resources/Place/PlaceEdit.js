@@ -5,6 +5,7 @@ import PlaceForm from './PlaceForm';
 import AddServiceButton from '../../common/button/AddServiceButton';
 import AddOfferAndNeedButton from '../../common/button/AddOfferAndNeedButton';
 import PlaceToolbar from './PlaceToolbar';
+import { offerOrEventSparql } from '../../constants';
 
 const PlaceEdit = () => (
   <Edit>
@@ -31,7 +32,7 @@ const PlaceEdit = () => (
         <ReferenceManyField
           reference="OfferAndNeed"
           target="pair:offeredBy"
-          filter={{ a: 'cdlt:OfferAndNeed' }}
+          filter={{ sparqlWhere: offerOrEventSparql }}
           fullWidth
         >
           <Datagrid rowClick="edit">
