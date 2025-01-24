@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useListContext, TextField, RecordContextProvider, Loading } from 'react-admin';
-import { Stack, Card, CardMedia, CardContent, Button, useMediaQuery, Box } from '@mui/material';
+import { Stack, Card, CardMedia, CardContent, Button, useMediaQuery, Box, Typography } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ServiceTypeField from './ServiceTypeField';
 import { arrayOf, hasType } from '../../utils';
@@ -9,7 +9,7 @@ const OffersAndNeedsList = ({ Header }) => {
   const xs = useMediaQuery(theme => theme.breakpoints.down('sm'), { noSsr: true });
   const sm = useMediaQuery(theme => theme.breakpoints.down('md'), { noSsr: true });
   const [externalLinks, setExternalLinks] = useState({});
-  const { data } = useListContext();
+  const { data, isLoading } = useListContext();
 
   // We receive all objects that the place offers, including hosting offers, so we must filter that out
   // We cannot use the filter prop of ReferenceArrayField because it only supports a single value
@@ -45,8 +45,6 @@ const OffersAndNeedsList = ({ Header }) => {
 
   if (!filteredData) return null;
 
-  console.log('external links', filteredData > 0 && Object.values(externalLinks).length === 0);
-
   return (
     <>
       <Header />
@@ -55,7 +53,7 @@ const OffersAndNeedsList = ({ Header }) => {
           <Box sx={{ width: '100%', height: 300 }}>
             <Loading loadingSecondary="" sx={{ color: 'primary' }} />
           </Box>
-        )}
+        )}{' '}
         {filteredData
           .filter(record => externalLinks[record.id])
           .map(record => (
@@ -94,6 +92,17 @@ const OffersAndNeedsList = ({ Header }) => {
               </Card>
             </RecordContextProvider>
           ))}
+        {filteredData.length === 0 && !isLoading && (
+          <Box sx={{ width: '100%', pb: 2 }}>
+            <Typography variant="body" color="secondary">
+              Aucune{' '}
+              <a href="https://cooperative-oasis.org/annonces/" target="_blank" rel="noopener noreferrer">
+                petite annonce
+              </a>{' '}
+              en ce moment.
+            </Typography>
+          </Box>
+        )}
       </Stack>
     </>
   );
