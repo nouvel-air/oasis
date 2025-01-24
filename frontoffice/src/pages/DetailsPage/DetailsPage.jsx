@@ -15,8 +15,8 @@ import Pictures from './Pictures';
 import ServicesList from './ServicesList';
 import ShareButtons from './ShareButtons';
 import MapField from '../../common/field/MapField/MapField';
-import backgroundBottomImage from '../../assets/background-bottom.png'
-import backgroundTopImage from '../../assets/background-top.png'
+import backgroundBottomImage from '../../assets/background-bottom.png';
+import backgroundTopImage from '../../assets/background-top.png';
 import ScrollToTop from '../../layout/ScrollToTop';
 import ContactDialog from './ContactDialog';
 import DepartmentField from '../../common/field/DepartmentField';
@@ -25,7 +25,9 @@ import OffersAndNeedsList from './OffersAndNeedsList';
 const OffersAndNeedsHeader = () => (
   <>
     <Separator mt={6} mb={3} />
-    <Typography variant="h3" mb={4}>Petites annonces</Typography>
+    <Typography variant="h3" mb={4}>
+      Petites annonces
+    </Typography>
   </>
 );
 
@@ -35,10 +37,10 @@ const DetailsPage = () => {
   const [service, setService] = useState();
   const { slug } = useParams();
   const redirect = useRedirect();
-  
-  const { record } = useShowController({ 
+
+  const { record } = useShowController({
     resource: 'Place',
-    id: process.env.REACT_APP_MIDDLEWARE_URL + 'places/' + slug, 
+    id: process.env.REACT_APP_MIDDLEWARE_URL + 'places/' + slug,
     queryOptions: { onError: () => redirect('/') }
   });
 
@@ -84,18 +86,26 @@ const DetailsPage = () => {
               <Box display="flex" flexDirection="column" alignItems={xs ? 'flex-start' : 'flex-end'}>
                 {xs && <ContactButton onClick={() => contact()} sx={{ mb: 2 }} />}
                 <ShareButtons />
-                <a href={`${process.env.REACT_APP_BACKOFFICE_URL}Place/${encodeURIComponent(record.id)}`} target="_blank" rel="noopener noreferrer">
-                  <Button endIcon={<LockIcon color="primary" />} color="secondary" sx={{ mt: xs ? 2 : 4 }}>Editer la page</Button>
+                <a
+                  href={`${process.env.REACT_APP_BACKOFFICE_URL}Place/${encodeURIComponent(record.id)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Button endIcon={<LockIcon color="primary" />} color="secondary" sx={{ mt: xs ? 2 : 4 }}>
+                    Editer la page
+                  </Button>
                 </a>
               </Box>
             </Grid>
           </Grid>
           <Separator mt={4} mb={3} />
-          <Typography variant="h3" mb={4}>Les formules</Typography>
+          <Typography variant="h3" mb={4}>
+            Les formules
+          </Typography>
           <ReferenceArrayField source="pair:offers" reference="Service" filter={{ type: 'cdlt:HostingService' }}>
             <ServicesList contact={contact} />
           </ReferenceArrayField>
-          <ReferenceArrayField source="pair:offers" reference="OfferAndNeed" filter={{ type: 'cdlt:OfferAndNeed' }}>
+          <ReferenceArrayField source="pair:offers" reference="OfferAndNeed">
             <OffersAndNeedsList Header={OffersAndNeedsHeader} />
           </ReferenceArrayField>
           <Separator mt={6} />
@@ -103,11 +113,13 @@ const DetailsPage = () => {
       </WhitePinkWrapper>
       <GreyPinkWrapper>
         <Container maxWidth="md" sx={{ pt: 2 }}>
-          <Typography variant="h3" mt={1} mb={3}>Localisation</Typography>
-          <MapField 
-            address={record => record?.['pair:hasPostalAddress']?.['pair:label']} 
-            latitude={record => record?.['pair:hasPostalAddress']?.['pair:latitude']} 
-            longitude={record => record?.['pair:hasPostalAddress']?.['pair:longitude']} 
+          <Typography variant="h3" mt={1} mb={3}>
+            Localisation
+          </Typography>
+          <MapField
+            address={record => record?.['pair:hasPostalAddress']?.['pair:label']}
+            latitude={record => record?.['pair:hasPostalAddress']?.['pair:latitude']}
+            longitude={record => record?.['pair:hasPostalAddress']?.['pair:longitude']}
             typographyProps={{ variant: 'body1', color: 'secondary', mb: 3 }}
             scrollWheelZoom={false}
           />
@@ -115,23 +127,23 @@ const DetailsPage = () => {
       </GreyPinkWrapper>
       <Footer />
       <ContactDialog open={!!openContact} onClose={() => setOpenContact()} service={service} />
-    </RecordContextProvider> 
+    </RecordContextProvider>
   );
 };
 
 const WhitePinkWrapper = styled(Box)({
-  backgroundImage: `url(${backgroundTopImage})`, 
-  backgroundRepeat: 'repeat-x', 
-  backgroundPosition: 'top', 
-  backgroundSize: '2px', 
+  backgroundImage: `url(${backgroundTopImage})`,
+  backgroundRepeat: 'repeat-x',
+  backgroundPosition: 'top',
+  backgroundSize: '2px',
   backgroundColor: '#F6F6F6'
 });
 
 const GreyPinkWrapper = styled(Box)({
-  backgroundImage: `url(${backgroundBottomImage})`, 
-  backgroundRepeat: 'repeat-x', 
-  backgroundPosition: 'top', 
-  backgroundSize: '2px', 
+  backgroundImage: `url(${backgroundBottomImage})`,
+  backgroundRepeat: 'repeat-x',
+  backgroundPosition: 'top',
+  backgroundSize: '2px',
   backgroundColor: '#FF96A0'
 });
 

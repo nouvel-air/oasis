@@ -91,11 +91,10 @@ const dataModels = {
     }
   },
   OfferAndNeed: {
-    types: ['cdlt:OfferAndNeed'],
+    types: ['cdlt:OfferAndNeed', 'pair:Event'],
     list: {
       servers: '@default',
       filter: {
-        type: 'cdlt:OfferAndNeed',
         'cdlt:hasPublicationStatus': STATUS_PUBLISHED
       }
     }
