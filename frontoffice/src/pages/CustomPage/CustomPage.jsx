@@ -10,10 +10,10 @@ import ScrollToTop from '../../layout/ScrollToTop';
 const CustomPage = () => {
   const { slug } = useParams();
   const redirect = useRedirect();
-  
-  const { record } = useShowController({ 
+
+  const { record } = useShowController({
     resource: 'Page',
-    id: process.env.REACT_APP_MIDDLEWARE_URL + 'pages/' + slug, 
+    id: process.env.REACT_APP_MIDDLEWARE_URL + 'pages/' + slug,
     queryOptions: { onError: () => redirect('/') }
   });
 
@@ -23,14 +23,14 @@ const CustomPage = () => {
     <RecordContextProvider value={record}>
       <ScrollToTop />
       <Header />
-      <Container maxWidth="md" sx={{ mt: 3, mb: 10 }}>
+      <Container className="page-content" maxWidth="md" sx={{ mt: 3, mb: 10 }}>
         {/* <Typo source="semapps:title" variant="h4" color="primary.main" component="div" /> */}
         <TextField source="semapps:title" variant="h1" component="h1" />
         <MarkdownField source="semapps:content" />
       </Container>
       <Footer />
     </RecordContextProvider>
-  )
+  );
 };
 
 export default CustomPage;

@@ -25,3 +25,7 @@ a, a:visited, a:hover, a:active {
 .footer a {
   text-decoration: underline !important;
 }
+
+.page-content img {
+  max-width: 100%;
+}
