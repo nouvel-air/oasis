@@ -81,7 +81,7 @@ module.exports = {
         await this.actions.tag({
           resourceUri: placeUri,
           zipCodes: [place['pair:hasPostalAddress']['pair:addressZipCode']],
-          country: offerAndNeed['pair:hasPostalAddress']['pair:addressCountry']
+          country: place['pair:hasPostalAddress']['pair:addressCountry']
         });
       }
     },
