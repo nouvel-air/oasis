@@ -185,7 +185,11 @@ const OfferAndNeedForm = ({ isCreate }) => {
           label={
             <span>
               Je certifie avoir payé pour la publication de mon annonce via{' '}
-              <a href="https://www.helloasso.com/associations/cooperative-oasis/boutiques/publication-d-une-annonce">
+              <a
+                href="https://www.helloasso.com/associations/cooperative-oasis/boutiques/publication-d-une-annonce"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 HelloAsso
               </a>
               . Mon annonce sera validée une fois le paiement vérifié.
@@ -199,9 +203,15 @@ const OfferAndNeedForm = ({ isCreate }) => {
         source="cdlt:publishOnEcovillageGlobal"
         label={
           <span>
-            Je souhaite que mon annonce soit diffusée sur <a href="https://ecovillageglobal.fr">ecovillageglobal.fr</a>{' '}
+            Je souhaite que mon annonce soit diffusée sur{' '}
+            <a href="https://ecovillageglobal.fr" target="_blank" rel="noopener noreferrer">
+              ecovillageglobal.fr
+            </a>{' '}
             et dans la revue Passerelle Éco. J'accepte la{' '}
-            <a href="https://ecovillageglobal.fr/Bienvenue#combien">politique tarifaire</a>.
+            <a href="https://ecovillageglobal.fr/Bienvenue#combien" target="_blank" rel="noopener noreferrer">
+              politique tarifaire
+            </a>
+            .
           </span>
         }
         sx={{ '& p': { display: 'none' } }}
