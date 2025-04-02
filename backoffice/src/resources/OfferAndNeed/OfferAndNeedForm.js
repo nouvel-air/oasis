@@ -210,8 +210,8 @@ const OfferAndNeedForm = ({ isCreate }) => {
             et dans la revue Passerelle Éco. J'accepte la{' '}
             <a href="https://ecovillageglobal.fr/Bienvenue#combien" target="_blank" rel="noopener noreferrer">
               politique tarifaire
-            </a>
-            .
+            </a>{' '}
+            de Passerelle Éco.
           </span>
         }
         sx={{ '& p': { display: 'none' } }}
