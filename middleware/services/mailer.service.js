@@ -206,7 +206,7 @@ module.exports = {
       const editUrl = urlJoin(CONFIG.BACKOFFICE_URL, 'OfferAndNeed', encodeURIComponent(resourceUri));
 
       await ctx.call('mailer.send', {
-        to: 'contact@cooperative-oasis.org',
+        to: 'annonces-moderation@cooperative-oasis.org',
         replyTo: this.settings.from,
         template: 'moderate-offer-and-need',
         data: {
