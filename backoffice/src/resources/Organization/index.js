@@ -16,9 +16,6 @@ export default {
   },
   dataModel: {
     types: ['pair:Organization'],
-    list: {
-      servers: '@default'
-    },
     fieldsMapping: {
       title: 'pair:label'
     }

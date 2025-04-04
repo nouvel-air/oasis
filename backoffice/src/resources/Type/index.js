@@ -15,9 +15,6 @@ export default {
   },
   dataModel: {
     types: ['cdlt:ServiceType', 'cdlt:OfferAndNeedType', 'pair:PersonType'],
-    list: {
-      servers: '@default'
-    },
     fieldsMapping: {
       title: 'pair:label'
     }
