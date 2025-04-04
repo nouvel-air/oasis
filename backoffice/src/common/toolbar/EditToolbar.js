@@ -11,7 +11,6 @@ const EditToolbar = ({ adminOnlyDelete = true }) => {
         <DeleteWithConfirmButton
           confirmTitle="Attention !"
           confirmContent="Cette action est irréversible. Êtes-vous sûr de vouloir continuer ?"
-          confirmColor="warning"
           sx={{ pl: 2 }}
         />
       )}

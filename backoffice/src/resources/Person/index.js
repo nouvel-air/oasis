@@ -16,9 +16,6 @@ export default {
   },
   dataModel: {
     types: ['pair:Person', 'foaf:Person'],
-    list: {
-      servers: '@default'
-    },
     fieldsMapping: {
       title: 'pair:label'
     }

@@ -1,3 +1,4 @@
+import urlJoin from 'url-join';
 import PlaceCreate from './PlaceCreate';
 import PlaceEdit from './PlaceEdit';
 import PlaceList from './PlaceList';
@@ -17,14 +18,10 @@ export default {
   dataModel: {
     types: ['pair:Place'],
     create: {
-      container: {
-        oasis: '/places'
-      }
+      container: urlJoin(process.env.REACT_APP_MIDDLEWARE_URL, '/places')
     },
     list: {
-      containers: {
-        oasis: ['/places']
-      },
+      containers: [urlJoin(process.env.REACT_APP_MIDDLEWARE_URL, '/places')],
       explicitEmbedOnFraming: false // Increase performance since explicit embed is not necessary
     },
     fieldsMapping: {

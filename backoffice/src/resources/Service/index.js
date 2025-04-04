@@ -15,10 +15,7 @@ export default {
     recordRepresentation: 'pair:label'
   },
   dataModel: {
-    types: ['cdlt:HostingService'],
-    list: {
-      servers: '@default'
-    },
+    types: ['cdlt:HostingService']
   },
   translations: {
     fr: {
@@ -31,8 +28,8 @@ export default {
         'cdlt:capacity': 'Capacité',
         'pair:description': 'Description',
         'pair:depictedBy': 'Image',
-        'cdlt:registrationLink': "Lien d'inscription",
-      },
-    },
-  },
+        'cdlt:registrationLink': "Lien d'inscription"
+      }
+    }
+  }
 };

@@ -15,10 +15,7 @@ export default {
     recordRepresentation: 'pair:label'
   },
   dataModel: {
-    types: ['cdlt:OfferAndNeed', 'pair:Event'],
-    list: {
-      servers: '@default'
-    }
+    types: ['cdlt:OfferAndNeed', 'pair:Event']
   },
   translations: {
     fr: {
