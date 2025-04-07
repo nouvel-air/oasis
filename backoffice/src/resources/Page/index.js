@@ -16,9 +16,6 @@ export default {
   },
   dataModel: {
     types: ['semapps:Page'],
-    list: {
-      servers: '@default'
-    },
     fieldsMapping: {
       title: 'semapps:title'
     }
