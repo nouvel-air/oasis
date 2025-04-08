@@ -18,7 +18,6 @@ const OfferAndNeedSidebar = () => (
       <ReferenceFilter
         reference="Type"
         source="pair:hasType"
-        inverseSource="pair:typeOf"
         limit={100}
         filter={{ a: 'cdlt:OfferAndNeedType', sparqlWhere: filterNoParent }}
         sort={{ field: 'pair:label', order: 'DESC' }}
