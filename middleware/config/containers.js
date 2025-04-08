@@ -42,13 +42,13 @@ module.exports = [
   },
   {
     path: '/types',
-    acceptedTypes: ['cdlt:ServiceType', 'pair:PersonType'],
+    acceptedTypes: ['cdlt:ServiceType', 'pair:PersonType', 'cdlt:OfferAndNeedType'],
     permissions: anonReadPermissions,
     newResourcesPermissions: anonReadPermissions
   },
   {
     path: '/status',
-    acceptedTypes: ['pair:ActorStatus'],
+    acceptedTypes: ['pair:ActorStatus', 'cdlt:PublicationStatus'],
     permissions: anonReadPermissions,
     newResourcesPermissions: anonReadPermissions
   },

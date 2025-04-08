@@ -6,7 +6,7 @@ module.exports = {
   name: 'expiration',
   mixins: [CronJobMixin],
   settings: {
-    cronTime: '*/2 * * * * *'
+    cronTime: '0 */2 * * * *'
   },
   methods: {
     async onTick() {
