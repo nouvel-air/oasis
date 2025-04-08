@@ -651,11 +651,6 @@
   dependencies:
     "@types/node" "*"
 
-"@types/luxon@~3.4.0":
-  version "3.4.2"
-  resolved "https://registry.yarnpkg.com/@types/luxon/-/luxon-3.4.2.tgz#e4fc7214a420173cea47739c33cdf10874694db7"
-  integrity sha512-TifLZlFudklWlMBfhubvgqTXRzLDI5pCbGa4P8a3wPyUQSW+1xQ5eDsreP9DWHX3tjq1ke96uYG/nwundroWcA==
-
 "@types/n3@^1.4.4":
   version "1.16.4"
   resolved "https://registry.yarnpkg.com/@types/n3/-/n3-1.16.4.tgz#007f489eb848a6a8ac586b037b8eea281da5730f"
@@ -1454,20 +1449,12 @@ cron-parser@^4.2.0, cron-parser@^4.2.1:
   dependencies:
     luxon "^3.2.1"
 
-cron@^1.8.2:
+cron@^1.7.1, cron@^1.8.2:
   version "1.8.3"
   resolved "https://registry.yarnpkg.com/cron/-/cron-1.8.3.tgz#2a61d7b15848716885834ec56ac072f4b9744ebd"
   integrity sha512-JYR/QZFklJCIPndBLfd/2nU1nSlCMrUdtQ2mGLXSVM/qqqEK7DOrFR0gsEiyeqs0PdWrs0ve1ggH4V7XksDwXg==
   dependencies:
     luxon "^1.23.x"
-
-cron@^3.1.6:
-  version "3.1.7"
-  resolved "https://registry.yarnpkg.com/cron/-/cron-3.1.7.tgz#3423d618ba625e78458fff8cb67001672d49ba0d"
-  integrity sha512-tlBg7ARsAMQLzgwqVxy8AZl/qlTc5nibqYwtNGoCrd+cV+ugI+tvZC1oT/8dFH8W455YrywGykx/KMmAqOr7Jw==
-  dependencies:
-    "@types/luxon" "~3.4.0"
-    luxon "~3.4.0"
 
 cross-fetch@^3.0.5, cross-fetch@^3.0.6:
   version "3.1.8"
@@ -3451,7 +3438,7 @@ luxon@^1.23.x:
   resolved "https://registry.yarnpkg.com/luxon/-/luxon-1.28.1.tgz#528cdf3624a54506d710290a2341aa8e6e6c61b0"
   integrity sha512-gYHAa180mKrNIUJCbwpmD0aTu9kV0dREDrwNnuyFAsO1Wt0EVYSZelPnJlbj9HplzXX/YWXHFTL45kvZ53M0pw==
 
-luxon@^3.2.1, luxon@~3.4.0:
+luxon@^3.2.1:
   version "3.4.4"
   resolved "https://registry.yarnpkg.com/luxon/-/luxon-3.4.4.tgz#cf20dc27dc532ba41a169c43fdcc0063601577af"
   integrity sha512-zobTr7akeGHnv7eBOXcRgMeCP6+uyYsczwmeRCauvpvaAltgNyTbLH/+VaEAPUeWBT+1GuNmz4wC/6jtQzbbVA==
@@ -3610,12 +3597,12 @@ moleculer-bull@^0.2.5:
     bull "^3.15.0"
     lodash "^4.17.15"
 
-moleculer-cron@^0.0.7:
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/moleculer-cron/-/moleculer-cron-0.0.7.tgz#5f44c1fc0e84fc39c2063158ff97b9ba6fb39199"
-  integrity sha512-g7nbdUUYouxebuxI7iALhQ97XXKsPrGwryzH3hFaeIVw5eFv8pTP5RUwD7Po+vceH9cBF/9f61NCFqmGqBCw9w==
+moleculer-cronjob@^0.1.7:
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/moleculer-cronjob/-/moleculer-cronjob-0.1.7.tgz#b43374a2082d7746d2aac7ccb0ebd2b326386324"
+  integrity sha512-I2RHydoRV9Go9nnD4wqCBXJjI5E4FwcBtZ0+IlIqSLdBFkrQ41psuJebZl16/2XMOXKu2HzAwwXzzzBvAF/UWQ==
   dependencies:
-    cron "^3.1.6"
+    cron "^1.7.1"
 
 moleculer-db@^0.8.16:
   version "0.8.25"
