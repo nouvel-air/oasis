@@ -23,7 +23,6 @@ const SignupForm = ({ additionalSignupValues }) => {
   const notify = useNotify();
   const classes = useStyles();
   const [searchParams] = useSearchParams();
-  const interactionId = searchParams.get('interaction_id');
   const signupType = searchParams.get('type');
 
   const submit = values => {
@@ -35,7 +34,6 @@ const SignupForm = ({ additionalSignupValues }) => {
         signupType === 'societaire'
           ? urlJoin(process.env.REACT_APP_MIDDLEWARE_URL, 'types', 'actor')
           : urlJoin(process.env.REACT_APP_MIDDLEWARE_URL, 'types', 'agent'),
-      interactionId,
       ...additionalSignupValues
     }).catch(error => {
       if (

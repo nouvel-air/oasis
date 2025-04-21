@@ -58,22 +58,15 @@ const LocalLoginPage = ({
   }, [isActivated, notify]);
 
   useEffect(() => {
-    (async () => {
-      if (!isLoading && identity?.id) {
-        if (interactionId) {
-          // If interactionId is set, it means we are connecting from another application.
-          // So first call a custom endpoint to tell the OIDC server the login is completed
-          await authProvider.loginCompleted(interactionId, identity?.id);
-        }
-        if (postLoginRedirect) {
-          navigate(`${postLoginRedirect}?${getSearchParamsRest(searchParams)}`);
-        } else if (redirectTo && redirectTo.startsWith('http')) {
-          window.location.href = redirectTo;
-        } else {
-          navigate(redirectTo || '/');
-        }
+    if (!isLoading && identity?.id) {
+      if (postLoginRedirect) {
+        navigate(`${postLoginRedirect}?${getSearchParamsRest(searchParams)}`);
+      } else if (redirectTo && redirectTo.startsWith('http')) {
+        window.location.href = redirectTo;
+      } else {
+        navigate(redirectTo || '/');
       }
-    })();
+    }
   }, [identity, isLoading, navigate, searchParams, redirectTo, postLoginRedirect, authProvider, interactionId]);
 
   const [title, text] = useMemo(() => {
