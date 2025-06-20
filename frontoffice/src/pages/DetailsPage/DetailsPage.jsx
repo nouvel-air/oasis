@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { RecordContextProvider, useShowController, useRedirect, TextField, UrlField } from 'react-admin';
 import { MarkdownField } from '@semapps/markdown-components';
@@ -21,6 +21,7 @@ import ScrollToTop from '../../layout/ScrollToTop';
 import ContactDialog from './ContactDialog';
 import DepartmentField from '../../common/field/DepartmentField';
 import OffersAndNeedsList from './OffersAndNeedsList';
+import { STATUS_PUBLISHED } from '../../constants';
 
 const OffersAndNeedsHeader = () => (
   <>
@@ -49,7 +50,13 @@ const DetailsPage = () => {
     setOpenContact(true);
   };
 
-  if (!record) return null;
+  useEffect(() => {
+    if (record && record['cdlt:hasPublicationStatus'] !== STATUS_PUBLISHED) {
+      redirect('/');
+    }
+  }, [record, redirect]);
+
+  if (!record || record['cdlt:hasPublicationStatus'] !== STATUS_PUBLISHED) return null;
 
   return (
     <RecordContextProvider value={record}>
