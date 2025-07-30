@@ -7,24 +7,10 @@ module.exports = [
     newResourcesPermissions: anonReadPermissions
   },
   {
-    path: '/places',
-    acceptedTypes: ['pair:Place'],
-    permissions: anonReadPermissions,
-    newResourcesPermissions: anonReadPermissions
-  },
-  {
     path: '/regions',
     acceptedTypes: ['pair:Place'],
     permissions: anonReadPermissions,
     newResourcesPermissions: anonReadPermissions
-  },
-  {
-    path: '/services',
-    acceptedTypes: ['cdlt:Service', 'cdlt:HostingService'],
-    permissions: {
-      ...anonReadPermissions,
-      ...writePermissionToActors
-    }
   },
   {
     path: '/groups',

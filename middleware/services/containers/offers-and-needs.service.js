@@ -1,17 +1,19 @@
 const { ControlledContainerMixin } = require('@semapps/ldp');
-const { anonReadPermissions, writePermissionToActors } = require('../config/permissions');
-const { TYPE_AGENT, TYPE_IMMOBILIER, STATUS_PUBLISHED, STATUS_MODERATED } = require('../constants');
+const { anonReadPermissions, writePermissionToActors } = require('../../config/permissions');
+const { TYPE_AGENT, TYPE_IMMOBILIER, STATUS_PUBLISHED, STATUS_MODERATED } = require('../../constants');
+const ProtectedPropertiesMixin = require('../../mixins/protected-properties');
 
 module.exports = {
   name: 'offers-and-needs',
-  mixins: [ControlledContainerMixin],
+  mixins: [ControlledContainerMixin, ProtectedPropertiesMixin],
   settings: {
     path: '/offers-and-needs',
     acceptedTypes: ['cdlt:OfferAndNeed', 'pair:Event'],
     permissions: {
       ...anonReadPermissions,
       ...writePermissionToActors
-    }
+    },
+    protectedProperties: ['cdlt:exportedTo']
   },
   hooks: {
     before: {
