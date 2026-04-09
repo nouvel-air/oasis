@@ -7,6 +7,7 @@ import Hero from './Hero';
 import Footer from '../../layout/Footer';
 import ScrollToTop from '../../layout/ScrollToTop';
 import DepartmentField from '../../common/field/DepartmentField';
+import { STATUS_PUBLISHED } from '../../constants';
 
 const getSlugFromUri = str => str.match(new RegExp(`.*/(.*)`))[1];
 
@@ -15,7 +16,8 @@ const CardsList = () => {
   return (
     <Grid container spacing={2} sx={{ position: 'relative' }}>
       {data &&
-        data.map(record => (
+        data.filter(record => record['cdlt:hasServiceType'] && record['cdlt:hasServiceType'].length > 0 && record['cdlt:hasPublicationStatus'] === STATUS_PUBLISHED)
+        .map(record => (
           <RecordContextProvider key={record.id} value={record}>
             <Grid item xs={12} sm={6} md={4}>
               <Link to={`/lieux/${encodeURIComponent(getSlugFromUri(record.id))}`}>

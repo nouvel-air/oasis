@@ -28,43 +28,44 @@ const dataModels = {
     },
     list: {
       containers: {
-        oasis: ['/places']
+        oasis: ['/places'],
       },
-      filter: {
-        'cdlt:hasPublicationStatus': STATUS_PUBLISHED,
-        // Only show places which have at least one hosting service
-        sparqlWhere: [
-          {
-            type: 'filter',
-            expression: {
-              type: 'operation',
-              operator: 'exists',
-              args: [
-                {
-                  type: 'bgp',
-                  triples: [
-                    {
-                      subject: {
-                        termType: 'Variable',
-                        value: 's1'
-                      },
-                      predicate: {
-                        termType: 'NamedNode',
-                        value: 'http://virtual-assembly.org/ontologies/cdlt#hasServiceType'
-                      },
-                      object: {
-                        termType: 'Variable',
-                        value: 'service'
-                      }
-                    }
-                  ]
-                }
-              ]
-            }
-          }
-        ]
-      },
-      explicitEmbedOnFraming: false // Increase performance since explicit embed is not necessary
+      fetchContainer: true,
+      explicitEmbedOnFraming: false, // Increase performance since explicit embed is not necessary
+      // filter: {
+      //   'cdlt:hasPublicationStatus': STATUS_PUBLISHED,
+      //   // Only show places which have at least one hosting service
+      //   sparqlWhere: [
+      //     {
+      //       type: 'filter',
+      //       expression: {
+      //         type: 'operation',
+      //         operator: 'exists',
+      //         args: [
+      //           {
+      //             type: 'bgp',
+      //             triples: [
+      //               {
+      //                 subject: {
+      //                   termType: 'Variable',
+      //                   value: 's1'
+      //                 },
+      //                 predicate: {
+      //                   termType: 'NamedNode',
+      //                   value: 'http://virtual-assembly.org/ontologies/cdlt#hasServiceType'
+      //                 },
+      //                 object: {
+      //                   termType: 'Variable',
+      //                   value: 'service'
+      //                 }
+      //               }
+      //             ]
+      //           }
+      //         ]
+      //       }
+      //     }
+      //   ]
+      // }
     },
     fieldsMapping: {
       title: 'pair:label'
