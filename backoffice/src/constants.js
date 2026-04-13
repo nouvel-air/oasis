@@ -11,6 +11,7 @@ export const TYPE_MEMBER = urlJoin(process.env.REACT_APP_MIDDLEWARE_URL, 'types'
 
 export const STATUS_PUBLISHED = urlJoin(process.env.REACT_APP_MIDDLEWARE_URL, 'status', 'published');
 export const STATUS_DRAFT = urlJoin(process.env.REACT_APP_MIDDLEWARE_URL, 'status', 'draft');
+export const STATUS_EXPIRED = urlJoin(process.env.REACT_APP_MIDDLEWARE_URL, 'status', 'expired');
 
 export const GROUP_OASIS = urlJoin(process.env.REACT_APP_MIDDLEWARE_URL, 'groups', 'oasis');
 

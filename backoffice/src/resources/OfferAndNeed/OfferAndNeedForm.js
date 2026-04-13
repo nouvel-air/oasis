@@ -17,7 +17,7 @@ import { PersonOrganizationOrPlaceInput, OrganizationOrPlaceInput, TypeInput, St
 import DateTimeInput from '../../common/input/DateTimeInput';
 import useAccountType from '../../hooks/useAccountType';
 import LocationInput from '../../common/input/LocationInput';
-import { TYPE_ANNONCE_AGENDA, TYPE_ANNONCE_EMPLOI } from '../../constants';
+import { STATUS_EXPIRED, TYPE_ANNONCE_AGENDA, TYPE_ANNONCE_EMPLOI } from '../../constants';
 import { filterNoParent } from '../../queries';
 
 // const toolbarCommands = [
@@ -56,6 +56,8 @@ const OfferAndNeedForm = ({ isCreate }) => {
 
   const categoryUri = useWatch({ name: 'pair:hasType' });
   const offeredByUri = useWatch({ name: 'pair:offeredBy' });
+  const publicationStatusUri = useWatch({ name: 'cdlt:hasPublicationStatus' });
+  const isFormDisabled = accountType !== 'admin' && publicationStatusUri === STATUS_EXPIRED;
 
   useEffect(() => {
     (async () => {
@@ -95,13 +97,13 @@ const OfferAndNeedForm = ({ isCreate }) => {
 
   return (
     <>
-      <TextInput source="pair:label" fullWidth validate={[required(), maxLength(100)]} />
+      <TextInput source="pair:label" fullWidth validate={[required(), maxLength(100)]} disabled={isFormDisabled} />
       {accountType !== 'agent' && (
         <TypeInput
           source="pair:hasType"
           filter={{ a: 'cdlt:OfferAndNeedType', sparqlWhere: filterNoParent }}
           validate={[required()]}
-          disabled={!isCreate}
+          disabled={!isCreate || isFormDisabled}
         />
       )}
       <FormDataConsumer>
@@ -111,6 +113,7 @@ const OfferAndNeedForm = ({ isCreate }) => {
               source="cdlt:hasSubType"
               filter={{ 'pair:partOf': formData['pair:hasType'] }}
               validate={[required()]}
+              disabled={isFormDisabled}
             />
           )
         }
@@ -120,17 +123,19 @@ const OfferAndNeedForm = ({ isCreate }) => {
           source="pair:offeredBy"
           validate={[required()]}
           filter={{ 'pair:affiliates': identity?.id }}
+          disabled={isFormDisabled}
         />
       )}
-      {accountType === 'admin' && <PersonOrganizationOrPlaceInput source="pair:offeredBy" validate={[required()]} />}
+      {accountType === 'admin' && <PersonOrganizationOrPlaceInput source="pair:offeredBy" validate={[required()]} disabled={isFormDisabled} />}
       <TextInput
         source="pair:description"
         fullWidth
         validate={[required(), maxLength(50_000), minLength(50)]}
         multiline
         rows={10}
+        disabled={isFormDisabled}
       />
-      <LocationInput source="pair:hasPostalAddress" validate={[required()]} fullWidth />
+      <LocationInput source="pair:hasPostalAddress" validate={[required()]} fullWidth disabled={isFormDisabled} />
       <TextInput
         source="pair:homePage"
         fullWidth
@@ -142,33 +147,37 @@ const OfferAndNeedForm = ({ isCreate }) => {
           ),
           maxLength(2048)
         ]}
+        disabled={isFormDisabled}
       />
       <ImageInput
         source="pair:depictedBy"
         validate={[required(), numFiles(1, 1)]}
         placeholder="Déposez ici l'image à uploader, ou cliquez pour en sélectionner (taille maximale: 2Mb)"
+        disabled={isFormDisabled}
       />
       <FormDataConsumer>
         {({ formData }) =>
           formData['pair:hasType'] === TYPE_ANNONCE_AGENDA ? (
             <>
-              <DateTimeInput source="pair:startDate" validate={[required(), futureDate]} />
-              <DateTimeInput source="pair:endDate" validate={[required(), afterStartDate]} />
+              <DateTimeInput source="pair:startDate" validate={[required(), futureDate]} disabled={isFormDisabled} />
+              <DateTimeInput source="pair:endDate" validate={[required(), afterStartDate]} disabled={isFormDisabled} />
             </>
           ) : (
             <DateTimeInput
               source="pair:endDate"
               label="Date d'expiration"
               validate={[required(), futureDate, max6months]}
+              disabled={isFormDisabled}
             />
           )
         }
       </FormDataConsumer>
-      <TextInput source="pair:e-mail" fullWidth validate={[required(), email()]} />
+      <TextInput source="pair:e-mail" fullWidth validate={[required(), email()]} disabled={isFormDisabled} />
       <TextInput
         source="pair:phone"
         fullWidth
         validate={[regex(/^[\d\s+()]*$/, 'Seuls les chiffres et les espaces sont autorisés')]}
+        disabled={isFormDisabled}
       />
       {accountType === 'admin' && (
         <StatusInput
@@ -176,6 +185,7 @@ const OfferAndNeedForm = ({ isCreate }) => {
           filter={{ a: 'cdlt:PublicationStatus' }}
           label={false}
           validate={[required()]}
+          disabled={isFormDisabled}
           // sx={{ '& p': { display: 'none' }, marginTop: -0.5 }}
         />
       )}
@@ -196,6 +206,7 @@ const OfferAndNeedForm = ({ isCreate }) => {
             </span>
           }
           required
+          disabled={isFormDisabled}
           sx={{ '& p': { display: 'none' } }}
         />
       )}
@@ -215,6 +226,7 @@ const OfferAndNeedForm = ({ isCreate }) => {
           </span>
         }
         sx={{ '& p': { display: 'none' } }}
+        disabled={isFormDisabled}
       />
     </>
   );

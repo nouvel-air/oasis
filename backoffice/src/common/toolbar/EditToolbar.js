@@ -1,12 +1,16 @@
 import React from 'react';
-import { SaveButton, DeleteWithConfirmButton, Toolbar } from 'react-admin';
+import { SaveButton, DeleteWithConfirmButton, Toolbar, useRecordContext } from 'react-admin';
 import useAccountType from '../../hooks/useAccountType';
+import { STATUS_EXPIRED } from '../../constants';
 
 const EditToolbar = ({ adminOnlyDelete = true }) => {
   const accountType = useAccountType();
+  const record = useRecordContext();
+  const isFormDisabled = accountType !== 'admin' && record?.['cdlt:hasPublicationStatus'] === STATUS_EXPIRED;
+
   return (
     <Toolbar>
-      <SaveButton />
+      <SaveButton disabled={isFormDisabled} />
       {(!adminOnlyDelete || accountType === 'admin') && (
         <DeleteWithConfirmButton
           confirmTitle="Attention !"
