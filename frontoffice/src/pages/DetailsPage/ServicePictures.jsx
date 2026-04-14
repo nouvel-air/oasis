@@ -42,7 +42,7 @@ const ServicePictures = () => {
                 // background: 'rgba(0,0,0,0.5)',
               }
             }}
-            title={`+${arrayOf(record['pair:depictedBy']).length} photos`}
+            title={`+${arrayOf(record['pair:depictedBy']).length - 1} photo${arrayOf(record['pair:depictedBy']).length > 2 ? 's' : ''}`}
             position="top"
           />
         )}
