@@ -50,13 +50,13 @@ const DetailsPage = () => {
     setOpenContact(true);
   };
 
-  useEffect(() => {
-    if (record && record['cdlt:hasPublicationStatus'] !== STATUS_PUBLISHED) {
-      redirect('/');
-    }
-  }, [record, redirect]);
+  // useEffect(() => {
+  //   if (record && record['cdlt:hasPublicationStatus'] !== STATUS_PUBLISHED) {
+  //     redirect('/');
+  //   }
+  // }, [record, redirect]);
 
-  if (!record || record['cdlt:hasPublicationStatus'] !== STATUS_PUBLISHED) return null;
+  if (!record /*|| record['cdlt:hasPublicationStatus'] !== STATUS_PUBLISHED*/) return null;
 
   return (
     <RecordContextProvider value={record}>
