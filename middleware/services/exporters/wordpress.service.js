@@ -43,9 +43,25 @@ module.exports = {
   },
   actions: {
     async clearAll() {
-      const posts = await this.list(this.settings.remoteApi.baseUrl);
-      for (const post of posts) {
-        await this.delete(`${this.settings.remoteApi.baseUrl}/${post.id}`);
+      // Collect all IDs before deleting, otherwise deleting shifts the pagination and we skip posts
+      const perPage = 100; // Maximum allowed by the Wordpress REST API
+      const postsIds = [];
+      let page = 1;
+      while (true) {
+        const url = new URL(this.settings.remoteApi.baseUrl);
+        url.searchParams.set('per_page', perPage);
+        url.searchParams.set('page', page);
+        url.searchParams.set('status', 'any'); // Include drafts, private posts, etc.
+        const posts = await this.list(url.toString());
+        // Wordpress returns a 400 error (false) when the page is out of range
+        if (!Array.isArray(posts) || posts.length === 0) break;
+        postsIds.push(...posts.map(post => post.id));
+        if (posts.length < perPage) break;
+        page++;
+      }
+
+      for (const postId of postsIds) {
+        await this.delete(`${this.settings.remoteApi.baseUrl}/${postId}`);
       }
       await this.actions.clearAllRemoteUrls();
     }
@@ -161,7 +177,10 @@ module.exports = {
     },
     async delete(remoteUrl) {
       this.logger.info(`Deleting Wordpress post ${remoteUrl}...`);
-      await this.fetchApi(remoteUrl, {
+      // Bypass the trash and delete permanently
+      const url = new URL(remoteUrl);
+      url.searchParams.set('force', 'true');
+      await this.fetchApi(url.toString(), {
         method: 'DELETE'
       });
     },
