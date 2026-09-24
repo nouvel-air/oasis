@@ -99,3 +99,14 @@ yarn run link-semapps-packages
 
 Additionally, frontend packages need to be rebuilt, or your changes will not be taken into account.
 You can use `yarn run build` to build a package once, or `yarn run dev` to rebuild a package on every change.
+
+## Maintenance
+
+### Reset Wordpress
+
+In case of problems of synchronization, a reset can be done like this:
+
+```
+call wordpress.clearAll
+call wordpress.exportAll
+```

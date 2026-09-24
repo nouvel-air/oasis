@@ -55,6 +55,11 @@ module.exports = {
       const isHostingService = hasType(data, 'cdlt:HostingService');
       const isEvent = hasType(data, 'pair:Event');
 
+      if (!data['pair:offeredBy']) {
+        this.logger.warn(`Resource ${data['@id']} does not have an 'offeredBy' property. Skipping export to Wordpress.`);
+        return false;
+      }
+
       const organization = await this.broker.call('ldp.resource.get', {
         resourceUri: data['pair:offeredBy'],
         accept: MIME_TYPES.JSON,
